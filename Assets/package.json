@@ -1,0 +1,23 @@
+{
+    "name": "com.goodtime.tools.autotranslate",
+    "displayName": "Auto Translate",
+    "version": "0.0.1",
+    "description": "Auto translate for unity localization",
+    "keywords": [
+      "Unity",
+      "Tool"
+    ],
+    "localization": {
+    "com.unity.localization": "1.0.5"
+    },
+    "author": "Hernets Maksym",
+    "license": "Open Source",
+    "unity": "2021.7",
+    "samples": [
+        {
+            "displayName": "Tutorial Scenes",
+            "description": "Contains an example scene",
+            "path": "Samples/Scenes"
+        }
+    ]
+   }
