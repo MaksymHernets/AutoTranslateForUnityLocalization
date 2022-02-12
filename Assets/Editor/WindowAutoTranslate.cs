@@ -20,8 +20,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private List<Locale> _locales;
 
         private string _selectedLocale = "English";
-        private bool _isTranslateAll = true;
-        
+
+        private bool _isOverrideWords = true;
+        private bool _isTranslateEmptyWords = true;
+        private bool _isTranslateSmartWords = true;
+
         [MenuItem("Window/Asset Management/Auto Translate for Tables")]
         public static void ShowWindow()
         {
@@ -95,13 +98,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             if (_typeStage == TypeStage.Loading)
             {
-                GUILayout.Label("Please wait. Search Localization Settings", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Please wait. Search Localization Settings", EditorStyles.boldLabel);
             }
             else if (_typeStage == TypeStage.Ready)
             {
-                GUILayout.Label("Source Launcher", EditorStyles.boldLabel);
-                var posit = new Rect(new Vector2(100, 100), new Vector2(200, 20));
-                if (EditorGUI.DropdownButton(posit, new GUIContent(_selectedLocale), FocusType.Passive))
+                GUILayout.Space(10);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Source Launcher", GUILayout.Width(300));
+
+                var posit = new Rect(new Vector2(210, 10), new Vector2(200, 20));
+                if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLocale), FocusType.Passive))
                 {
                     var genericMenu = new GenericMenu();
 
@@ -115,17 +121,27 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                     }
                     genericMenu.DropDown(posit);
                 }
+                EditorGUILayout.EndHorizontal();
 
-                _isTranslateAll = GUI.Toggle(new Rect(new Vector2(100, 200), new Vector2(200, 20)), _isTranslateAll, "Translate all words or only empty words");
+                GUILayout.Space(10);
+                EditorGUIUtility.labelWidth = 300;
+                _isOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _isOverrideWords);
+                GUILayout.Space(10);
+                EditorGUIUtility.labelWidth = 300;
+                _isTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _isTranslateEmptyWords);
+                GUILayout.Space(10);
+                EditorGUIUtility.labelWidth = 300;
+                _isTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _isTranslateSmartWords);
 
-                if (GUI.Button(new Rect(new Vector2(100, 300), new Vector2(200, 20)), "Translate"))
+                GUILayout.Space(20);
+                if (GUILayout.Button("Translate") )
                 {
                     Translate();
                 }
             }
             else if (_typeStage == TypeStage.Translating)
             {
-                GUILayout.Label("Translating", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Translating", EditorStyles.boldLabel);
             }
         }
 
