@@ -11,7 +11,12 @@
     "com.unity.localization": "1.0.5"
     },
     "author": "Hernets Maksym",
-    "license": "Open Source",
+    "repository": 
+    { 
+        "url": "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git",
+        "directory": "/Assets"
+    },
+    "license": "ISC",
     "unity": "2021.7",
     "samples": [
         {
