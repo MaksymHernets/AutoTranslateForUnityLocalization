@@ -1,20 +1,20 @@
 {
     "name": "com.goodtime.tools.autotranslate",
     "displayName": "Auto Translate",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Auto translate for unity localization",
     "keywords": [
       "Unity",
       "Tool"
     ],
-    "localization": {
+    "dependencies": {
     "com.unity.localization": "1.0.5"
     },
     "author": "Hernets Maksym",
     "repository": 
     { 
         "url": "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git",
-        "directory": "/Assets"
+        "directory": "Assets"
     },
     "license": "ISC",
     "unity": "2021.7",
