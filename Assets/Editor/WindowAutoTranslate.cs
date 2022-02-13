@@ -1,5 +1,7 @@
+using GoodTime.Tools.GoogleApiTranslate;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,15 +14,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
     public class WindowAutoTranslate : EditorWindow
     {
+        // Window parameters
         private const string k_WindowTitle = "Auto Translate for Localization";
-        static readonly Vector2 k_MinSize = new Vector2(900, 600);
-
-        private LocalizationSettings _localizationSettings;
         private TypeStage _typeStage;
+
+        // Temp
         private List<Locale> _locales;
+        private Locale _selectedLocale;
+        private IList<StringTable> _tables;
 
-        private string _selectedLocale = "English";
-
+        // Arguments for translate
+        private string _selectedLanguage = string.Empty;
         private bool _isOverrideWords = true;
         private bool _isTranslateEmptyWords = true;
         private bool _isTranslateSmartWords = true;
@@ -37,61 +41,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             _typeStage = TypeStage.Loading;
 
-            this.minSize = k_MinSize;
-
             LoadSettings();
-
-            if (_locales.Count != 0)
-            {
-                _selectedLocale = _locales[0].name;
-            }
         }
 
         private void OnFocus()
         {
             LoadSettings();
-        }
-
-        private async void LoadSettings()
-        {
-            string[] guids = AssetDatabase.FindAssets("Localization Settings t:LocalizationSettings", null);
-
-            if ( guids.Length != 0 )
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-
-                _localizationSettings = AssetDatabase.LoadAssetAtPath<LocalizationSettings>(path);
-
-                _locales =  _localizationSettings.GetAvailableLocales().Locales;
-
-                Locale selectedLocale = await _localizationSettings.GetSelectedLocaleAsync().Task;
-
-                if (selectedLocale != null)
-                {
-                    _selectedLocale = selectedLocale.name;
-                }
-                
-                _typeStage = TypeStage.Ready;
-            } 
-        }
-
-        private async void LoadLaunchers()
-        {
-            _locales = new List<Locale>();
-
-            List<string> labels = new List<string>();
-            labels.Add("Locale");
-            IList<IResourceLocation> locations = await Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.None, typeof(Locale)).Task;
-
-            foreach (var location in locations)
-            {
-                _locales.Add(await Addressables.LoadAssetAsync<Locale>(location).Task);
-            }
-
-            // It is no work. Why?. I dont know...
-            //IList<Locale> lists = await Addressables.LoadAssetsAsync<Locale>(locations, null, Addressables.MergeMode.Union).Task;
-
-            _typeStage = TypeStage.Ready;
         }
 
         void OnGUI()
@@ -104,19 +59,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 GUILayout.Space(10);
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Source Launcher", GUILayout.Width(300));
+                EditorGUILayout.LabelField("Source language", GUILayout.Width(300));
 
-                var posit = new Rect(new Vector2(210, 10), new Vector2(200, 20));
-                if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLocale), FocusType.Passive))
+                var posit = new Rect(new Vector2(310, 10), new Vector2(200, 20));
+                if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
                 {
                     var genericMenu = new GenericMenu();
 
                     foreach (var option in _locales.Select(w => w.name))
                     {
-                        bool selected = option == _selectedLocale;
+                        bool selected = option == _selectedLanguage;
                         genericMenu.AddItem(new GUIContent(option), selected, () =>
                         {
-                            _selectedLocale = option;
+                            _selectedLanguage = option;
                         });
                     }
                     genericMenu.DropDown(posit);
@@ -134,44 +89,128 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _isTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _isTranslateSmartWords);
 
                 GUILayout.Space(20);
-                if (GUILayout.Button("Translate") )
+                if (GUILayout.Button("Translate"))
                 {
-                    Translate();
+                    ButtonTranslate_Click();
                 }
             }
             else if (_typeStage == TypeStage.Translating)
             {
                 EditorGUILayout.LabelField("Translating", EditorStyles.boldLabel);
             }
+            else if (_typeStage == TypeStage.ErrorNoFoundSettings)
+            {
+                EditorGUILayout.LabelField("Error. Localization settings not found!", EditorStyles.boldLabel);
+            }
+            else if (_typeStage == TypeStage.ErrorNoFoundLocales)
+            {
+                EditorGUILayout.LabelField("Error. No languages found!", EditorStyles.boldLabel);
+            }
         }
 
-        private void Translate()
+        private void LoadSettings()
+        {
+            string[] guids = AssetDatabase.FindAssets("Localization Settings t:LocalizationSettings", null);
+
+            if (guids.Length != 0)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+
+                LocalizationSettings localizationSettings = AssetDatabase.LoadAssetAtPath<LocalizationSettings>(path);
+
+                _locales = localizationSettings.GetAvailableLocales().Locales;
+
+                if ( _locales == null || _locales.Count == 0)
+                {
+                    _typeStage = TypeStage.ErrorNoFoundLocales;
+                    return;
+                }
+
+                Locale selectedLocale = localizationSettings.GetSelectedLocale();
+
+                if ( selectedLocale != null )
+                {
+                    _selectedLanguage = selectedLocale.LocaleName;
+                }
+
+                _selectedLanguage = _locales[0].LocaleName;
+
+                _typeStage = TypeStage.Ready;
+            }
+            else
+            {
+                _typeStage = TypeStage.ErrorNoFoundSettings;
+            }
+        }
+
+        private void ButtonTranslate_Click()
         {
             _typeStage = TypeStage.Translating;
-            LoadTables();
+
+            Addressables.ClearResourceLocators();
+            Addressables.CleanBundleCache();
+
+            LoadTables().ContinueWith( _ =>
+            {
+                TranslateTables();
+                
+                _typeStage = TypeStage.Ready;
+            }
+            , System.Threading.Tasks.TaskContinuationOptions.ExecuteSynchronously);
         }
 
-        public async void LoadTables()
+        private async Task LoadTables()
         {
-            List<string> labels = new List<string>();
-
-            foreach (var item in _locales)
-            {
-                labels.Add("Locale-" + item.Formatter);      
-            }
+            List<string> labels = _locales.Select(w=> "Locale-" + w.Formatter).ToList();
 
             IList<IResourceLocation> locations = await Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Union, typeof(StringTable)).Task;
 
-            var tables = await Addressables.LoadAssetsAsync<StringTable>(locations, null).Task;
+            _tables = await Addressables.LoadAssetsAsync<StringTable>(locations, null).Task;
 
-            foreach (var table in tables)
+            return;
+        }
+
+        private void TranslateTables()
+        {
+            if ( _tables == null ) return;
+
+            _selectedLocale = _locales.First(w => w.LocaleName == _selectedLanguage);
+
+            StringTable sourceLanguageTable = _tables.First(w => w.LocaleIdentifier == _selectedLocale.Identifier);
+
+            IList<StringTable> tablesForTranslate = _tables;
+            tablesForTranslate.Remove(sourceLanguageTable);
+
+            GoogleApiTranslate translator = new GoogleApiTranslate();
+
+            foreach (StringTable targetLanguageTable in tablesForTranslate)
             {
-                //table["SampleText"].Value = "sample";
-
-                table.AddEntry("SampleText", "sample4");
+                foreach (var entry in sourceLanguageTable.SharedData.Entries)
+                {
+                    StringTableEntry sourceWord = sourceLanguageTable.GetEntry(entry.Key);
+                    if ( sourceWord.IsSmart == true && _isTranslateSmartWords == false)
+                    {
+                        continue;
+                    }
+                    StringTableEntry targetWord = targetLanguageTable.GetEntry(entry.Key);
+                    if ( targetWord == null || string.IsNullOrEmpty(targetWord.Value) )
+                    {
+                        if ( _isTranslateEmptyWords == false)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if ( _isOverrideWords == false )
+                        {
+                            continue;
+                        }
+                    }
+                    string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+                    targetLanguageTable.AddEntry(entry.Key, result);
+                }
             }
-
-            _typeStage = TypeStage.Ready;
         }
     }
 
@@ -180,7 +219,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         Loading,
         Ready,
         Translating,
-        Done
+        Done,
+        ErrorNoFoundSettings,
+        ErrorNoFoundLocales
     }
 }
 

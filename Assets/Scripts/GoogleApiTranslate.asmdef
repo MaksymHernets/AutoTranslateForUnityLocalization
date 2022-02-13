@@ -1,0 +1,14 @@
+{
+    "name": "GoogleApiTranslate",
+    "rootNamespace": "GoodTime.Tools.GoogleApiTranslate",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
