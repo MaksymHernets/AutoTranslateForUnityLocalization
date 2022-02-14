@@ -15,11 +15,14 @@ namespace GoodTime.Tools.GoogleApiTranslate
             string translationFromGoogle = RequestToGoogleApi(word, sourceLanguage, targetLanguage);
 
             var json = JsonConvert.DeserializeObject(translationFromGoogle);
-            var json1 = json as JArray;
-            var json2 = json1.First() as JArray;
-            var json3 = json2.First() as JArray;
-            var json4 = json3.First() as JValue;
-            translation = json4.Value.ToString();
+            var arrayGeneric = json as JArray;
+            var arrayWords = arrayGeneric.First() as JArray;
+            foreach (var arrayWord in arrayWords)
+            {
+                var array = arrayWord as JArray;
+                var targetWord = array[0] as JValue;
+                translation += targetWord;
+            }
 
             return translation;
         }

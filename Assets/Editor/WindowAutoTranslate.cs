@@ -147,9 +147,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             _typeStage = TypeStage.Translating;
 
-            Addressables.ClearResourceLocators();
-            Addressables.CleanBundleCache();
-
             LoadTables().ContinueWith( _ =>
             {
                 TranslateTables();
@@ -188,6 +185,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 foreach (var entry in sourceLanguageTable.SharedData.Entries)
                 {
                     StringTableEntry sourceWord = sourceLanguageTable.GetEntry(entry.Key);
+                    if ( sourceWord == null && string.IsNullOrEmpty(sourceWord.Value) )
+                    {
+                        continue;
+                    }
                     if ( sourceWord.IsSmart == true && _isTranslateSmartWords == false)
                     {
                         continue;
