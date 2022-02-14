@@ -1,14 +1,14 @@
 using GoodTime.Tools.GoogleApiTranslate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -28,6 +28,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isOverrideWords = true;
         private bool _isTranslateEmptyWords = true;
         private bool _isTranslateSmartWords = true;
+
+        private bool _isErrorTooManyRequests = false;
+        private DateTime _diedLineErrorTooManyRequests;
+        private double _timeNeedForWaitErrorMinute = 10;
 
         [MenuItem("Window/Asset Management/Auto Translate for Tables")]
         public static void ShowWindow()
@@ -78,17 +82,24 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 }
                 EditorGUILayout.EndHorizontal();
 
-                GUILayout.Space(10);
                 EditorGUIUtility.labelWidth = 300;
                 _isOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _isOverrideWords);
-                GUILayout.Space(10);
-                EditorGUIUtility.labelWidth = 300;
                 _isTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _isTranslateEmptyWords);
-                GUILayout.Space(10);
-                EditorGUIUtility.labelWidth = 300;
                 _isTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _isTranslateSmartWords);
 
-                GUILayout.Space(20);
+                GUILayout.Space(10);
+                EditorGUILayout.HelpBox("\n  Found " + _locales.Count + " languages\n", MessageType.Info);
+
+                if ( _isErrorTooManyRequests )
+                {
+                    TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
+                    EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
+                    if ( _diedLineErrorTooManyRequests < DateTime.Now )
+                    {
+                        _isErrorTooManyRequests = false;
+                    }
+                }
+                GUILayout.Space(10);
                 if (GUILayout.Button("Translate"))
                 {
                     ButtonTranslate_Click();
@@ -110,14 +121,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void LoadSettings()
         {
-            string[] guids = AssetDatabase.FindAssets("Localization Settings t:LocalizationSettings", null);
+            LocalizationSettings localizationSettings = LocalizationSettings.InitializationOperation.WaitForCompletion();
 
-            if (guids.Length != 0)
+            if ( localizationSettings != null)
             {
-                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-
-                LocalizationSettings localizationSettings = AssetDatabase.LoadAssetAtPath<LocalizationSettings>(path);
-
                 _locales = localizationSettings.GetAvailableLocales().Locales;
 
                 if ( _locales == null || _locales.Count == 0)
@@ -126,16 +133,18 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                     return;
                 }
 
-                Locale selectedLocale = localizationSettings.GetSelectedLocale();
+                Locale selectedLocale = LocalizationSettings.ProjectLocale;
 
                 if ( string.IsNullOrEmpty(_selectedLanguage) )
                 {
                     if (selectedLocale != null)
                     {
-                        _selectedLanguage = selectedLocale.LocaleName;
+                        _selectedLanguage = selectedLocale.name;
                     }
-
-                    _selectedLanguage = _locales[0].LocaleName;
+                    else
+                    {
+                        _selectedLanguage = _locales[0].LocaleName;
+                    }
                 }
                 
                 _typeStage = TypeStage.Ready;
@@ -150,71 +159,113 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             _typeStage = TypeStage.Translating;
 
-            LoadTables().ContinueWith( _ =>
-            {
-                TranslateTables();
-                
-                _typeStage = TypeStage.Ready;
-            }
-            , System.Threading.Tasks.TaskContinuationOptions.ExecuteSynchronously);
+            LoadTables();
+
+            TranslateTables();
+
+            //Addressables.CheckForCatalogUpdates();
+            //AssetBundle.UnloadAllAssetBundles(true);
+
+            EditorUtility.ClearProgressBar();
+
+            _typeStage = TypeStage.Ready;
         }
 
-        private async Task LoadTables()
+        private void LoadTables()
         {
-            List<string> labels = _locales.Select(w=> "Locale-" + w.Formatter).ToList();
+            try
+            {
+                EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
-            IList<IResourceLocation> locations = await Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Union, typeof(StringTable)).Task;
+                IList<string> labels = _locales.Select(w => "Locale-" + w.Formatter).ToList();
 
-            _tables = await Addressables.LoadAssetsAsync<StringTable>(locations, null).Task;
+                var locations = Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Union, typeof(StringTable)).WaitForCompletion();
 
-            return;
+                _tables = Addressables.LoadAssetsAsync<StringTable>(locations, null).WaitForCompletion();
+
+                return;
+            }
+            catch (Exception exception)
+            {
+                EditorUtility.ClearProgressBar();
+            }
         }
 
         private void TranslateTables()
         {
             if ( _tables == null ) return;
 
+            EditorUtility.DisplayCancelableProgressBar("Translating", "Preparation translate", 0.1f);
+
             _selectedLocale = _locales.First(w => w.LocaleName == _selectedLanguage);
 
-            StringTable sourceLanguageTable = _tables.First(w => w.LocaleIdentifier == _selectedLocale.Identifier);
+            StringTable sourceLanguageTable = _tables.FirstOrDefault(w => w.LocaleIdentifier == _selectedLocale.Identifier);
 
-            IList<StringTable> tablesForTranslate = _tables;
-            tablesForTranslate.Remove(sourceLanguageTable);
+            List<StringTable> tablesForTranslate = new List<StringTable>();
+            foreach (var item in _tables)
+            {
+                if ( item.LocaleIdentifier != _selectedLocale.Identifier)
+                {
+                    tablesForTranslate.Add(item);
+                } 
+            }
 
             GoogleApiTranslate translator = new GoogleApiTranslate();
 
-            foreach (StringTable targetLanguageTable in tablesForTranslate)
+            float progressRate = 0.9f / tablesForTranslate.Count;
+            int indexTable = 0;
+
+            try
             {
-                foreach (var entry in sourceLanguageTable.SharedData.Entries)
+                foreach (StringTable targetLanguageTable in tablesForTranslate)
                 {
-                    StringTableEntry sourceWord = sourceLanguageTable.GetEntry(entry.Key);
-                    if ( sourceWord == null && string.IsNullOrEmpty(sourceWord.Value) )
+                    float progress = 0.1f + indexTable * progressRate;
+                    EditorUtility.DisplayCancelableProgressBar("Translating", "Translate " + targetLanguageTable.LocaleIdentifier.CultureInfo, progress);
+                    foreach (var entry in sourceLanguageTable.SharedData.Entries)
                     {
-                        continue;
-                    }
-                    if ( sourceWord.IsSmart == true && _isTranslateSmartWords == false)
-                    {
-                        continue;
-                    }
-                    StringTableEntry targetWord = targetLanguageTable.GetEntry(entry.Key);
-                    if ( targetWord == null || string.IsNullOrEmpty(targetWord.Value) )
-                    {
-                        if ( _isTranslateEmptyWords == false)
+                        StringTableEntry sourceWord;
+                        if (!sourceLanguageTable.TryGetValue(entry.Id, out sourceWord))
                         {
                             continue;
                         }
-                    }
-                    else
-                    {
-                        if ( _isOverrideWords == false )
+                        //sourceWord = sourceLanguageTable.GetEntry(entry.Key);
+                        if (sourceWord == null)
                         {
                             continue;
                         }
+                        if (sourceWord.IsSmart == true && _isTranslateSmartWords == false)
+                        {
+                            continue;
+                        }
+                        StringTableEntry targetWord;
+
+                        if ( targetLanguageTable.TryGetValue(entry.Id, out targetWord) )
+                        {
+                            if (_isOverrideWords == false)
+                            {
+                                continue;
+                            }
+                        }
+                        string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+                        targetLanguageTable.AddEntry(entry.Key, result);
                     }
-                    string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
-                    targetLanguageTable.AddEntry(entry.Key, result);
+                    ++indexTable;
                 }
             }
+            catch (WebException webException)
+            {
+                EditorUtility.ClearProgressBar();
+                _diedLineErrorTooManyRequests = DateTime.Now;
+                _diedLineErrorTooManyRequests = _diedLineErrorTooManyRequests.AddMinutes(_timeNeedForWaitErrorMinute);
+                _isErrorTooManyRequests = true;
+            }
+            catch (Exception exception)
+            {
+                EditorUtility.ClearProgressBar();
+                Debug.Log(exception.Message);
+            }
+
+            EditorUtility.DisplayProgressBar("Translating", "Completed", 1f);
         }
     }
 
