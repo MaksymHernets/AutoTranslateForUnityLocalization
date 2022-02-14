@@ -128,13 +128,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
                 Locale selectedLocale = localizationSettings.GetSelectedLocale();
 
-                if ( selectedLocale != null )
+                if ( string.IsNullOrEmpty(_selectedLanguage) )
                 {
-                    _selectedLanguage = selectedLocale.LocaleName;
+                    if (selectedLocale != null)
+                    {
+                        _selectedLanguage = selectedLocale.LocaleName;
+                    }
+
+                    _selectedLanguage = _locales[0].LocaleName;
                 }
-
-                _selectedLanguage = _locales[0].LocaleName;
-
+                
                 _typeStage = TypeStage.Ready;
             }
             else
