@@ -1,7 +1,7 @@
 {
     "name": "com.maksymhernets.autotranslateforlocalizationunity",
     "displayName": "Auto Translate",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n Use 'Window->Asset Management->Auto Translate for Tables' to begin working with the system.",
     "keywords": [
       "Unity",
@@ -18,13 +18,6 @@
     },
     "license": "ISC",
     "unity": "2021.7",
-    "samples": [
-        {
-            "displayName": "Tutorial Scenes",
-            "description": "Contains an example scene",
-            "path": "Samples/Scenes"
-        }
-    ],
     "publishConfig": 
     {
         "registry":"https://npm.pkg.github.com"
