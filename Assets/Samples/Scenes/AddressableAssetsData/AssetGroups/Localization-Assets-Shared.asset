@@ -17,8 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: d480200f24580ba4fae494b280996c71
   m_SerializeEntries:
-  - m_GUID: 9fc9dfa8eceeb7041b4d3fee3559f7bc
-    m_Address: Assets/StringTablesCollection/New Table Shared Data.asset
+  - m_GUID: a968c958705545947b9098a24bf9e1e0
+    m_Address: Assets/New Table Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 2b07202c289928144a9ddc25c165f33f
+    m_Address: Assets/Samples/Scenes/StringTablesCollection/New Table 1 Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 8ac9d319a437a7d4980a43d60449a22e
+    m_Address: Assets/Samples/Scenes/StringTablesCollection/New Table 2 Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
   m_ReadOnly: 1

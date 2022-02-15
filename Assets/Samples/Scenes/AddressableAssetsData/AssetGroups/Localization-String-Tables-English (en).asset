@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 35cbb039d1879794fb6f4dbb59e85ddf
-  m_SerializeEntries:
-  - m_GUID: fd8b910d2fa37e54b91b3d9e72d19295
-    m_Address: New Table_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Preload
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 42e5a33725540b4409474e152a4ba414, type: 2}
   m_SchemaSet:
