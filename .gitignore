@@ -74,3 +74,4 @@ crashlytics-build.properties
 /.vs
 /.idea
 /Assets/Samples
+/Assets/Samples.meta

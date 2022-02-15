@@ -46,6 +46,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         public void OnEnable()
         {
+            _canTranslateTableCollections = new List<bool>();
             LoadSettings();
             LoadTables();
             InstTranslateTableCollections();
