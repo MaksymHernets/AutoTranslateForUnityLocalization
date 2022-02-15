@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using UnityEditor;
+using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Localization;
@@ -16,18 +17,20 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
     {
         // Window parameters
         private const string k_WindowTitle = "Auto Translate for Localization";
-        private TypeStage _typeStage;
 
         // Temp
+        private LocalizationSettings _localizationSettings;
         private List<Locale> _locales;
         private Locale _selectedLocale;
         private IList<StringTable> _tables;
+        private IList<SharedTableData> _sharedtables;
 
         // Arguments for translate
         private string _selectedLanguage = string.Empty;
-        private bool _isOverrideWords = true;
-        private bool _isTranslateEmptyWords = true;
-        private bool _isTranslateSmartWords = true;
+        private bool _canOverrideWords = true;
+        private bool _canTranslateEmptyWords = true;
+        private bool _canTranslateSmartWords = true;
+        private List<bool> _canTranslateTableCollections;
 
         private bool _isErrorTooManyRequests = false;
         private DateTime _diedLineErrorTooManyRequests;
@@ -43,95 +46,112 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         public void OnEnable()
         {
-            _typeStage = TypeStage.Loading;
-
             LoadSettings();
+            LoadTables();
+            InstTranslateTableCollections();
         }
 
         private void OnFocus()
         {
             LoadSettings();
+            LoadTables();
+            InstTranslateTableCollections();
         }
 
         void OnGUI()
         {
-            if (_typeStage == TypeStage.Loading)
-            {
-                EditorGUILayout.LabelField("Please wait. Search Localization Settings", EditorStyles.boldLabel);
-            }
-            else if (_typeStage == TypeStage.Ready)
-            {
-                GUILayout.Space(10);
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Source language", GUILayout.Width(300));
+            GUILayout.Space(10);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Source language", GUILayout.Width(300));
 
-                var posit = new Rect(new Vector2(310, 10), new Vector2(200, 20));
-                if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
+            var posit = new Rect(new Vector2(310, 10), new Vector2(200, 20));
+            if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
+            {
+                var genericMenu = new GenericMenu();
+
+                foreach (var option in _locales.Select(w => w.name))
                 {
-                    var genericMenu = new GenericMenu();
-
-                    foreach (var option in _locales.Select(w => w.name))
+                    bool selected = option == _selectedLanguage;
+                    genericMenu.AddItem(new GUIContent(option), selected, () =>
                     {
-                        bool selected = option == _selectedLanguage;
-                        genericMenu.AddItem(new GUIContent(option), selected, () =>
-                        {
-                            _selectedLanguage = option;
-                        });
-                    }
-                    genericMenu.DropDown(posit);
+                        _selectedLanguage = option;
+                    });
                 }
-                EditorGUILayout.EndHorizontal();
+                genericMenu.DropDown(posit);
+            }
+            EditorGUILayout.EndHorizontal();
 
-                EditorGUIUtility.labelWidth = 300;
-                _isOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _isOverrideWords);
-                _isTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _isTranslateEmptyWords);
-                _isTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _isTranslateSmartWords);
+            EditorGUIUtility.labelWidth = 300;
+            _canOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _canOverrideWords);
+            _canTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _canTranslateEmptyWords);
+            _canTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _canTranslateSmartWords);
 
-                GUILayout.Space(10);
-                EditorGUILayout.HelpBox("\n  Found " + _locales.Count + " languages\n", MessageType.Info);
+            GUILayout.Space(10);
+            EditorGUILayout.HelpBox("  Found " + _locales.Count + " languages" +
+                "\n  Found " + _sharedtables.Count + " table collection" + 
+                "\n  Found " + _tables.Count + " tables", MessageType.Info);
 
-                if ( _isErrorTooManyRequests )
+            if ( _sharedtables != null)
+            {
+                EditorGUILayout.LabelField("Selected collection tables for translation:", GUILayout.Width(300));
+                EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(10,10,10,10) });
+                int index = 0;
+                foreach (var sharedtable in _sharedtables)
                 {
-                    TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
-                    EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
-                    if ( _diedLineErrorTooManyRequests < DateTime.Now )
-                    {
-                        _isErrorTooManyRequests = false;
-                    }
+                    _canTranslateTableCollections[index] = EditorGUILayout.ToggleLeft(sharedtable.TableCollectionName, _canTranslateTableCollections[index]);
+                    ++index;
                 }
-                GUILayout.Space(10);
-                if (GUILayout.Button("Translate"))
+                
+                EditorGUILayout.EndVertical();
+            }
+
+            if (_isErrorTooManyRequests)
+            {
+                TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
+                EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
+                if (_diedLineErrorTooManyRequests < DateTime.Now)
                 {
-                    ButtonTranslate_Click();
+                    _isErrorTooManyRequests = false;
                 }
             }
-            else if (_typeStage == TypeStage.Translating)
+            if( _localizationSettings == null )
             {
-                EditorGUILayout.LabelField("Translating", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox("Localization settings not found! Please create one via 'Edit/Project Settings/Localization'", MessageType.Error);
+                GUI.enabled = false;
             }
-            else if (_typeStage == TypeStage.ErrorNoFoundSettings)
+            if( _locales == null || _locales.Count == 0 )
             {
-                EditorGUILayout.LabelField("Error. Localization settings not found!", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox("Languages not found! Please add languages via 'Edit/Project Settings/Localization' => Locale Generator and reload project", MessageType.Error);
+                GUI.enabled = false;
             }
-            else if (_typeStage == TypeStage.ErrorNoFoundLocales)
+            if( _tables.Count == 0 )
             {
-                EditorGUILayout.LabelField("Error. No languages found!", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox("String Tables not found! Please add string table via 'Window/Asset Management/Localization Tables' => New Table Collection", MessageType.Error);
+                GUI.enabled = false;
+            }
+            GUILayout.Space(10);
+            if (GUILayout.Button("Translate"))
+            {
+                ButtonTranslate_Click();
             }
         }
 
         private void LoadSettings()
         {
-            LocalizationSettings localizationSettings = LocalizationSettings.InitializationOperation.WaitForCompletion();
+            string[] guids = AssetDatabase.FindAssets("Localization Settings t:LocalizationSettings", null);
 
-            if ( localizationSettings != null)
+            if (guids.Length != 0)
             {
-                _locales = localizationSettings.GetAvailableLocales().Locales;
+                var path = AssetDatabase.GUIDToAssetPath(guids[0]);
 
-                if ( _locales == null || _locales.Count == 0)
-                {
-                    _typeStage = TypeStage.ErrorNoFoundLocales;
-                    return;
-                }
+                _localizationSettings = AssetDatabase.LoadAssetAtPath<LocalizationSettings>(path);
+            }
+
+            _locales = new List<Locale>();
+
+            if (_localizationSettings != null)
+            {
+                _locales = LocalizationSettings.Instance.GetAvailableLocales().Locales;
 
                 Locale selectedLocale = LocalizationSettings.ProjectLocale;
 
@@ -141,47 +161,44 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                     {
                         _selectedLanguage = selectedLocale.name;
                     }
-                    else
+                    else if (_locales.Count != 0)
                     {
                         _selectedLanguage = _locales[0].LocaleName;
                     }
                 }
-                
-                _typeStage = TypeStage.Ready;
-            }
-            else
-            {
-                _typeStage = TypeStage.ErrorNoFoundSettings;
             }
         }
 
         private void ButtonTranslate_Click()
         {
-            _typeStage = TypeStage.Translating;
+            EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
             LoadTables();
 
+            if (_tables == null) return;
+
+            PreparationTranslate();
+
             TranslateTables();
 
-            //Addressables.CheckForCatalogUpdates();
-            //AssetBundle.UnloadAllAssetBundles(true);
+            SaveTables();
 
             EditorUtility.ClearProgressBar();
-
-            _typeStage = TypeStage.Ready;
         }
 
         private void LoadTables()
         {
             try
             {
-                EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
+                _tables = new List<StringTable>();
 
                 IList<string> labels = _locales.Select(w => "Locale-" + w.Formatter).ToList();
 
                 var locations = Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Union, typeof(StringTable)).WaitForCompletion();
 
                 _tables = Addressables.LoadAssetsAsync<StringTable>(locations, null).WaitForCompletion();
+
+                _sharedtables = _tables.Select(w => w.SharedData).Distinct().ToList();
 
                 return;
             }
@@ -191,65 +208,97 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
         }
 
-        private void TranslateTables()
+        private void InstTranslateTableCollections()
         {
-            if ( _tables == null ) return;
+            _canTranslateTableCollections.Clear();
+            foreach (var item in _sharedtables)
+            {
+                _canTranslateTableCollections.Add(true);
+            }
+        }
 
+        private void PreparationTranslate()
+        {
             EditorUtility.DisplayCancelableProgressBar("Translating", "Preparation translate", 0.1f);
 
             _selectedLocale = _locales.First(w => w.LocaleName == _selectedLanguage);
 
-            StringTable sourceLanguageTable = _tables.FirstOrDefault(w => w.LocaleIdentifier == _selectedLocale.Identifier);
+            _sharedtables = _tables.Select(w => w.SharedData).Distinct().ToList();
+        }    
 
-            List<StringTable> tablesForTranslate = new List<StringTable>();
-            foreach (var item in _tables)
-            {
-                if ( item.LocaleIdentifier != _selectedLocale.Identifier)
-                {
-                    tablesForTranslate.Add(item);
-                } 
-            }
-
+        private void TranslateTables()
+        {
             GoogleApiTranslate translator = new GoogleApiTranslate();
 
-            float progressRate = 0.9f / tablesForTranslate.Count;
+            float progressRate = 0.9f / _tables.Count;
             int indexTable = 0;
+            int indexTableCollection = -1;
 
             try
             {
-                foreach (StringTable targetLanguageTable in tablesForTranslate)
+                foreach (var sharedtable in _sharedtables)
                 {
-                    float progress = 0.1f + indexTable * progressRate;
-                    EditorUtility.DisplayCancelableProgressBar("Translating", "Translate " + targetLanguageTable.LocaleIdentifier.CultureInfo, progress);
-                    foreach (var entry in sourceLanguageTable.SharedData.Entries)
+                    ++indexTableCollection;
+                    if ( _canTranslateTableCollections[indexTableCollection] == false)
                     {
-                        StringTableEntry sourceWord;
-                        if (!sourceLanguageTable.TryGetValue(entry.Id, out sourceWord))
+                        continue;
+                    }
+                    StringTable sourceLanguageTable = new StringTable();
+                    List<StringTable> tablesForTranslate = new List<StringTable>();
+                    foreach (var table in _tables)
+                    {
+                        if ( table.TableCollectionName == sharedtable.TableCollectionName)
                         {
-                            continue;
+                            if (table.LocaleIdentifier != _selectedLocale.Identifier)
+                            {
+                                tablesForTranslate.Add(table);
+                            }
+                            else
+                            {
+                                sourceLanguageTable = table;
+                            }
                         }
-                        //sourceWord = sourceLanguageTable.GetEntry(entry.Key);
-                        if (sourceWord == null)
-                        {
-                            continue;
-                        }
-                        if (sourceWord.IsSmart == true && _isTranslateSmartWords == false)
-                        {
-                            continue;
-                        }
-                        StringTableEntry targetWord;
+                        
+                    }
 
-                        if ( targetLanguageTable.TryGetValue(entry.Id, out targetWord) )
+                    foreach (StringTable targetLanguageTable in tablesForTranslate)
+                    {
+                        ++indexTable;
+                        float progress = 0.1f + indexTable * progressRate;
+                        if( EditorUtility.DisplayCancelableProgressBar("Translating", "Translate Table" + sharedtable.TableCollectionName + " .Language " + targetLanguageTable.LocaleIdentifier.CultureInfo, progress) )
                         {
-                            if (_isOverrideWords == false)
+                            return;
+                        }
+
+                        foreach (var entry in sharedtable.Entries)
+                        {
+                            StringTableEntry sourceWord;
+                            if (!sourceLanguageTable.TryGetValue(entry.Id, out sourceWord))
                             {
                                 continue;
                             }
+                            if (sourceWord == null)
+                            {
+                                continue;
+                            }
+                            if (sourceWord.IsSmart == true && _canTranslateSmartWords == false)
+                            {
+                                continue;
+                            }
+
+                            StringTableEntry targetWord;
+                            if (targetLanguageTable.TryGetValue(entry.Id, out targetWord))
+                            {
+                                if (_canOverrideWords == false)
+                                {
+                                    continue;
+                                }
+                            }
+
+                            string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+                            targetLanguageTable.AddEntry(entry.Key, result);
                         }
-                        string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
-                        targetLanguageTable.AddEntry(entry.Key, result);
                     }
-                    ++indexTable;
                 }
             }
             catch (WebException webException)
@@ -267,16 +316,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             EditorUtility.DisplayProgressBar("Translating", "Completed", 1f);
         }
-    }
 
-    public enum TypeStage
-    {
-        Loading,
-        Ready,
-        Translating,
-        Done,
-        ErrorNoFoundSettings,
-        ErrorNoFoundLocales
+        private void SaveTables()
+        {
+            foreach (var table in _tables)
+            {
+                EditorUtility.SetDirty(table);
+            }
+        }
     }
 }
 
