@@ -1,9 +1,16 @@
+<img src="/Screenshots/logo.jpg" width="500" height="300" align="center"/>
+
 Auto translation of the whole game in one click, using unity localization and google api.
 
-![GitHub Logo](/Screenshots/logo.jpg)
-You can add the plugin through the package manager using the "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git" link.
+## Where to begin?
+You can get the plugin through the unity package manager using the "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git?path=/Assets" link.
 
-![GitHub Logo](/Screenshots/example1.jpg)
+![GitHub Logo](/Screenshots/tutorial1.jpg)
+
+Use 'Window->Asset Management->Auto Translate for Tables' to begin working with the system.
+
+![GitHub Logo](/Screenshots/tutorial2.jpg)
+
 As a result, thanks to the plugin, you can save a lot of time.
 
 ![GitHub Logo](/Screenshots/result.jpg)
