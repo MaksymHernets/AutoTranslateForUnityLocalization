@@ -1,0 +1,33 @@
+{
+    "name": "@maksymhernets/autotranslateforlocalizationunity",
+    "displayName": "Auto Translate",
+    "version": "0.1.7",
+    "description": "Auto translate for unity localization",
+    "keywords": [
+      "Unity",
+      "Tool"
+    ],
+    "dependencies": {
+    "com.unity.localization": "1.0.5"
+    },
+    "author": "Hernets Maksym",
+    "repository": 
+    { 
+        "url": "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git",
+        "directory": "Assets"
+    },
+    "license": "ISC",
+    "unity": "2021.7",
+    "samples": [
+        {
+            "displayName": "Tutorial Scenes",
+            "description": "Contains an example scene",
+            "path": "Samples/Scenes"
+        }
+    ],
+    "publishConfig": 
+    {
+        "registry":"https://npm.pkg.github.com"
+    },
+    "type": "tool"
+   }

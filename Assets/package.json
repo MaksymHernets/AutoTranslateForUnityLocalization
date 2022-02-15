@@ -1,7 +1,7 @@
 {
     "name": "@maksymhernets/autotranslateforlocalizationunity",
     "displayName": "Auto Translate",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "Auto translate for unity localization",
     "keywords": [
       "Unity",
