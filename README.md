@@ -3,7 +3,7 @@
 Auto translation of the whole game in one click, using unity localization and google api.
 
 ## Where to begin?
-You can get the plugin through the unity package manager using the "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git?path=/Assets" link.
+You can get the plugin through the unity package manager using the "https://github.com/MaksymHernets/AutoTranslateForUnityLocalization.git?path=/Assets" link.
 
 ![GitHub Logo](/Screenshots/tutorial1.jpg)
 
