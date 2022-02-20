@@ -1,12 +1,13 @@
+using GoodTime.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace GoodTime.Tools.GoogleApiTranslate
+namespace GoodTime.Tools.InterfaceTranslate
 {
-    public class GoogleApiTranslate
+    public class GoogleApiTranslate : ITranslateApi
     {
         public string Translate(string word, string sourceLanguage, string targetLanguage)
         {

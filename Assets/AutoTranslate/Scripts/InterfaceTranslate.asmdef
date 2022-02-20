@@ -1,6 +1,6 @@
 {
-    "name": "GoogleApiTranslate",
-    "rootNamespace": "GoodTime.Tools.GoogleApiTranslate",
+    "name": "InterfaceTranslate",
+    "rootNamespace": "GoodTime.Tools.InterfaceTranslate",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GoodTime.Tools.GoogleApiTranslate
+namespace GoodTime.Tools.InterfaceTranslate
 {
     public class Language
     {

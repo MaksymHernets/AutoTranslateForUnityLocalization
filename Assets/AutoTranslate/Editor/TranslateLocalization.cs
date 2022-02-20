@@ -1,4 +1,5 @@
-using GoodTime.Tools.GoogleApiTranslate;
+using GoodTime.Tools.FactoryTranslate;
+using GoodTime.Tools.InterfaceTranslate;
 using System.Collections.Generic;
 using UnityEngine.Localization.Tables;
 
@@ -6,10 +7,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 {
     public class TranslateLocalization
     {
-        public static IEnumerable<TranslateStatus> Make(TranslateParameters translateParameters, TranslateData translateData)
-        {
-            GoogleApiTranslate translator = new GoogleApiTranslate();
+        private ITranslateApi translator;
 
+        public TranslateLocalization()
+        {
+            translator = FactoryTranslateApi.GetTranslateApi();
+        }
+
+        public IEnumerable<TranslateStatus> Make(TranslateParameters translateParameters, TranslateData translateData)
+        {
             float progressRate = 0.9f / translateData.stringTables.Count;
             int indexTable = 0;
             int indexTableCollection = -1;

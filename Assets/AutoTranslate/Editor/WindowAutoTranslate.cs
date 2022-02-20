@@ -1,3 +1,4 @@
+using GoodTime.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Window parameters
         private const string k_WindowTitle = "Auto Translate for Localization";
 
-        // Temp
+        // Data Localization
         private LocalizationSettings _localizationSettings;
         private List<Locale> _locales;
         private Locale _selectedLocale;
@@ -26,6 +27,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private string _selectedLanguage = string.Empty;
         private TranslateParameters _translateParameters = new TranslateParameters();
 
+        // Error
         private bool _isErrorTooManyRequests = false;
         private DateTime _diedLineErrorTooManyRequests;
         private double _timeNeedForWaitErrorMinute = 10;
@@ -34,21 +36,27 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         [MenuItem("Window/Asset Management/Auto Translate for Tables")]
         public static void ShowWindow()
         {
-            var window = GetWindow<WindowAutoTranslate>(false, k_WindowTitle, true);
+            Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
+            WindowAutoTranslate window = GetWindow<WindowAutoTranslate>(k_WindowTitle, true, typeof(SceneView), gameview);
             window.titleContent = new GUIContent(k_WindowTitle);
             window.Show();
         }
 
         public void OnEnable()
         {
-            LoadSettings();
-            InitializationTranslateTableCollections();
+            UpdateParameters();
         }
 
         private void OnFocus()
         {
+            UpdateParameters();
+        }
+
+        private void UpdateParameters()
+        {
             LoadSettings();
             InitializationTranslateTableCollections();
+            _selectedLanguage = _selectedLocale.LocaleName;
         }
 
         void OnGUI()
@@ -57,7 +65,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Source language", GUILayout.Width(300));
 
-            var posit = new Rect(new Vector2(310, 10), new Vector2(200, 20));
+            var posit = new Rect(new Vector2(310, 0), new Vector2(200, 20));
             if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
             {
                 genericMenu = new GenericMenu();
@@ -172,9 +180,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             translateData.sharedtables = _sharedTables.ToList();
             translateData.stringTables = _stringTables.ToList();
 
+            TranslateLocalization translateLocalization = new TranslateLocalization();
+
             try
             {
-                foreach (var translateStatus in TranslateLocalization.Make(_translateParameters, translateData))
+                foreach (var translateStatus in translateLocalization.Make(_translateParameters, translateData))
                 {
                     if (EditorUtility.DisplayCancelableProgressBar("Translating", "Translate Table - " + translateStatus.sharedTable + " .Language -" + translateStatus.targetLanguageTable, translateStatus.progress))
                     {
