@@ -27,7 +27,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 {
                     continue;
                 }
-                StringTable sourceLanguageTable = new StringTable();
+                StringTable sourceLanguageTable = default(StringTable);
                 List<StringTable> tablesForTranslate = new List<StringTable>();
                 foreach (var table in translateData.stringTables)
                 {
@@ -44,6 +44,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                     }
 
                 }
+
+                Dictionary<string,string> lists = new Dictionary<string, string>();
 
                 foreach (StringTable targetLanguageTable in tablesForTranslate)
                 {
@@ -77,9 +79,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             }
                         }
 
-                        string result = translator.Translate(sourceWord.Value, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
-                        targetLanguageTable.AddEntry(entry.Key, result);
+                        lists.Add(entry.Key, sourceWord.Value);
                     }
+
+                    Dictionary<string, string> result = translator.Translate(lists, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+
+                    foreach (var item in result)
+                    {
+                        targetLanguageTable.AddEntry(item.Key, item.Value);
+                    }
+
+                    lists.Clear();
                 }
             }
 

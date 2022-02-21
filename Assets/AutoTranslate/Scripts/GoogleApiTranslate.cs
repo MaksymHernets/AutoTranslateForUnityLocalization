@@ -4,56 +4,88 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace GoodTime.Tools.InterfaceTranslate
 {
     public class GoogleApiTranslate : ITranslateApi
     {
-        public string Translate(string word, string sourceLanguage, string targetLanguage)
+        private const int MAXCHARS_FORREQUST = 5000;
+        private const string SEPARATE_STRING = "[$]";
+
+        public string Translate(string sourceText, string sourceLanguage, string targetLanguage)
         {
-            string translation = string.Empty;
-
-            string translationFromGoogle = RequestToGoogleApi(word, sourceLanguage, targetLanguage);
-
-            var json = JsonConvert.DeserializeObject(translationFromGoogle);
-            var arrayGeneric = json as JArray;
-            var arrayWords = arrayGeneric.First() as JArray;
-            foreach (var arrayWord in arrayWords)
-            {
-                var array = arrayWord as JArray;
-                var targetWord = array[0] as JValue;
-                translation += targetWord;
-            }
-
-            return translation;
-        }
-
-        public Dictionary<string, string> Translate(List<string> words, string sourceLanguage, string targetLanguage)
-        {
-            Dictionary<string, string> translation = new Dictionary<string, string>();
-
-            string sourceText = string.Empty;
-            foreach (var item in words)
-            {
-                sourceText += item + " . ";
-            }
-
             string translationFromGoogle = RequestToGoogleApi(sourceText, sourceLanguage, targetLanguage);
 
-            var json = JsonConvert.DeserializeObject(translationFromGoogle);
-            var arrayGeneric = json as JArray;
-            var arrayWords = arrayGeneric.First() as JArray;
+            RespontTranslateGoogle respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+
+            return respontTranslateGoogle.FullRespont;
+        }
+
+        public Dictionary<string, string> Translate(Dictionary<string, string> words, string sourceLanguage, string targetLanguage)
+        {
+            List<string> listRespontWords = new List<string>();
+            Dictionary<string, string> targetWords = new Dictionary<string, string>();
+
+            StringBuilder sourceText = new StringBuilder(MAXCHARS_FORREQUST + 100);
+            StringBuilder sourceTryText = new StringBuilder(MAXCHARS_FORREQUST + 100);
+
+            string translationFromGoogle = string.Empty;
+            RespontTranslateGoogle respontTranslateGoogle;
+
+            foreach (var item in words)
+            {
+                string temp = item.Value + SEPARATE_STRING;
+                sourceTryText.Append(temp);
+                if (sourceTryText.Length > MAXCHARS_FORREQUST)
+                {
+                    translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage);
+                    respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+                    sourceTryText.Clear();
+                    sourceText.Clear();
+                }
+                else
+                {
+                    sourceText.Append(temp);
+                }
+            }
+
+            translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
+            respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+            listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+
+            int index = 0;
+            foreach (var item in words)
+            {
+                targetWords.Add(item.Key, listRespontWords[index]);
+                ++index;
+            }
+
+            return targetWords;
+        }
+
+        private RespontTranslateGoogle DeserializeRespont(string json)
+        {
+            RespontTranslateGoogle respontTranslateGoogle = new RespontTranslateGoogle();
+
+            object respontObject = JsonConvert.DeserializeObject(json);
+            JArray arrayGeneric = respontObject as JArray;
+            JArray arrayWords = arrayGeneric.First() as JArray;
+            StringBuilder fullrespont = new StringBuilder(MAXCHARS_FORREQUST);
 
             foreach (var arrayWord in arrayWords)
             {
-                var array = arrayWord as JArray;
-                var translatedWord = array[0] as JValue;
-                var sourceWord = array[1] as JValue;
+                JArray array = arrayWord as JArray;
+                JValue translatedWord = array[0] as JValue;
+                JValue sourceWord = array[1] as JValue;
+                respontTranslateGoogle.TargetWords.Add((string)translatedWord);
+                respontTranslateGoogle.SourceWords.Add((string)sourceWord);
 
-                translation.Add(sourceWord.Value.ToString(), translatedWord.Value.ToString() );
+                fullrespont.Append(translatedWord);
             }
-           
-            return translation;
+            respontTranslateGoogle.FullRespont = fullrespont.ToString();
+            return respontTranslateGoogle;
         }
 
         private string RequestToGoogleApi(string sourceText, string sourceLanguage, string targetLanguage)
@@ -74,5 +106,12 @@ namespace GoodTime.Tools.InterfaceTranslate
 
             return translationFromGoogle;
         }
+    }
+
+    public class RespontTranslateGoogle
+    {
+        public List<string> SourceWords = new List<string>();
+        public List<string> TargetWords = new List<string>();
+        public string FullRespont;
     }
 }

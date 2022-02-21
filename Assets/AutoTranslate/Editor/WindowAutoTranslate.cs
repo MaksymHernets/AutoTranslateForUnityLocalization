@@ -186,7 +186,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 foreach (var translateStatus in translateLocalization.Make(_translateParameters, translateData))
                 {
-                    if (EditorUtility.DisplayCancelableProgressBar("Translating", "Translate Table - " + translateStatus.sharedTable + " .Language -" + translateStatus.targetLanguageTable, translateStatus.progress))
+                    if (EditorUtility.DisplayCancelableProgressBar("Translating", "Translate... Table " + translateStatus.sharedTable + " | Language -" + translateStatus.targetLanguageTable, translateStatus.progress))
                     {
                         return;
                     }
@@ -203,6 +203,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             catch (Exception exception)
             {
+                EditorUtility.ClearProgressBar();
                 Debug.Log(exception.Message);
                 return;
             }
