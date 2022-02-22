@@ -14,7 +14,21 @@ namespace GoodTime.Tools.InterfaceTranslate
 
         public static AutoTranslateSetting GetOrCreateSettings()
         {
-            AutoTranslateSetting settings = AssetDatabase.LoadAssetAtPath<AutoTranslateSetting>(k_MyCustomSettingsPath);
+            AutoTranslateSetting settings = new AutoTranslateSetting();
+
+            string[] guids = AssetDatabase.FindAssets("AutoTranslateSetting t:AutoTranslateSetting", null);
+
+            if (guids.Length != 0)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+
+                settings = AssetDatabase.LoadAssetAtPath<AutoTranslateSetting>(path);
+            }
+            else
+            {
+                return null;
+            }
+
             string[] platforms = Enum.GetNames(typeof(TypePlatformTranslate));
             if (settings == null)
             {
