@@ -1,3 +1,4 @@
+using GoodTime.Tools.Helpers;
 using GoodTime.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isErrorTooManyRequests = false;
         private DateTime _diedLineErrorTooManyRequests;
         private double _timeNeedForWaitErrorMinute = 10;
+        private bool _isErrorConnection = false;
         private GenericMenu genericMenu;
 
         [MenuItem("Window/Asset Management/Auto Translate for Tables")]
@@ -45,11 +47,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         public void OnEnable()
         {
             UpdateParameters();
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
         }
 
         private void OnFocus()
         {
             UpdateParameters();
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
         }
 
         private void UpdateParameters()
@@ -116,7 +120,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.EndVertical();
             }
 
-            if (_isErrorTooManyRequests)
+            if ( _isErrorConnection )
+            {
+                EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
+            }
+            if ( _isErrorTooManyRequests )
             {
                 TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
                 EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
@@ -183,6 +191,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void ButtonTranslate_Click()
         {
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
+            if (_isErrorConnection )
+            {
+                return;
+            }
+
             EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
             LoadSettings();
@@ -210,19 +224,26 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             catch (WebException webException)
             {
+                if ( webException.Status == WebExceptionStatus.NameResolutionFailure)
+                {
+                    _isErrorConnection = true;
+                }
+                else
+                {
+                    _diedLineErrorTooManyRequests = DateTime.Now;
+                    _diedLineErrorTooManyRequests = _diedLineErrorTooManyRequests.AddMinutes(_timeNeedForWaitErrorMinute);
+                    _isErrorTooManyRequests = true;
+                }
                 EditorUtility.ClearProgressBar();
-                _diedLineErrorTooManyRequests = DateTime.Now;
-                _diedLineErrorTooManyRequests = _diedLineErrorTooManyRequests.AddMinutes(_timeNeedForWaitErrorMinute);
-                _isErrorTooManyRequests = true;
-                Debug.Log(webException.Message);
                 return;
             }
             catch (Exception exception)
             {
                 EditorUtility.ClearProgressBar();
-                Debug.Log(exception.Message);
                 return;
             }
+
+            _isErrorConnection = false;
 
             SaveStringTables();
 

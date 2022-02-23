@@ -41,7 +41,7 @@ namespace GoodTime.Tools.InterfaceTranslate
                 {
                     translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage);
                     respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
                     sourceTryText.Clear();
                     sourceText.Clear();
                 }
@@ -53,7 +53,7 @@ namespace GoodTime.Tools.InterfaceTranslate
 
             translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
             respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-            listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+            listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
 
             int index = 0;
             foreach (var item in words)
