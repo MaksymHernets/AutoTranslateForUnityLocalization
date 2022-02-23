@@ -135,7 +135,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.HelpBox("Languages not found! Please add languages via 'Edit/Project Settings/Localization' => Locale Generator and reload project", MessageType.Error);
                 GUI.enabled = false;
             }
-            if( _stringTables.Count == 0 )
+            if( _stringTables == null || _stringTables.Count == 0 )
             {
                 EditorGUILayout.HelpBox("String Tables not found! Please add string table via 'Window/Asset Management/Localization Tables' => New Table Collection", MessageType.Error);
                 GUI.enabled = false;
