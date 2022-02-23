@@ -55,8 +55,18 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void UpdateParameters()
         {
             LoadSettings();
-            InitializationTranslateTableCollections();
-            _selectedLanguage = _selectedLocale.LocaleName;
+            if ( _sharedTables != null)
+            {
+                InitializationTranslateTableCollections();
+            }
+            if (_selectedLocale != null)
+            {
+                _selectedLanguage = _selectedLocale.LocaleName;
+            }
+            else
+            {
+                _selectedLanguage = string.Empty;
+            }
         }
 
         void OnGUI()
@@ -88,9 +98,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _translateParameters.canTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _translateParameters.canTranslateSmartWords);
 
             GUILayout.Space(10);
-            EditorGUILayout.HelpBox("  Found " + _locales.Count + " languages" +
-                "\n  Found " + _sharedTables.Count + " table collection" + 
-                "\n  Found " + _stringTables.Count + " tables", MessageType.Info);
+            EditorGUILayout.HelpBox("  Found " + _locales?.Count + " languages" +
+                "\n  Found " + _sharedTables?.Count + " table collection" + 
+                "\n  Found " + _stringTables?.Count + " tables", MessageType.Info);
 
             if ( _sharedTables != null)
             {
@@ -137,32 +147,38 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
         }
 
-        private void LoadSettings()
+        private bool LoadSettings()
         {
             _localizationSettings = SimpleInterfaceLocalization.GetLocalizationSettings();
 
             if (_localizationSettings == null)
             {
-                return;
+                return false;
             }
 
             _locales = SimpleInterfaceLocalization.GetAvailableLocales();
 
             if (_locales == null)
             {
-                return;
+                return false;
             }
 
             _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
 
             _sharedTables = SimpleInterfaceLocalization.GetAvailableSharedTableData();
 
-            if (_locales == null)
+            if (_sharedTables == null)
             {
-                return;
+                return false;
             }
 
             _stringTables = SimpleInterfaceLocalization.GetAvailableStringTable();
+
+            if (_stringTables == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void ButtonTranslate_Click()
