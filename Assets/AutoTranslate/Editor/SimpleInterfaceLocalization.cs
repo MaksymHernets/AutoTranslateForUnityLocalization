@@ -75,17 +75,36 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
         public static List<StringTable> GetAvailableStringTable()
         {
-            IList<StringTable> stringTables = new List<StringTable>();
+            string[] guids = AssetDatabase.FindAssets("t:StringTable", null);
 
-            List<Locale> locale = GetAvailableLocales();
+            List<StringTable> stringTable = new List<StringTable>();
 
-            IList<string> labels = locale.Select(w => "Locale-" + w.Formatter).ToList();
+            string path;
+            foreach (var guid in guids)
+            {
+                path = AssetDatabase.GUIDToAssetPath(guid);
 
-            IList<IResourceLocation> locations = Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Union, typeof(StringTable)).WaitForCompletion();
+                stringTable.Add(AssetDatabase.LoadAssetAtPath<StringTable>(path));
+            }
 
-            stringTables = Addressables.LoadAssetsAsync<StringTable>(locations, null).WaitForCompletion();
+            return stringTable;
+        }
 
-            return stringTables.ToList();
+        public static List<AssetTable> GetAvailableAssetTable()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:AssetTable", null);
+
+            List<AssetTable> assetTables = new List<AssetTable>();
+
+            string path;
+            foreach (var guid in guids)
+            {
+                path = AssetDatabase.GUIDToAssetPath(guid);
+
+                assetTables.Add(AssetDatabase.LoadAssetAtPath<AssetTable>(path));
+            }
+
+            return assetTables;
         }
     }
 }

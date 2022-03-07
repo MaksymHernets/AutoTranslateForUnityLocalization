@@ -22,7 +22,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private List<Locale> _locales;
         private Locale _selectedLocale;
         private IList<StringTable> _stringTables;
-        private IList<SharedTableData> _sharedTables;
+        private IList<AssetTable> _assetTables;
+        private IList<SharedTableData> _sharedStringTables;
+        private IList<SharedTableData> _sharedAssetTables;
 
         // Arguments for translate
         private string _selectedLanguage = string.Empty;
@@ -59,7 +61,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void UpdateParameters()
         {
             LoadSettings();
-            if ( _sharedTables != null)
+            if ( _sharedStringTables != null)
             {
                 InitializationTranslateTableCollections();
             }
@@ -103,15 +105,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             GUILayout.Space(10);
             EditorGUILayout.HelpBox("  Found " + _locales?.Count + " languages" +
-                "\n  Found " + _sharedTables?.Count + " table collection" + 
-                "\n  Found " + _stringTables?.Count + " tables", MessageType.Info);
+                "\n  Found " + _sharedStringTables?.Count + " table collection" + 
+                "\n  Found " + _stringTables?.Count + " string tables" + 
+                "\n  Found " + _assetTables?.Count + " asset tables", MessageType.Info);
 
-            if ( _sharedTables != null)
+            
+            if (_sharedStringTables != null)
             {
                 EditorGUILayout.LabelField("Selected collection tables for translation:", GUILayout.Width(300));
                 EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(10,10,10,10) });
                 int index = 0;
-                foreach (var sharedtable in _sharedTables)
+                foreach (var sharedtable in _sharedStringTables)
                 {
                     _translateParameters.canTranslateTableCollections[index] = EditorGUILayout.ToggleLeft(sharedtable.TableCollectionName, _translateParameters.canTranslateTableCollections[index]);
                     ++index;
@@ -173,19 +177,18 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
 
-            _sharedTables = SimpleInterfaceLocalization.GetAvailableSharedTableData();
-
-            if (_sharedTables == null)
-            {
-                return false;
-            }
-
             _stringTables = SimpleInterfaceLocalization.GetAvailableStringTable();
-
-            if (_stringTables == null)
+            if ( _stringTables != null)
             {
-                return false;
+                _sharedStringTables = _stringTables.Select(w => w.SharedData).Distinct().ToList();
             }
+            
+            _assetTables = SimpleInterfaceLocalization.GetAvailableAssetTable();
+            if ( _assetTables != null)
+            {
+                _sharedAssetTables = _assetTables.Select(w => w.SharedData).Distinct().ToList();
+            }
+            
             return true;
         }
 
@@ -207,7 +210,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             TranslateData translateData = new TranslateData();
             translateData.selectedLocale = _selectedLocale;
-            translateData.sharedtables = _sharedTables.ToList();
+            translateData.sharedtables = _sharedStringTables.ToList();
             translateData.stringTables = _stringTables.ToList();
 
             TranslateLocalization translateLocalization = new TranslateLocalization();
@@ -255,7 +258,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void InitializationTranslateTableCollections()
         {
             _translateParameters.canTranslateTableCollections.Clear();
-            foreach (var item in _sharedTables)
+            foreach (var item in _sharedStringTables)
             {
                 _translateParameters.canTranslateTableCollections.Add(true);
             }
