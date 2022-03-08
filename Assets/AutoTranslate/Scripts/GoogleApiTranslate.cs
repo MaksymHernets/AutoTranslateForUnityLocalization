@@ -1,6 +1,7 @@
 using GoodTime.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,7 @@ namespace GoodTime.Tools.InterfaceTranslate
     public class GoogleApiTranslate : ITranslateApi
     {
         private const int MAXCHARS_FORREQUST = 5000;
-        private const string SEPARATE_STRING = "[$]";
+        private const String SEPARATE_STRING = "[$]";
 
         public string Translate(string sourceText, string sourceLanguage, string targetLanguage)
         {
@@ -41,7 +42,7 @@ namespace GoodTime.Tools.InterfaceTranslate
                 {
                     translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage);
                     respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
                     sourceTryText.Clear();
                     sourceText.Clear();
                 }
@@ -52,8 +53,12 @@ namespace GoodTime.Tools.InterfaceTranslate
             }
 
             translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
+
             respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-            listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING).ToList());
+            string response = respontTranslateGoogle.FullRespont;
+            String[] mass = new String[1];
+            mass[0] = SEPARATE_STRING;
+            listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
             int index = 0;
             foreach (var item in words)

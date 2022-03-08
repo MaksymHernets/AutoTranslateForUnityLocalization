@@ -1,3 +1,4 @@
+using GoodTime.Tools.Helpers;
 using GoodTime.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private List<Locale> _locales;
         private Locale _selectedLocale;
         private IList<StringTable> _stringTables;
-        private IList<SharedTableData> _sharedTables;
+        private IList<AssetTable> _assetTables;
+        private IList<SharedTableData> _sharedStringTables;
+        private IList<SharedTableData> _sharedAssetTables;
 
         // Arguments for translate
         private string _selectedLanguage = string.Empty;
@@ -31,6 +34,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isErrorTooManyRequests = false;
         private DateTime _diedLineErrorTooManyRequests;
         private double _timeNeedForWaitErrorMinute = 10;
+        private bool _isErrorConnection = false;
         private GenericMenu genericMenu;
 
         [MenuItem("Window/Asset Management/Auto Translate for Tables")]
@@ -45,17 +49,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         public void OnEnable()
         {
             UpdateParameters();
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
         }
 
         private void OnFocus()
         {
             UpdateParameters();
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
         }
 
         private void UpdateParameters()
         {
             LoadSettings();
-            if ( _sharedTables != null)
+            if ( _sharedStringTables != null)
             {
                 InitializationTranslateTableCollections();
             }
@@ -99,15 +105,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             GUILayout.Space(10);
             EditorGUILayout.HelpBox("  Found " + _locales?.Count + " languages" +
-                "\n  Found " + _sharedTables?.Count + " table collection" + 
-                "\n  Found " + _stringTables?.Count + " tables", MessageType.Info);
+                "\n  Found " + _sharedStringTables?.Count + " table collection" + 
+                "\n  Found " + _stringTables?.Count + " string tables" + 
+                "\n  Found " + _assetTables?.Count + " asset tables", MessageType.Info);
 
-            if ( _sharedTables != null)
+            
+            if (_sharedStringTables != null)
             {
                 EditorGUILayout.LabelField("Selected collection tables for translation:", GUILayout.Width(300));
                 EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(10,10,10,10) });
                 int index = 0;
-                foreach (var sharedtable in _sharedTables)
+                foreach (var sharedtable in _sharedStringTables)
                 {
                     _translateParameters.canTranslateTableCollections[index] = EditorGUILayout.ToggleLeft(sharedtable.TableCollectionName, _translateParameters.canTranslateTableCollections[index]);
                     ++index;
@@ -116,7 +124,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.EndVertical();
             }
 
-            if (_isErrorTooManyRequests)
+            if ( _isErrorConnection )
+            {
+                EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
+            }
+            if ( _isErrorTooManyRequests )
             {
                 TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
                 EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
@@ -135,7 +147,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.HelpBox("Languages not found! Please add languages via 'Edit/Project Settings/Localization' => Locale Generator and reload project", MessageType.Error);
                 GUI.enabled = false;
             }
-            if( _stringTables.Count == 0 )
+            if( _stringTables == null || _stringTables.Count == 0 )
             {
                 EditorGUILayout.HelpBox("String Tables not found! Please add string table via 'Window/Asset Management/Localization Tables' => New Table Collection", MessageType.Error);
                 GUI.enabled = false;
@@ -165,24 +177,29 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
 
-            _sharedTables = SimpleInterfaceLocalization.GetAvailableSharedTableData();
-
-            if (_sharedTables == null)
-            {
-                return false;
-            }
-
             _stringTables = SimpleInterfaceLocalization.GetAvailableStringTable();
-
-            if (_stringTables == null)
+            if ( _stringTables != null)
             {
-                return false;
+                _sharedStringTables = _stringTables.Select(w => w.SharedData).Distinct().ToList();
             }
+            
+            _assetTables = SimpleInterfaceLocalization.GetAvailableAssetTable();
+            if ( _assetTables != null)
+            {
+                _sharedAssetTables = _assetTables.Select(w => w.SharedData).Distinct().ToList();
+            }
+            
             return true;
         }
 
         private void ButtonTranslate_Click()
         {
+            _isErrorConnection = WebInformation.IsConnectedToInternet();
+            if (_isErrorConnection )
+            {
+                return;
+            }
+
             EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
             LoadSettings();
@@ -193,7 +210,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             TranslateData translateData = new TranslateData();
             translateData.selectedLocale = _selectedLocale;
-            translateData.sharedtables = _sharedTables.ToList();
+            translateData.sharedtables = _sharedStringTables.ToList();
             translateData.stringTables = _stringTables.ToList();
 
             TranslateLocalization translateLocalization = new TranslateLocalization();
@@ -210,19 +227,26 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             catch (WebException webException)
             {
+                if ( webException.Status == WebExceptionStatus.NameResolutionFailure)
+                {
+                    _isErrorConnection = true;
+                }
+                else
+                {
+                    _diedLineErrorTooManyRequests = DateTime.Now;
+                    _diedLineErrorTooManyRequests = _diedLineErrorTooManyRequests.AddMinutes(_timeNeedForWaitErrorMinute);
+                    _isErrorTooManyRequests = true;
+                }
                 EditorUtility.ClearProgressBar();
-                _diedLineErrorTooManyRequests = DateTime.Now;
-                _diedLineErrorTooManyRequests = _diedLineErrorTooManyRequests.AddMinutes(_timeNeedForWaitErrorMinute);
-                _isErrorTooManyRequests = true;
-                Debug.Log(webException.Message);
                 return;
             }
             catch (Exception exception)
             {
                 EditorUtility.ClearProgressBar();
-                Debug.Log(exception.Message);
                 return;
             }
+
+            _isErrorConnection = false;
 
             SaveStringTables();
 
@@ -234,7 +258,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void InitializationTranslateTableCollections()
         {
             _translateParameters.canTranslateTableCollections.Clear();
-            foreach (var item in _sharedTables)
+            foreach (var item in _sharedStringTables)
             {
                 _translateParameters.canTranslateTableCollections.Add(true);
             }
