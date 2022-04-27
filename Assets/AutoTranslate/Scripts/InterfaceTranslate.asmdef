@@ -1,8 +1,9 @@
 {
     "name": "InterfaceTranslate",
-    "rootNamespace": "GoodTime.Tools.InterfaceTranslate",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
