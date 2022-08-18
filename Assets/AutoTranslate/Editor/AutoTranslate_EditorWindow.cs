@@ -12,7 +12,7 @@ using UnityEngine.Localization.Tables;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-    public class WindowAutoTranslate : EditorWindow
+    public class AutoTranslate_EditorWindow : EditorWindow
     {
         // Window parameters
         private const string k_WindowTitle = "Auto Translate for Localization";
@@ -37,11 +37,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isErrorConnection = false;
         private GenericMenu genericMenu;
 
-        [MenuItem("Window/Asset Management/Auto Translate for Tables")]
+        [MenuItem("Window/Auto Localization/Auto Translate for Tables")]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
-            WindowAutoTranslate window = GetWindow<WindowAutoTranslate>(k_WindowTitle, true, typeof(SceneView), gameview);
+            AutoTranslate_EditorWindow window = GetWindow<AutoTranslate_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
             window.titleContent = new GUIContent(k_WindowTitle);
             window.Show();
         }
