@@ -26,7 +26,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
             AutoTranslate_EditorWindow window = GetWindow<AutoTranslate_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
-            window.titleContent = new GUIContent(k_WindowTitle);
+            window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.AutoTranslate);
             window.Show();
         }
 
