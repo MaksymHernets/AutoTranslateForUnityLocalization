@@ -103,18 +103,26 @@ public class BaseLocalization_EditorWindow : EditorWindow
         return selected;
     }
 
-    protected void ValidLocalization()
+    protected void ValidateLocalizationSettings()
 	{
         if (_localizationSettings == null)
         {
             EditorGUILayout.HelpBox("Localization settings not found! Please create one via 'Edit/Project Settings/Localization'", MessageType.Error);
             GUI.enabled = false;
         }
+    }
+
+    protected void ValidateLocales()
+    {
         if (_locales == null || _locales.Count == 0)
         {
             EditorGUILayout.HelpBox("Languages not found! Please add languages via 'Edit/Project Settings/Localization' => Locale Generator and reload project", MessageType.Error);
             GUI.enabled = false;
         }
+    }
+
+    protected void ValidateStringTables()
+	{
         if (_stringTables == null || _stringTables.Count == 0)
         {
             EditorGUILayout.HelpBox("String Tables not found! Please add string table via 'Window/Asset Management/Localization Tables' => New Table Collection", MessageType.Error);
@@ -122,7 +130,7 @@ public class BaseLocalization_EditorWindow : EditorWindow
         }
     }
 
-    protected bool LoadSettings()
+	protected bool LoadSettings()
     {
         _localizationSettings = SimpleInterfaceLocalization.GetLocalizationSettings();
 

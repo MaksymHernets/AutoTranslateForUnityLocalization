@@ -45,8 +45,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnEnable();
 
             UpdateParameter();
-
-            if (_sharedStringTables.Count != 0 ) _selectedTable = _sharedStringTables.First().name;
         }
 
         protected override void OnFocus()
@@ -60,6 +58,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void UpdateParameter()
 		{
+            if (_sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().name;
+            else _selectedTable = KEYWORD_NEWTABLE;
+
             _currentScene = SimpleDatabaseProject.GetCurrentScene();
             _nameTable = "StringTable_" + _currentScene.name + "_Scene";
         }
@@ -106,7 +107,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.HelpBox("Name table is empty", MessageType.Error);
                 GUI.enabled = false;
             }
-            ValidLocalization();
+            ValidateLocalizationSettings();
+            ValidateLocales();
             if (GUILayout.Button("Add localization"))
             {
                 _infoLocalization = Localization();

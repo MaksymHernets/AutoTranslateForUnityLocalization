@@ -96,7 +96,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                     _isErrorTooManyRequests = false;
                 }
             }
-            ValidLocalization();
+            ValidateLocalizationSettings();
+            ValidateLocales();
+            ValidateStringTables();
             GUILayout.Space(10);
             if (GUILayout.Button("Translate"))
             {
