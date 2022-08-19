@@ -60,13 +60,13 @@ public class BaseLocalization_EditorWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    protected void SourceLanguage(int width = 400)
+    protected void SourceLanguage(int width = 400, int height = 70)
 	{
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Source language", GUILayout.Width(width));
         if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
         {
-            Rect posit = new Rect(new Vector2(310, 0), new Vector2(200, 20));
+            Rect posit = new Rect(new Vector2(width, height), new Vector2(200, 20));
             genericMenu = new GenericMenu();
             foreach (string option in _locales.Select(w => w.name))
             {
