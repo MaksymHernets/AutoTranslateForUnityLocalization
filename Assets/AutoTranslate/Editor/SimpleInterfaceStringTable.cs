@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -46,11 +47,13 @@ public static class SimpleInterfaceStringTable
 
 	public static SharedTableData AddStringTable(string name)
 	{
-		SharedTableData sharedTable = new SharedTableData();
-		sharedTable.name = name;
-		AssetDatabase.CreateAsset(sharedTable, "Assets/" + name + ".asset");
+		//SharedTableData sharedTable = new SharedTableData();
+		//sharedTable.name = name;
+		//AssetDatabase.CreateAsset(sharedTable, "Assets/" + name + ".asset");
 
-		return sharedTable;
+		LocalizationEditorSettings.CreateStringTableCollection(name, "Assets/" + name);
+
+		return null;
 	}
 
 	public static void AddKey(string name)
