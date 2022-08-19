@@ -60,7 +60,7 @@ public class BaseLocalization_EditorWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    protected void SourceLanguage(int width = 300)
+    protected void SourceLanguage(int width = 400)
 	{
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Source language", GUILayout.Width(width));

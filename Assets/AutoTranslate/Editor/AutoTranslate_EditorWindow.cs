@@ -55,7 +55,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            SourceLanguage();
+            SourceLanguage(k_SeparationWidth);
 
             EditorGUIUtility.labelWidth = k_SeparationWidth;
             _translateParameters.canOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _translateParameters.canOverrideWords);

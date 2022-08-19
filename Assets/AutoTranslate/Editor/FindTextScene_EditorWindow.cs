@@ -21,12 +21,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Parameters for execute
         private Scene _currentScene;
         private bool _isPrefab = true;
+        private string _selectedTable = KEYWORD_NEWTABLE;
         private string _nameTable = string.Empty;
 
         // Temps
         private int _countText = 0;
         private int _countTextLocalization = 0;
         private string _infoLocalization = string.Empty;
+
+        private const string KEYWORD_NEWTABLE = "-New-";
 
         [MenuItem("Window/Auto Localization/Find Text for Tables in Scene")]
         public static void ShowWindow()
@@ -42,6 +45,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnEnable();
 
             UpdateParameter();
+
+            if (_sharedStringTables.Count != 0 ) _selectedTable = _sharedStringTables.First().name;
         }
 
         protected override void OnFocus()
@@ -68,11 +73,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.LabelField(_currentScene.name);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Name string table", GUILayout.Width(k_SeparationWidth));
-            _nameTable = EditorGUILayout.TextField("", _nameTable);
-            EditorGUILayout.EndHorizontal();
+            DropDownTables(k_SeparationWidth);
 
+            if ( _selectedTable == KEYWORD_NEWTABLE)
+			{
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
+                _nameTable = EditorGUILayout.TextField("", _nameTable);
+                EditorGUILayout.EndHorizontal();
+            }
+            
             SourceLanguage(k_SeparationWidth);
 
             EditorGUIUtility.labelWidth = k_SeparationWidth;
@@ -103,7 +113,31 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             if ( !string.IsNullOrEmpty(_infoLocalization) ) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
         }
-        
+
+        private void DropDownTables(int width = 300)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Select string Table", GUILayout.Width(width));
+            if (EditorGUILayout.DropdownButton(new GUIContent(_selectedTable), FocusType.Passive))
+            {
+                Rect posit = new Rect(new Vector2(width, 90), new Vector2(400, 20));
+                genericMenu = new GenericMenu();
+                foreach (string option in _sharedStringTables.Select(w => w.TableCollectionName))
+                {
+                    genericMenu.AddItem(new GUIContent(option), option == _selectedTable, () =>
+                    {
+                        _selectedTable = option;
+                    });
+                }
+				genericMenu.AddItem(new GUIContent(KEYWORD_NEWTABLE), KEYWORD_NEWTABLE == _selectedTable, () =>
+				{
+					_selectedTable = KEYWORD_NEWTABLE;
+				});
+				genericMenu.DropDown(posit);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
         private List<Text> GetGameObjectsText(GameObject[] mainGameObjects)
 		{
             List<Text> listsText = new List<Text>();
@@ -139,7 +173,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             List<Text> listsText = GetGameObjectsText(gameObjects);
             if ( listsText.Count == 0 ) return "texts is 0";
 
-            SharedTableData sharedTable = SimpleInterfaceStringTable.GetSharedTable(_nameTable);
+            string NameTable = string.Empty;
+            if ( _selectedTable == KEYWORD_NEWTABLE)
+			{
+                NameTable = _nameTable;
+            }
+            else
+			{
+                NameTable = _selectedTable;
+            }
+            SharedTableData sharedTable = SimpleInterfaceStringTable.GetSharedTable(NameTable);
+
             if ( sharedTable != null )
             {
                 while ( sharedTable.Entries.Count != 0 )
