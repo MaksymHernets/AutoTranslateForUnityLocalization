@@ -28,6 +28,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private int _countText = 0;
         private int _countTextLocalization = 0;
         private string _infoLocalization = string.Empty;
+        private int _countPrefabs = 0;
 
         private const string KEYWORD_NEWTABLE = "-New-";
 
@@ -58,7 +59,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void UpdateParameter()
 		{
-            if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().name;
+            if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().TableCollectionName;
             else _selectedTable = KEYWORD_NEWTABLE;
 
             _currentScene = SimpleDatabaseProject.GetCurrentScene();
@@ -93,11 +94,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(_currentScene.name);
                 List<Text> texts = GetGameObjectsText(gameObjects);
+                _countPrefabs = 0;
+                foreach (Text text in texts)
+                {
+                    if( PrefabUtility.IsPartOfAnyPrefab(text.gameObject) ) ++_countPrefabs;
+                }
                 _countTextLocalization = CheckTextAboutLocalization(texts);
                 _countText = texts.Count;
             }
             if ( _countText != 0 ) EditorGUILayout.HelpBox(" Found text: " + _countText.ToString() + "\n"
-                + " Found localize string event: " + _countTextLocalization, MessageType.Info);
+                + " Found localize string event: " + _countTextLocalization + "\n"
+                + " Prefabs: " + _countPrefabs, MessageType.Info);
             if (SimpleInterfaceStringTable.CheckNameStringTable(_nameTable))
             {
                 EditorGUILayout.HelpBox("StringTable - " + _nameTable + " exists. In this case, the table will be cleared and filled again. ", MessageType.Warning);
@@ -204,6 +211,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             bool key = false;
             foreach (var text in listsText)
             {
+                if ( _isPrefab == false && PrefabUtility.IsPartOfAnyPrefab(text.gameObject) ) continue;
+
                 key = text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent);
                 if ( key )
                 {
