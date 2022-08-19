@@ -58,7 +58,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void UpdateParameter()
 		{
-            if (_sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().name;
+            if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().name;
             else _selectedTable = KEYWORD_NEWTABLE;
 
             _currentScene = SimpleDatabaseProject.GetCurrentScene();
