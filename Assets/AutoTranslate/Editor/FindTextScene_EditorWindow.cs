@@ -213,8 +213,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 				{
                     localizeStringEvent = text.gameObject.AddComponent<LocalizeStringEvent>();
                 }
-
-                string name = text.gameObject.name + text.gameObject.transform.parent?.name;
+                string name = String.Format("[{0}][{1}]", text.gameObject.name, text.gameObject.transform.parent?.name);
+                int variants = 1;
+				while ( sharedTable.Contains(name) )
+				{
+                    name = String.Format("[{0}][{1}][{2}]", text.gameObject.name, text.gameObject.transform.parent?.name, variants);
+                    ++variants;
+                }
                 sharedTableEntry = sharedTable.AddKey(name);
 
                 stringTable = SimpleInterfaceStringTable.GetStringTable(sharedTable, _selectedLocale);
