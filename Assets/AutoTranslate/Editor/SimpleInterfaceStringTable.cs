@@ -47,13 +47,9 @@ public static class SimpleInterfaceStringTable
 
 	public static SharedTableData AddStringTable(string name)
 	{
-		//SharedTableData sharedTable = new SharedTableData();
-		//sharedTable.name = name;
-		//AssetDatabase.CreateAsset(sharedTable, "Assets/" + name + ".asset");
-
 		LocalizationEditorSettings.CreateStringTableCollection(name, "Assets/" + name);
-
-		return null;
+		SharedTableData sharedTable = SimpleInterfaceStringTable.GetSharedTable(name);
+		return sharedTable;
 	}
 
 	public static void AddKey(string name)

@@ -152,8 +152,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 sharedTable = SimpleInterfaceStringTable.AddStringTable(_nameTable);
             }
 
-            return "Completed";
-
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
             SharedTableEntry sharedTableEntry = default(SharedTableEntry);
             StringTable stringTable = default(StringTable);
