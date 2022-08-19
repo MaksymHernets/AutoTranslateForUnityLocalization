@@ -13,21 +13,20 @@ using static UnityEngine.Localization.Tables.SharedTableData;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class FindTextScene_EditorWindow : EditorWindow
+	public class FindTextScene_EditorWindow : BaseLocalization_EditorWindow
     {
+        // Window parameters
         private const string k_WindowTitle = "Find text for Localization in Scene";
 
+        // Parameters for execute
         private Scene _currentScene;
         private bool _isPrefab = true;
-        private List<Row> _lists;
+        private string _nameTable = string.Empty;
+
+        // Temps
         private int _countText = 0;
         private int _countTextLocalization = 0;
-        private string _nameTable = string.Empty;
         private string _infoLocalization = string.Empty;
-        private Locale _selectedLocale;
-        private GenericMenu genericMenu;
-        private List<Locale> _locales;
-        private string _selectedLanguage = string.Empty;
 
         [MenuItem("Window/Auto Localization/Find Text for Tables in Scene")]
         public static void ShowWindow()
@@ -38,70 +37,46 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             window.Show();
         }
 
-        public void OnEnable()
+        protected override void OnEnable()
         {
-            _locales = SimpleInterfaceLocalization.GetAvailableLocales();
-            _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
+            base.OnEnable();
 
-            if (_selectedLocale != null)
-            {
-                _selectedLanguage = _selectedLocale.LocaleName;
-            }
-            else
-            {
-                _selectedLanguage = string.Empty;
-            }
-
-            _currentScene = SimpleDatabaseProject.GetCurrentScene();
-            _lists = new List<Row>();
-            _lists.Add(new Row("Text Legacy"));
-            _lists.Add(new Row("Dropdown"));
-            _nameTable = "StringTable_" + _currentScene.name + "_Scene";
+            UpdateParameter();
         }
 
-        private void OnFocus()
+        protected override void OnFocus()
         {
-            _locales = SimpleInterfaceLocalization.GetAvailableLocales();
-            _currentScene = SimpleDatabaseProject.GetCurrentScene();
+            base.OnFocus();
+
+            UpdateParameter();
+
             _infoLocalization = string.Empty;
+        }
+
+        private void UpdateParameter()
+		{
+            _currentScene = SimpleDatabaseProject.GetCurrentScene();
+            _nameTable = "StringTable_" + _currentScene.name + "_Scene";
         }
 
         private void OnGUI()
         {
-            EditorGUILayout.LabelField(k_WindowTitle, GUILayout.Width(300));
-            GUILayout.Space(10);
-
-            EditorGUILayout.LabelField("Current Scene: " + _currentScene.name, GUILayout.Width(300));
-            _nameTable = EditorGUILayout.TextField("Name table:", _nameTable);
+            ShowNameWindow(k_WindowTitle);
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Source language", GUILayout.Width(300));
-            var posit = new Rect(new Vector2(310, 0), new Vector2(200, 20));
-            if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
-            {
-                genericMenu = new GenericMenu();
-
-                foreach (var option in _locales.Select(w => w.name))
-                {
-                    bool selected = option == _selectedLanguage;
-                    genericMenu.AddItem(new GUIContent(option), selected, () =>
-                    {
-                        _selectedLanguage = option;
-                    });
-                }
-                genericMenu.DropDown(posit);
-            }
+            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
+            EditorGUILayout.LabelField(_currentScene.name);
             EditorGUILayout.EndHorizontal();
 
-            _isPrefab = EditorGUILayout.ToggleLeft("Add localization for prefabs ( as an addition to the prefab )", _isPrefab);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Name string table", GUILayout.Width(k_SeparationWidth));
+            _nameTable = EditorGUILayout.TextField("", _nameTable);
+            EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.LabelField("Selected text components need to translate:", GUILayout.Width(300));
-   //         EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(10, 10, 10, 10) });
-			//foreach (Row row in _lists)
-			//{
-			//	row.check = EditorGUILayout.ToggleLeft( row.name, row.check );
-			//}
-			//EditorGUILayout.EndVertical();
+            SourceLanguage(k_SeparationWidth);
+
+            EditorGUIUtility.labelWidth = k_SeparationWidth;
+            _isPrefab = EditorGUILayout.Toggle("Add localization for prefabs ( as an addition to the prefab )", _isPrefab);
 
             if (GUILayout.Button("Find text components"))
             {
@@ -121,6 +96,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.HelpBox("Name table is empty", MessageType.Error);
                 GUI.enabled = false;
             }
+            ValidLocalization();
             if (GUILayout.Button("Add localization"))
             {
                 _infoLocalization = Localization();
