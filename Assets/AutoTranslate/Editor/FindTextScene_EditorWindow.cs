@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Events;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Events;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
@@ -237,11 +241,32 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 LocalizedString localizedString = new LocalizedString();
                 localizedString.SetReference(sharedTable.TableCollectionName, sharedTableEntry.Key);
                 localizeStringEvent.StringReference = localizedString;
-            }
 
+				while (localizeStringEvent.OnUpdateString.GetPersistentEventCount() != 0)
+				{
+                    UnityEventTools.RemovePersistentListener(localizeStringEvent.OnUpdateString, 0);
+                }
+
+                Text myScriptInstance = FindObjectOfType<Text>();
+                var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
+                if (targetinfo != null)
+                {
+                    UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), text, targetinfo, false) as UnityAction<string>;
+                    UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
+                    EditorUtility.SetDirty(text.gameObject);
+                }
+            }
+            EditorSceneManager.SaveScene(_currentScene);
             return "Completed";
         }
+
+        public void UPdateee(string value)
+        {
+            //text.text = value;
+        }
     }
+
+    
 
     public class Row
 	{
