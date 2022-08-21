@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public static class SimpleDatabaseProject
 {
@@ -45,9 +46,33 @@ public static class SimpleDatabaseProject
 	{
         Scene scene = EditorSceneManager.GetSceneByName(nameScene);
         
-        //SceneManager.LoadScene(scene.name);
-        //EditorSceneManager.OpenScene(lists[0].name);
         return scene.GetRootGameObjects();
+    }
+
+    public static List<GameObject> GetPrefabs()
+	{
+        string[] guids = AssetDatabase.FindAssets("t:prefab");
+        List<GameObject> gameObjects = new List<GameObject>();
+        string path = string.Empty;
+        if (guids.Length != 0)
+        {
+			foreach (string guid in guids)
+			{
+                path = AssetDatabase.GUIDToAssetPath(guid);
+                gameObjects.Add(AssetDatabase.LoadAssetAtPath<GameObject>(path));
+            }
+        }
+        return gameObjects;
+    }
+
+    public static List<Text> GetGameObjectsText(GameObject[] mainGameObjects)
+    {
+        List<Text> listsText = new List<Text>();
+        foreach (var gameobject in mainGameObjects)
+        {
+            listsText.AddRange(gameobject.GetComponentsInChildren<Text>());
+        }
+        return listsText;
     }
 
     public static void SaveScene(Scene scene)

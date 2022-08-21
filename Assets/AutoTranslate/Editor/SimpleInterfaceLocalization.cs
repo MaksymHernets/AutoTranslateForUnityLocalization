@@ -1,15 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
 {
-    public class SimpleInterfaceLocalization
+	public class SimpleInterfaceLocalization
     {
         public static bool HasLocalizationSettings()
         {

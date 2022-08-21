@@ -60,7 +60,7 @@ public class BaseLocalization_EditorWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    protected void SourceLanguage(int width = 400, int height = 70)
+    protected void Dropdown_SelectLanguage(int width = 400, int height = 70)
 	{
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Source language", GUILayout.Width(width));

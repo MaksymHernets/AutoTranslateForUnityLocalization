@@ -52,8 +52,11 @@ public static class SimpleInterfaceStringTable
 		return sharedTable;
 	}
 
-	public static void AddKey(string name)
+	public static void Clear_StringTable(SharedTableData sharedTable)
 	{
-
+		while (sharedTable.Entries.Count != 0)
+		{
+			sharedTable.RemoveKey(sharedTable.Entries[0].Id);
+		}
 	}
 }
