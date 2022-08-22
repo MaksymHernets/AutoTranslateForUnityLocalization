@@ -17,7 +17,7 @@
         "directory": "Assets"
     },
     "license": "ISC",
-    "unity": "2021.3.6",
+    "unity": "2019.4",
     "publishConfig": 
     {
         "registry":"https://npm.pkg.github.com"
