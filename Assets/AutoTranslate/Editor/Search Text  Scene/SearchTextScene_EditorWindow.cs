@@ -88,7 +88,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_currentScene);
             }
 
-            if ( _statusLocalizationScene.CountText != 0 ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
+            if ( _statusLocalizationScene?.CountText != 0 ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
 
             if (SimpleInterfaceStringTable.CheckNameStringTable(_nameTable))
             {
