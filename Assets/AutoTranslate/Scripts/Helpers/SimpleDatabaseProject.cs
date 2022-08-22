@@ -89,12 +89,6 @@ public static class SimpleDatabaseProject
 
     public static GameObject[] GetSubGameObjects(GameObject gameObject)
 	{
-        return gameObject.GetComponentsInChildren<Transform>().Select(w => w.gameObject).ToArray();
+        return gameObject.GetComponents<Transform>().Select(w => w.gameObject).ToArray();
 	}
-
- //   public static GameObject GetCurrentOpenPrefab()
-	//{
- //       PrefabStageUtility.GetCurrentPrefabStage();
-
- //   }
 }
