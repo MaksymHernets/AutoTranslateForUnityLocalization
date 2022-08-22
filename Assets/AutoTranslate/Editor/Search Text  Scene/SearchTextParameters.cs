@@ -8,7 +8,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 {
     public class SearchTextParameters
     {
-        public Scene Scene;
         public string NameTable;
         public bool SkipPrefab;
         public Locale SourceLocale;
