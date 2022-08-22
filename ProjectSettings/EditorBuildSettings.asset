@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/AutoTranslate/SceneDemo/Demo.unity
+    path: Assets/AutoTranslate/Scenes/Tutorial.unity
     guid: 13bd414fa28bcd249a27ae3c15a04256
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: f77fb7a3de9e14b49a945370f3afb478,
