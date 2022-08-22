@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -47,9 +47,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";
             }
-
-            //_currentPrefab = SimpleDatabaseProject.GetCurrentScene();
-            
         }
 
         private void OnGUI()
