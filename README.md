@@ -14,10 +14,14 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Localization 1.3.2 
 - Addressables 1.20.5
 
+## Functions currently available:
+- Translation of text into hundreds of languages to choose from;
+- Automatically search for files for translation in the project;
+- Tutorial scene.
+
 ## Plans to add to the package:
 - Add text translation on textures;
 - Add Translation of Audio Files;
-- Add text search in prefabs;
 - Add documentation;
 - Add unit tests.
 
