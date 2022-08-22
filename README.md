@@ -1,8 +1,6 @@
 # Auto Translate For Unity Localization
 ## Compatibility Unity 2019.4.0 or high
 
-<img src="/Screenshots/logo.jpg" width="500" height="300" align="center"/>
-
 Auto translation of the whole game in one click, using unity localization and translate service api.
 
 ## Where to begin?
