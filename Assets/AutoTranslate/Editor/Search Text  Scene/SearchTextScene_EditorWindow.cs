@@ -148,6 +148,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 parameters.NameTable = _selectedTable;
             }
 
+            if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
+
             parameters.Scene = _currentScene;
             parameters.SkipPrefab = _skipPrefab;
             parameters.SourceLocale = _selectedLocale;
