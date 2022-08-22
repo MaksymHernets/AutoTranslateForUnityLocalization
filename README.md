@@ -23,9 +23,11 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 
 ## Screenshots
 
+Use 'Window/Auto Localization/Find Text for Tables in Scene'
+
 ![GitHub Logo](/Screenshots/SearchTextSceneWIndow.png)
 
-Use 'Window->Asset Management->Auto Translate for Tables' to begin working with the system.
+Use 'Window/Auto Localization/Auto Translate for Tables' to begin working with the system.
 
 ![GitHub Logo](/Screenshots/TextTranslateWindow.png)
 
