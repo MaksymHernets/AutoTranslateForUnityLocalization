@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,40 +10,43 @@ namespace GoodTime.Tools.InterfaceTranslate
         public const string k_MyCustomSettingsPath = "Assets/AutoTranslate/ProjectSettings/AutoTranslateSetting.asset";
 
         [SerializeField] public TypePlatformTranslate PlatformForTranslate;
+        [SerializeField] public string KeyForService = string.Empty;
 
         [NonSerialized] public string[] Platforms;
 
         public static AutoTranslateSetting GetOrCreateSettings()
         {
-            AutoTranslateSetting settings = new AutoTranslateSetting();
-
             string[] guids = AssetDatabase.FindAssets("AutoTranslateSetting t:AutoTranslateSetting", null);
+            string path = string.Empty;
 
-            if (guids.Length != 0)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            if (guids.Length != 0) path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            else return null;
 
-                settings = AssetDatabase.LoadAssetAtPath<AutoTranslateSetting>(path);
-            }
-            else
-            {
-                return null;
-            }
+            AutoTranslateSetting settings = AssetDatabase.LoadAssetAtPath<AutoTranslateSetting>(path);
 
-            string[] platforms = Enum.GetNames(typeof(TypePlatformTranslate));
             if (settings == null)
             {
                 settings = ScriptableObject.CreateInstance<AutoTranslateSetting>();
-                settings.Platforms = platforms;
-                if (platforms.Length != 0)
-                {
-                    settings.PlatformForTranslate = TypePlatformTranslate.GoogleApisCustom;
-                }
+                
                 AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
                 AssetDatabase.SaveAssets();
+
+                settings.Platforms = GetNamePlatformTranslate();
+                if (settings.Platforms.Length != 0)
+                {
+                    settings.PlatformForTranslate = TypePlatformTranslate.GoogleApiFree;
+                }
             }
-            settings.Platforms = platforms;
+
+            settings.Platforms = GetNamePlatformTranslate();
+
             return settings;
+        }
+
+        public static string[] GetNamePlatformTranslate()
+		{
+
+            return Enum.GetNames(typeof(TypePlatformTranslate));
         }
 
         internal static SerializedObject GetSerializedSettings()
