@@ -13,11 +13,26 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 {
 	public static class SearchTextForLocalization 
     {
-        public static string Search(SearchTextParameters parameters)
-        {
-            GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(parameters.Scene.name);
+        public static string Search(SearchTextParameters parameters, Scene scene)
+		{
+            GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(scene.name);
             if (gameObjects.Length == 0) return "gameObjects is 0";
+            string result = Search(parameters, gameObjects);
+            EditorSceneManager.SaveScene(scene);
+            return result;
+        }
 
+        public static string Search(SearchTextParameters parameters, GameObject mainPrefab)
+        {
+            GameObject[] gameObjects = SimpleDatabaseProject.GetSubGameObjects(mainPrefab);
+            if (gameObjects.Length == 0) return "gameObjects is 0";
+            string result = Search(parameters, gameObjects);
+            EditorUtility.SetDirty(mainPrefab);
+            return result;
+        }
+
+        public static string Search(SearchTextParameters parameters, GameObject[] gameObjects)
+        {
             List<Text> listsText = SimpleDatabaseProject.GetGameObjectsText(gameObjects);
             if (listsText.Count == 0) return "texts is 0";
 
@@ -45,16 +60,27 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
                 localizeStringEvent.Sign_OnUpdateString(text);
             }
 
-            EditorSceneManager.SaveScene(parameters.Scene);
-
             return "Completed";
         }
 
         public static StatusLocalizationScene CheckTextAboutLocalization(Scene scene)
         {
+            GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(scene.name);
+
+            return CounterLocalization(gameObjects);
+        }
+
+        public static StatusLocalizationScene CheckTextAboutLocalization(GameObject gameObject)
+        {
+            GameObject[] gameObjects = SimpleDatabaseProject.GetSubGameObjects(gameObject);
+
+            return CounterLocalization(gameObjects);
+        }
+
+        private static StatusLocalizationScene CounterLocalization(GameObject[] gameObjects)
+		{
             StatusLocalizationScene statusLocalizationScene = new StatusLocalizationScene();
 
-            GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(scene.name);
             List<Text> texts = SimpleDatabaseProject.GetGameObjectsText(gameObjects);
 
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);

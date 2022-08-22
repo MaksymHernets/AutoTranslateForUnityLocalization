@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -84,4 +86,15 @@ public static class SimpleDatabaseProject
 	{
         return EditorSceneManager.GetActiveScene();
     }
+
+    public static GameObject[] GetSubGameObjects(GameObject gameObject)
+	{
+        return gameObject.GetComponentsInChildren<Transform>().Select(w => w.gameObject).ToArray();
+	}
+
+ //   public static GameObject GetCurrentOpenPrefab()
+	//{
+ //       PrefabStageUtility.GetCurrentPrefabStage();
+
+ //   }
 }

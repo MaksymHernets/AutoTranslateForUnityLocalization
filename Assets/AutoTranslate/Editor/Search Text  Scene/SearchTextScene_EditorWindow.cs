@@ -7,46 +7,33 @@ using UnityEngine.SceneManagement;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class SearchTextScene_EditorWindow : BaseLocalization_EditorWindow
+	public class SearchTextScene_EditorWindow : BaseSearchText_EditorWindow
     {
         // Window parameters
-        private const string k_WindowTitle = "Find text for Localization in Scene";
+        private const string k_WindowTitle = "Search text for Localization in Scene";
 
         private Scene _currentScene;
-        private string _selectedTable = KEYWORD_NEWTABLE;
-        private string _nameTable = string.Empty;
-        private bool _skipPrefab;
 
-        private StatusLocalizationScene _statusLocalizationScene;
-
-        private string _infoLocalization = string.Empty;
-
-        private const string KEYWORD_NEWTABLE = "-New-";
-
-        [MenuItem("Window/Auto Localization/Find Text for Tables in Scene")]
+        [MenuItem("Window/Auto Localization/Search Text for Tables in Scene")]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
             SearchTextScene_EditorWindow window = GetWindow<SearchTextScene_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
-            window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.FindTextScene);
+            window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.SearchTextScene);
             window.Show();
         }
 
         protected override void OnEnable()
         {
-            base.OnEnable();
-
+            UpdateLocalization();
             _statusLocalizationScene = new StatusLocalizationScene();
-
             UpdateParameter();
         }
 
         protected override void OnFocus()
         {
-            base.OnFocus();
-
+            UpdateLocalization();
             UpdateParameter();
-
             _infoLocalization = string.Empty;
         }
 
@@ -90,16 +77,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if ( _statusLocalizationScene?.CountText != 0 ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
 
-            if (SimpleInterfaceStringTable.CheckNameStringTable(_nameTable))
-            {
-                EditorGUILayout.HelpBox("StringTable - " + _nameTable + " exists. In this case, the table will be cleared and filled again. ", MessageType.Warning);
-            }
+            CheckNameStringTable();
 
-            if ( string.IsNullOrEmpty(_nameTable) )
-			{
-                EditorGUILayout.HelpBox("Name table is empty", MessageType.Error);
-                GUI.enabled = false;
-            }
             ValidateLocalizationSettings();
             ValidateLocales();
 
@@ -109,30 +88,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
 
             if ( !string.IsNullOrEmpty(_infoLocalization) ) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
-        }
-
-        private void Dropdown_StringTables(int width = 300)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Select string Table", GUILayout.Width(width));
-            if (EditorGUILayout.DropdownButton(new GUIContent(_selectedTable), FocusType.Passive))
-            {
-                Rect posit = new Rect(new Vector2(width, 90), new Vector2(400, 20));
-                genericMenu = new GenericMenu();
-                foreach (string option in _sharedStringTables.Select(w => w.TableCollectionName))
-                {
-                    genericMenu.AddItem(new GUIContent(option), option == _selectedTable, () =>
-                    {
-                        _selectedTable = option;
-                    });
-                }
-				genericMenu.AddItem(new GUIContent(KEYWORD_NEWTABLE), KEYWORD_NEWTABLE == _selectedTable, () =>
-				{
-					_selectedTable = KEYWORD_NEWTABLE;
-				});
-				genericMenu.DropDown(posit);
-            }
-            EditorGUILayout.EndHorizontal();
         }
 
         private string StartSearch()
@@ -150,11 +105,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
-            parameters.Scene = _currentScene;
             parameters.SkipPrefab = _skipPrefab;
             parameters.SourceLocale = _selectedLocale;
 
-            return SearchTextForLocalization.Search(parameters);
+            return SearchTextForLocalization.Search(parameters, _currentScene);
 		}
     }
 }
