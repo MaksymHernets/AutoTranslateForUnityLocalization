@@ -1,14 +1,14 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate",
-    "version": "0.3.2",
+    "version": "0.3.5",
     "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n Use 'Window->Asset Management->Auto Translate for Tables' to begin working with the system.",
     "keywords": [
       "Unity",
       "Tool"
     ],
     "dependencies": {
-    "com.unity.localization": "1.0.5"
+    "com.unity.localization": "1.3.2"
     },
     "author": "Hernets Maksym",
     "repository": 
@@ -17,7 +17,7 @@
         "directory": "Assets"
     },
     "license": "ISC",
-    "unity": "2021.7",
+    "unity": "2021.3.6f",
     "publishConfig": 
     {
         "registry":"https://npm.pkg.github.com"
