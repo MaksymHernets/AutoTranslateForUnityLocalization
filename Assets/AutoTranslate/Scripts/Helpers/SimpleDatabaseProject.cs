@@ -91,10 +91,4 @@ public static class SimpleDatabaseProject
 	{
         return gameObject.GetComponentsInChildren<Transform>().Select(w => w.gameObject).ToArray();
 	}
-
- //   public static GameObject GetCurrentOpenPrefab()
-	//{
- //       PrefabStageUtility.GetCurrentPrefabStage();
-
- //   }
 }

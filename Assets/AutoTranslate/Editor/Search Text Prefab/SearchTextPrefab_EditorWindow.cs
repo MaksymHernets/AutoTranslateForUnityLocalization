@@ -43,6 +43,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             else _selectedTable = KEYWORD_NEWTABLE;
 
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+
             if (_prefabStage != null)
             {
                 _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";
@@ -86,10 +87,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (GUILayout.Button("Search text for localization"))
             {
-                _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_prefabStage.prefabContentsRoot);
+                _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_prefabStage.prefabContentsRoot, _skipPrefab);
             }
 
-            if (_statusLocalizationScene?.CountText != 0) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
+            if (_statusLocalizationScene != null) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
 
             CheckNameStringTable();
 
@@ -119,7 +120,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
 			if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
-			parameters.SkipPrefab = _skipPrefab;
+			parameters.IsSkipPrefab = _skipPrefab;
 			parameters.SourceLocale = _selectedLocale;
 
 			return SearchTextForLocalization.Search(parameters, _prefabStage.prefabContentsRoot);

@@ -9,7 +9,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
     public class SearchTextParameters
     {
         public string NameTable;
-        public bool SkipPrefab;
+        public bool IsSkipPrefab;
         public Locale SourceLocale;
     }
 }

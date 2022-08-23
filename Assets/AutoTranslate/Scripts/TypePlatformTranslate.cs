@@ -6,7 +6,8 @@ namespace GoodTime.Tools.InterfaceTranslate
 {
     public enum TypePlatformTranslate 
     {
-        GoogleApisCustom,
-        GoogleApisOffical
+        GoogleApiFree,
+        GoogleApi,
+        BingApi
     }
 }

@@ -1,8 +1,11 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate",
-    "version": "0.3.5",
-    "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n Use 'Window->Asset Management->Auto Translate for Tables' to begin working with the system.",
+    "version": "0.3.6",
+    "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n
+    \n 
+    Use 'Window/Auto Localization/Find Text for Tables in Scene'
+    Use 'Window/Auto localization/Auto Translate for Tables'",
     "keywords": [
       "Unity",
       "Tool"
