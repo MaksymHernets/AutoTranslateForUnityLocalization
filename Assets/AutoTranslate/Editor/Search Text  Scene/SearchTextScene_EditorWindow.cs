@@ -26,7 +26,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnEnable()
         {
             UpdateLocalization();
-            _statusLocalizationScene = new StatusLocalizationScene();
             UpdateParameter();
         }
 
@@ -35,6 +34,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             UpdateLocalization();
             UpdateParameter();
             _infoLocalization = string.Empty;
+            _statusLocalizationScene = null;
         }
 
         private void UpdateParameter()
@@ -72,10 +72,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (GUILayout.Button("Search text for localization"))
             {
-                _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_currentScene);
+                _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_currentScene, _skipPrefab);
             }
 
-            if ( _statusLocalizationScene?.CountText != 0 ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
+            if ( _statusLocalizationScene != null ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
 
             CheckNameStringTable();
 
@@ -105,7 +105,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
-            parameters.SkipPrefab = _skipPrefab;
+            parameters.IsSkipPrefab = _skipPrefab;
             parameters.SourceLocale = _selectedLocale;
 
             return SearchTextForLocalization.Search(parameters, _currentScene);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -17,24 +18,24 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 		{
             GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(scene.name);
             if (gameObjects.Length == 0) return "gameObjects is 0";
-            string result = Search(parameters, gameObjects);
+            string result = AddLocalization(parameters, gameObjects);
             EditorSceneManager.SaveScene(scene);
             return result;
         }
 
         public static string Search(SearchTextParameters parameters, GameObject mainPrefab)
         {
-            GameObject[] gameObjects = SimpleDatabaseProject.GetSubGameObjects(mainPrefab);
-            if (gameObjects.Length == 0) return "gameObjects is 0";
-            string result = Search(parameters, gameObjects);
+            GameObject[] gameObjects = new GameObject[1];
+            gameObjects[0] = mainPrefab;
+            string result = AddLocalization(parameters, gameObjects);
             EditorUtility.SetDirty(mainPrefab);
             return result;
         }
 
-        public static string Search(SearchTextParameters parameters, GameObject[] gameObjects)
+        public static string AddLocalization(SearchTextParameters parameters, GameObject[] gameObjects)
         {
-            List<Text> listsText = SimpleDatabaseProject.GetGameObjectsText(gameObjects);
-            if (listsText.Count == 0) return "texts is 0";
+            StatusLocalizationScene statusLocalizationScene = SearchForLocalization(gameObjects, parameters.IsSkipPrefab);
+            if (statusLocalizationScene.Texts.Count == 0) return "texts is 0";
 
             SharedTableData sharedTable = GetOrAdd_SharedTableData(parameters.NameTable);
 
@@ -42,9 +43,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
             SharedTableEntry sharedTableEntry = default(SharedTableEntry);
             StringTable stringTable = default(StringTable);
 
-            foreach (Text text in listsText)
+            foreach (Text text in statusLocalizationScene.Texts)
             {
-                if (parameters.SkipPrefab == true && PrefabUtility.IsPartOfAnyPrefab(text.gameObject)) continue;
+                if (parameters.IsSkipPrefab == true && PrefabUtility.IsPartOfAnyPrefab(text.gameObject)) continue;
 
                 localizeStringEvent = GetOrAdd_LocalizeStringEventComponent(text.gameObject);
 
@@ -63,21 +64,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
             return "Completed";
         }
 
-        public static StatusLocalizationScene CheckTextAboutLocalization(Scene scene)
+        public static StatusLocalizationScene CheckTextAboutLocalization(Scene scene, bool skipPrefab)
         {
             GameObject[] gameObjects = SimpleDatabaseProject.GetGameObjects(scene.name);
 
-            return CounterLocalization(gameObjects);
+            return SearchForLocalization(gameObjects, skipPrefab);
         }
 
-        public static StatusLocalizationScene CheckTextAboutLocalization(GameObject gameObject)
+        public static StatusLocalizationScene CheckTextAboutLocalization(GameObject gameObject, bool skipPrefab)
         {
-            GameObject[] gameObjects = SimpleDatabaseProject.GetSubGameObjects(gameObject);
+            GameObject[] gameObjects = new GameObject[1];
+            gameObjects[0] = gameObject;
 
-            return CounterLocalization(gameObjects);
+            return SearchForLocalization(gameObjects, skipPrefab);
         }
 
-        private static StatusLocalizationScene CounterLocalization(GameObject[] gameObjects)
+        private static StatusLocalizationScene SearchForLocalization(GameObject[] gameObjects, bool skipPrefab)
 		{
             StatusLocalizationScene statusLocalizationScene = new StatusLocalizationScene();
 
@@ -85,14 +87,31 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
 
+			foreach (GameObject gameObject in gameObjects)
+			{
+                GameObject[] subGameObjects = SimpleDatabaseProject.GetSubGameObjects(gameObject);
+				foreach (GameObject subGameObject in subGameObjects)
+				{
+                    if (PrefabUtility.IsAnyPrefabInstanceRoot(subGameObject))
+                    {
+                        statusLocalizationScene.Prefabs.Add(subGameObject);
+                    }
+                }
+            }
+
             foreach (Text text in texts)
             {
-                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject))
-                    ++statusLocalizationScene.CountPrefabs;
+                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && skipPrefab == true)
+                {
+                    continue;
+                }
+
                 if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                    ++statusLocalizationScene.CountTextLocalization;
+				{
+                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
+                }
+                statusLocalizationScene.Texts.Add(text);
             }
-            statusLocalizationScene.CountText = texts.Count;
             return statusLocalizationScene;
         }
 

@@ -89,6 +89,6 @@ public static class SimpleDatabaseProject
 
     public static GameObject[] GetSubGameObjects(GameObject gameObject)
 	{
-        return gameObject.GetComponents<Transform>().Select(w => w.gameObject).ToArray();
+        return gameObject.GetComponentsInChildren<Transform>().Select(w => w.gameObject).ToArray();
 	}
 }
