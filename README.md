@@ -19,6 +19,10 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Automatically search for files for translation in the project;
 - Tutorial scene.
 
+## Supported and plans:
+- Unity UI Legacy ( Text, Button, Toggle, Input Field)
+- Test Mesh Pro ( under development )
+
 ## Plans to add to the package:
 - Add text translation on textures;
 - Add Translation of Audio Files;
