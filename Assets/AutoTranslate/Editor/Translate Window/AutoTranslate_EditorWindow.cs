@@ -55,7 +55,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            Dropdown_SelectLanguage(k_SeparationWidth);
+
+            _dropdownLanguages.Draw();
 
             EditorGUIUtility.labelWidth = k_SeparationWidth;
             _translateParameters.canOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _translateParameters.canOverrideWords);
@@ -116,11 +117,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
-            LoadSettings();
+            UpdateLocalization();
 
             EditorUtility.DisplayCancelableProgressBar("Translating", "Preparation translate", 0.1f);
 
-            _selectedLocale = _locales.First(w => w.LocaleName == _selectedLanguage);
+            _selectedLocale = _locales.First(w => w.LocaleName == _dropdownLanguages.Selected);
 
             TranslateData translateData = new TranslateData();
             translateData.selectedLocale = _selectedLocale;

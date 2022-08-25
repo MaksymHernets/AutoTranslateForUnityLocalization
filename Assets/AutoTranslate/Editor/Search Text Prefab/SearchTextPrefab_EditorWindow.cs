@@ -1,5 +1,7 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using GoodTime.Tools.Helpers.GUI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
@@ -26,6 +28,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected override void OnEnable()
         {
+            base.OnEnable();
+
             UpdateLocalization();
             UpdateParameter();
             _statusLocalizationScene = new StatusLocalizationScene();
@@ -33,14 +37,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected override void OnFocus()
         {
+            base.OnFocus();
             UpdateLocalization();
             UpdateParameter();
         }
 
         private void UpdateParameter()
         {
-            if (_sharedStringTables != null && _sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().TableCollectionName;
-            else _selectedTable = KEYWORD_NEWTABLE;
+            if (_sharedStringTables != null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
+            else _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
 
@@ -53,6 +58,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
+            EditorGUIUtility.labelWidth = k_SeparationWidth;
 
             bool IsOpenPrefab = _prefabStage == null;
 
@@ -64,9 +70,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
             EditorGUILayout.EndHorizontal();
 
-            Dropdown_StringTables(k_SeparationWidth);
+            _dropdownTables.Draw();
 
-            if (_selectedTable == KEYWORD_NEWTABLE)
+            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
@@ -74,10 +80,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.EndHorizontal();
             }
 
-            Dropdown_SelectLanguage(k_SeparationWidth);
+            _dropdownLanguages.Draw();
 
-            EditorGUIUtility.labelWidth = k_SeparationWidth;
             _skipPrefab = EditorGUILayout.Toggle("Skip sub prefabs", _skipPrefab);
+
+            EditorGUILayout.LabelField("Search:");
+            _checkListGUI.Draw();
 
             if (IsOpenPrefab)
             {
@@ -109,13 +117,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             SearchTextParameters parameters = new SearchTextParameters();
 
-			if (_selectedTable == KEYWORD_NEWTABLE)
+			if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
 			{
 				parameters.NameTable = _nameTable;
 			}
 			else
 			{
-				parameters.NameTable = _selectedTable;
+				parameters.NameTable = _dropdownTables.Selected;
 			}
 
 			if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";

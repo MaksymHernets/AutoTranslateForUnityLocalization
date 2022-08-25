@@ -25,12 +25,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected override void OnEnable()
         {
+            base.OnEnable();
             UpdateLocalization();
             UpdateParameter();
         }
 
         protected override void OnFocus()
         {
+            base.OnFocus();
             UpdateLocalization();
             UpdateParameter();
             _infoLocalization = string.Empty;
@@ -39,8 +41,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void UpdateParameter()
 		{
-            if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _selectedTable = _sharedStringTables.First().TableCollectionName;
-            else _selectedTable = KEYWORD_NEWTABLE;
+            if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
+            else _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
             _currentScene = SimpleDatabaseProject.GetCurrentScene();
             _nameTable = "StringTable_" + _currentScene.name + "_Scene";
@@ -49,26 +51,29 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
+            EditorGUIUtility.labelWidth = k_SeparationWidth;
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
             EditorGUILayout.LabelField(_currentScene.name);
             EditorGUILayout.EndHorizontal();
 
-            Dropdown_StringTables(k_SeparationWidth);
+            _dropdownTables.Draw();
 
-            if ( _selectedTable == KEYWORD_NEWTABLE)
+            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
 			{
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
                 _nameTable = EditorGUILayout.TextField("", _nameTable);
                 EditorGUILayout.EndHorizontal();
             }
-            
-            Dropdown_SelectLanguage(k_SeparationWidth);
 
-            EditorGUIUtility.labelWidth = k_SeparationWidth;
+            _dropdownLanguages.Draw();
+
             _skipPrefab = EditorGUILayout.Toggle("Skip prefabs", _skipPrefab);
+
+            EditorGUILayout.LabelField("Search:");
+            _checkListGUI.Draw();
 
             if (GUILayout.Button("Search text for localization"))
             {
@@ -94,13 +99,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 		{
             SearchTextParameters parameters = new SearchTextParameters();
 
-            if (_selectedTable == KEYWORD_NEWTABLE)
+            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
             {
                 parameters.NameTable = _nameTable;
             }
             else
             {
-                parameters.NameTable = _selectedTable;
+                parameters.NameTable = _dropdownTables.Selected;
             }
 
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
