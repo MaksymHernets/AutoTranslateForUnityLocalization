@@ -1,10 +1,7 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.Helpers.GUI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 

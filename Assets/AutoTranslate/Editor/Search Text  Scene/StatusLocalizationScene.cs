@@ -8,21 +8,24 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 {
 	public class StatusLocalizationScene
     {
-        public List<Text> Texts;
+        public List<Text> LegacyTexts;
+        public List<Dropdown> LegacyDropdowns;
+
         public List<GameObject> Prefabs;
         public List<LocalizeStringEvent> LocalizeStringEvents;
 
         public StatusLocalizationScene()
 		{
-            Texts = new List<Text>();
+            LegacyTexts = new List<Text>();
+            LegacyDropdowns = new List<Dropdown>();
             Prefabs = new List<GameObject>();
             LocalizeStringEvents = new List<LocalizeStringEvent>();
         }
 
         public override string ToString()
         {
-            return String.Format(" Found text: {0} \n Found localize string event: {1} \n Prefabs: {2}",
-                Texts.Count, LocalizeStringEvents.Count, Prefabs.Count);
+            return String.Format(" Found:\n Text Legacy: {0}\n Localize string event: {1}\n Prefabs: {2}\n Dropdown Legacy: {3}",
+                LegacyTexts.Count, LocalizeStringEvents.Count, Prefabs.Count, LegacyDropdowns.Count);
         }
     }
 }

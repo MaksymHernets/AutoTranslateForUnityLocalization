@@ -60,6 +60,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _translateParameters.canTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _translateParameters.canTranslateSmartWords);
 
             GUILayout.Space(10);
+
             EditorGUILayout.HelpBox("  Found " + _locales?.Count + " languages" +
                 "\n  Found " + _sharedStringTables?.Count + " table collection" + 
                 "\n  Found " + _stringTables?.Count + " string tables" + 
@@ -68,19 +69,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.LabelField("Selected collection tables for translation:");
             _checkListStringTable.Draw();
 
-            if ( _isErrorConnection )
-            {
-                EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
-            }
+            if ( _isErrorConnection ) EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
 
             if ( _isErrorTooManyRequests )
             {
                 TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
                 EditorGUILayout.HelpBox("The remote server returned an error: (429) Too Many Requests. Need to wait " + _timeNeedForWaitErrorMinute + " minutes. " + leftTime.Minutes + " minutes " + leftTime.Seconds + " left", MessageType.Error);
-                if (_diedLineErrorTooManyRequests < DateTime.Now)
-                {
-                    _isErrorTooManyRequests = false;
-                }
+                if (_diedLineErrorTooManyRequests < DateTime.Now) _isErrorTooManyRequests = false;
             }
 
             ValidateLocalizationSettings();
@@ -88,6 +83,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             ValidateStringTables();
 
             GUILayout.Space(10);
+
             if (GUILayout.Button("Translate")) ButtonTranslate_Click();
         }
 
@@ -140,6 +136,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             catch (Exception exception)
             {
+                Debug.LogError(exception.Message);
                 EditorUtility.ClearProgressBar();
                 return;
             }

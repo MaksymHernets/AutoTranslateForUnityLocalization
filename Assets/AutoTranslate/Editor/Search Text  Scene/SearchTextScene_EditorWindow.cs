@@ -1,4 +1,5 @@
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -44,7 +45,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if ( _sharedStringTables!= null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
             else _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
-            _currentScene = SimpleDatabaseProject.GetCurrentScene();
+            _currentScene = DatabaseProject.GetCurrentScene();
             _nameTable = "StringTable_" + _currentScene.name + "_Scene";
         }
 
