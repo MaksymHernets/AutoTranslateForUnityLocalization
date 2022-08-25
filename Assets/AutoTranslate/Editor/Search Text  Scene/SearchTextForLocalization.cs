@@ -32,6 +32,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
             return result;
         }
 
+        public static List<string> GetAvailableForSearchUIElements()
+		{
+            List<string> Checklists = new List<string>();
+            Checklists.Add("Text Legacy");
+            Checklists.Add("Dropdown Legacy (not work)");
+            Checklists.Add("Text Mesh Pro (not work)");
+            Checklists.Add("Dropdown Mesh Pro (not work)");
+            return Checklists;
+        }
+
         public static string AddLocalization(SearchTextParameters parameters, GameObject[] gameObjects)
         {
             StatusLocalizationScene statusLocalizationScene = SearchForLocalization(gameObjects, parameters.IsSkipPrefab);

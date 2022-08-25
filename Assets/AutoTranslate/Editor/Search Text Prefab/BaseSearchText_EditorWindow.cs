@@ -16,7 +16,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected const string KEYWORD_NEWTABLE = "-New-";
 
         protected DropdownGUI _dropdownTables;
-        protected CheckListGUI _checkListGUI;
+        protected CheckListGUI _checkListSearchElements;
 
         protected void CheckNameStringTable()
         {
@@ -41,36 +41,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _dropdownTables = new DropdownGUI("Select string Table", Tablelists);
             _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
-            List<string> Checklists = new List<string>();
-            Checklists.Add("Text Legacy");
-            Checklists.Add("Dropdown Legacy");
-            Checklists.Add("Text Mesh Pro");
-            Checklists.Add("Dropdown Mesh Pro");
-            _checkListGUI = new CheckListGUI(Checklists);
+            _checkListSearchElements = new CheckListGUI(SearchTextForLocalization.GetAvailableForSearchUIElements());
         }
 
-        //protected void Dropdown_StringTables(int width = 300)
-        //{
-        //    EditorGUILayout.BeginHorizontal();
-        //    EditorGUILayout.LabelField("Select string Table", GUILayout.Width(width));
-        //    if (EditorGUILayout.DropdownButton(new GUIContent(_selectedTable), FocusType.Passive))
-        //    {
-        //        Rect posit = new Rect(new Vector2(width, 90), new Vector2(400, 20));
-        //        genericMenu = new GenericMenu();
-        //        foreach (string option in _sharedStringTables.Select(w => w.TableCollectionName))
-        //        {
-        //            genericMenu.AddItem(new GUIContent(option), option == _selectedTable, () =>
-        //            {
-        //                _selectedTable = option;
-        //            });
-        //        }
-        //        genericMenu.AddItem(new GUIContent(KEYWORD_NEWTABLE), KEYWORD_NEWTABLE == _selectedTable, () =>
-        //        {
-        //            _selectedTable = KEYWORD_NEWTABLE;
-        //        });
-        //        genericMenu.DropDown(posit);
-        //    }
-        //    EditorGUILayout.EndHorizontal();
-        //}
+        protected override void OnFocus()
+        {
+            base.OnFocus();
+            _checkListSearchElements.Update(SearchTextForLocalization.GetAvailableForSearchUIElements());
+        }
     }
 }

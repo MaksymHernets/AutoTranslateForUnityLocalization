@@ -18,17 +18,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         {
             float progressRate = 0.9f / translateData.stringTables.Count;
             int indexTable = 0;
-            int indexTableCollection = -1;
 
             foreach (var sharedtable in translateData.sharedtables)
             {
-                ++indexTableCollection;
-                if (translateParameters.canTranslateTableCollections[indexTableCollection] == false)
-                {
-                    continue;
-                }
+                if (translateParameters.IsTranslateStringTables.ContainsKey(sharedtable.TableCollectionName) == false) continue;
+                if (translateParameters.IsTranslateStringTables[sharedtable.TableCollectionName] == false) continue;
+
                 StringTable sourceLanguageTable = default(StringTable);
                 List<StringTable> tablesForTranslate = new List<StringTable>();
+
                 foreach (var table in translateData.stringTables)
                 {
                     if (table.TableCollectionName == sharedtable.TableCollectionName)
@@ -42,7 +40,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             sourceLanguageTable = table;
                         }
                     }
-
                 }
 
                 Dictionary<string,string> lists = new Dictionary<string, string>();

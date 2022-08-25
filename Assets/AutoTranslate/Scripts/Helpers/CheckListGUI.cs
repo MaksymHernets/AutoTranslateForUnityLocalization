@@ -18,10 +18,7 @@ namespace GoodTime.Tools.Helpers.GUI
 		{
 			Width = width;
 			RowCheckLists = new List<RowCheckList>();
-			foreach (string element in elements)
-			{
-				RowCheckLists.Add(new RowCheckList(element, isActive));
-			}
+			FillElements(elements, isActive);
 			texture2D = MakeTex(600, 10, BackColor);
 		}
 
@@ -30,6 +27,14 @@ namespace GoodTime.Tools.Helpers.GUI
 			Width = width;
 			RowCheckLists = elements;
 			texture2D = MakeTex(600, 10, BackColor);
+		}
+
+		private void FillElements(List<string> elements, bool isActive = true)
+		{
+			foreach (string element in elements)
+			{
+				RowCheckLists.Add(new RowCheckList(element, isActive));
+			}
 		}
 
 		public void Draw()
@@ -44,6 +49,28 @@ namespace GoodTime.Tools.Helpers.GUI
 				element.IsActive = EditorGUILayout.Toggle(element.Name, element.IsActive);
 			}
 			EditorGUILayout.EndVertical();
+		}
+
+		public void Update(List<string> elements)
+		{
+			List<RowCheckList> newRowCheckLists = new List<RowCheckList>();
+			bool pair = false;
+
+			foreach (string newelement in elements)
+			{
+				foreach (RowCheckList rowCheckLists in RowCheckLists)
+				{
+					if ( rowCheckLists.Name == newelement)
+					{
+						newRowCheckLists.Add(new RowCheckList(rowCheckLists.Name, rowCheckLists.IsActive));
+						pair = true;
+					}
+				}
+				if ( pair == false) newRowCheckLists.Add(new RowCheckList(newelement, true));
+				pair = false;
+			}
+
+			RowCheckLists = newRowCheckLists;
 		}
 
 		private Texture2D MakeTex(int width, int height, Color col)
@@ -65,11 +92,13 @@ namespace GoodTime.Tools.Helpers.GUI
 	{
 		public string Name;
 		public bool IsActive;
+		public bool IsAvailable;
 
-		public RowCheckList(string name, bool isActive)
+		public RowCheckList(string name, bool isActive, bool isAvailable = true)
 		{
 			Name = name;
 			IsActive = isActive;
+			IsAvailable = isAvailable;
 		}
 	}
 }

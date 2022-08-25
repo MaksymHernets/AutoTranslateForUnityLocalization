@@ -84,8 +84,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _skipPrefab = EditorGUILayout.Toggle("Skip sub prefabs", _skipPrefab);
 
-            EditorGUILayout.LabelField("Search:");
-            _checkListGUI.Draw();
+            EditorGUILayout.LabelField("Search UI Elements:");
+            _checkListSearchElements.Draw();
+            GUILayout.Space(10);
 
             if (IsOpenPrefab)
             {

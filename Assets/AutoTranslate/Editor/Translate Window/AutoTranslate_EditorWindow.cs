@@ -1,4 +1,5 @@
 using GoodTime.Tools.Helpers;
+using GoodTime.Tools.Helpers.GUI;
 using System;
 using System.Linq;
 using System.Net;
@@ -20,6 +21,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private DateTime _diedLineErrorTooManyRequests;
         private double _timeNeedForWaitErrorMinute = 10;
         private bool _isErrorConnection = false;
+        private CheckListGUI _checkListStringTable;
 
         [MenuItem("Window/Auto Localization/Auto Translate for Tables")]
         public static void ShowWindow()
@@ -33,32 +35,26 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnEnable()
         {
             base.OnEnable();
-            UpdateParameter();
             _isErrorConnection = WebInformation.IsConnectedToInternet();
+
+            _checkListStringTable = new CheckListGUI(_sharedStringTables.Select(w=>w.TableCollectionName).ToList());
         }
 
         protected override void OnFocus()
         {
             base.OnFocus();
-            UpdateParameter();
             _isErrorConnection = WebInformation.IsConnectedToInternet();
-        }
 
-        protected void UpdateParameter()
-        {
-            if ( _sharedStringTables != null)
-            {
-                InitializationTranslateTableCollections();
-            }
+            _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
         }
 
         void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
+            EditorGUIUtility.labelWidth = k_SeparationWidth;
 
             _dropdownLanguages.Draw();
 
-            EditorGUIUtility.labelWidth = k_SeparationWidth;
             _translateParameters.canOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _translateParameters.canOverrideWords);
             _translateParameters.canTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords);
             _translateParameters.canTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _translateParameters.canTranslateSmartWords);
@@ -69,25 +65,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 "\n  Found " + _stringTables?.Count + " string tables" + 
                 "\n  Found " + _assetTables?.Count + " asset tables", MessageType.Info);
 
-            
-            if (_sharedStringTables != null)
-            {
-                EditorGUILayout.LabelField("Selected collection tables for translation:", GUILayout.Width(k_SeparationWidth));
-                EditorGUILayout.BeginVertical(new GUIStyle() { padding = new RectOffset(10,10,10,10) });
-                int index = 0;
-                foreach (var sharedtable in _sharedStringTables)
-                {
-                    _translateParameters.canTranslateTableCollections[index] = EditorGUILayout.ToggleLeft(sharedtable.TableCollectionName, _translateParameters.canTranslateTableCollections[index]);
-                    ++index;
-                }
-                
-                EditorGUILayout.EndVertical();
-            }
+            EditorGUILayout.LabelField("Selected collection tables for translation:");
+            _checkListStringTable.Draw();
 
             if ( _isErrorConnection )
             {
                 EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
             }
+
             if ( _isErrorTooManyRequests )
             {
                 TimeSpan leftTime = _diedLineErrorTooManyRequests.Subtract(DateTime.Now);
@@ -97,23 +82,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                     _isErrorTooManyRequests = false;
                 }
             }
+
             ValidateLocalizationSettings();
             ValidateLocales();
             ValidateStringTables();
+
             GUILayout.Space(10);
-            if (GUILayout.Button("Translate"))
-            {
-                ButtonTranslate_Click();
-            }
+            if (GUILayout.Button("Translate")) ButtonTranslate_Click();
         }
 
         private void ButtonTranslate_Click()
         {
             _isErrorConnection = WebInformation.IsConnectedToInternet();
-            if (_isErrorConnection )
-            {
-                return;
-            }
+            if (_isErrorConnection ) return;
 
             EditorUtility.DisplayCancelableProgressBar("Translating", "Load Tables", 0);
 
@@ -129,6 +110,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             translateData.stringTables = _stringTables.ToList();
 
             TranslateLocalization translateLocalization = new TranslateLocalization();
+
+            _translateParameters.FillDictinary(_checkListStringTable.RowCheckLists);
 
             try
             {
@@ -169,15 +152,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             EditorUtility.ClearProgressBar();
         }
-
-        private void InitializationTranslateTableCollections()
-        {
-            _translateParameters.canTranslateTableCollections.Clear();
-            foreach (var item in _sharedStringTables)
-            {
-                _translateParameters.canTranslateTableCollections.Add(true);
-            }
-        }  
 
         private void SaveStringTables()
         {

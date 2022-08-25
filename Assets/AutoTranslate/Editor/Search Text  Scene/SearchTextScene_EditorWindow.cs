@@ -72,8 +72,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _skipPrefab = EditorGUILayout.Toggle("Skip prefabs", _skipPrefab);
 
-            EditorGUILayout.LabelField("Search:");
-            _checkListGUI.Draw();
+            EditorGUILayout.LabelField("Search UI Elements:");
+            _checkListSearchElements.Draw();
+            GUILayout.Space(10);
 
             if (GUILayout.Button("Search text for localization"))
             {
