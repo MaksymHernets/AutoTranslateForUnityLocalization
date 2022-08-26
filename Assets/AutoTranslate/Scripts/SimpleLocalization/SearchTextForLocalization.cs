@@ -1,4 +1,5 @@
 using GoodTime.Tools.Helpers;
+using GoodTime.Tools.Helpers.GUIElements;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -11,13 +12,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 {
 	public static class SearchTextForLocalization 
     {
-        public static List<string> GetAvailableForSearchUIElements()
+        public static List<RowCheckList> GetAvailableForSearchUIElements()
         {
-            List<string> Checklists = new List<string>();
-            Checklists.Add("Text Legacy");
-            Checklists.Add("Dropdown Legacy");
-            Checklists.Add("Text Mesh Pro");
-            Checklists.Add("Dropdown Mesh Pro");
+            List<RowCheckList> Checklists = new List<RowCheckList>();
+            Checklists.Add(new RowCheckList("Text Legacy", true, true));
+            Checklists.Add(new RowCheckList("Text Mesh Pro", true, true));
+            Checklists.Add(new RowCheckList("Dropdown Legacy", false, false));
+            Checklists.Add(new RowCheckList("Dropdown Mesh Pro", false, false));
             return Checklists;
         }
 

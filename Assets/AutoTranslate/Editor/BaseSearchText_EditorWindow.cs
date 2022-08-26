@@ -1,5 +1,5 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.Helpers.GUI;
+using GoodTime.Tools.Helpers.GUIElements;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -56,7 +56,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnFocus()
         {
             base.OnFocus();
-            _checkListSearchElements?.Update(SearchTextForLocalization.GetAvailableForSearchUIElements());
+            _checkListSearchElements?.Update(SearchTextForLocalization.GetAvailableForSearchUIElements().Select(w=>w.Name).ToList());
         }
     }
 }

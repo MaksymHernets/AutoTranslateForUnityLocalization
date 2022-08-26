@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.Helpers.GUI
+namespace GoodTime.Tools.Helpers.GUIElements
 {
 	public class CheckListGUI
 	{
@@ -47,8 +46,10 @@ namespace GoodTime.Tools.Helpers.GUI
 			EditorGUILayout.BeginVertical(CheckListStyle);
 			foreach (RowCheckList element in RowCheckLists)
 			{
+				GUI.enabled = element.IsAvailable;
 				element.IsActive = EditorGUILayout.Toggle(element.Name, element.IsActive);
 			}
+			GUI.enabled = true;
 			EditorGUILayout.EndVertical();
 		}
 
@@ -63,7 +64,7 @@ namespace GoodTime.Tools.Helpers.GUI
 				{
 					if ( rowCheckLists.Name == newelement)
 					{
-						newRowCheckLists.Add(new RowCheckList(rowCheckLists.Name, rowCheckLists.IsActive));
+						newRowCheckLists.Add(new RowCheckList(rowCheckLists.Name, rowCheckLists.IsActive, rowCheckLists.IsAvailable));
 						pair = true;
 					}
 				}

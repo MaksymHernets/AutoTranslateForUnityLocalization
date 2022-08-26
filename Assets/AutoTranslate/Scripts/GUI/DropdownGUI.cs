@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace GoodTime.Tools.Helpers.GUI
+namespace GoodTime.Tools.Helpers.GUIElements
 {
     public class DropdownGUI
     {
