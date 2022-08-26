@@ -1,4 +1,5 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate;
+using GoodTime.Tools.Helpers.GUIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,13 +28,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected IList<SharedTableData> _sharedStringTables;
         protected IList<SharedTableData> _sharedAssetTables;
 
-        protected GenericMenu genericMenu;
-
-        protected string _selectedLanguage = string.Empty;
+        protected DropdownGUI _dropdownLanguages;
 
         protected virtual void OnEnable()
         {
             UpdateLocalization();
+
+            if (_locales != null)
+                _dropdownLanguages = new DropdownGUI("Source language", _locales.Select(w => w.name).ToList());
+            else
+                _dropdownLanguages = new DropdownGUI("Source language", new List<string>());
+            InitDefaultDropdownLocalization();
         }
 
         protected virtual void OnFocus()
@@ -41,17 +46,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             UpdateLocalization();
         }
 
-        protected void UpdateLocalization()
-        {
-            LoadSettings();
-            if (_selectedLocale != null)
-            {
-                _selectedLanguage = _selectedLocale.LocaleName;
-            }
-            else
-            {
-                _selectedLanguage = string.Empty;
-            }
+        protected void InitDefaultDropdownLocalization()
+		{
+            if (_selectedLocale != null) _dropdownLanguages.Selected = _selectedLocale.LocaleName;
+            else _dropdownLanguages.Selected = string.Empty;
         }
 
         protected void ShowNameWindow(string name)
@@ -60,49 +58,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             GUILayout.Button(name, GUILayout.Height(60));
             GUI.enabled = true;
             GUILayout.Space(10);
-        }
-
-        protected void Dropdown_SelectLanguage(int width = 400, int height = 70)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Source language", GUILayout.Width(width));
-            if (EditorGUILayout.DropdownButton(new GUIContent(_selectedLanguage), FocusType.Passive))
-            {
-                Rect posit = new Rect(new Vector2(width, height), new Vector2(200, 20));
-                genericMenu = new GenericMenu();
-                foreach (string option in _locales.Select(w => w.name))
-                {
-                    genericMenu.AddItem(new GUIContent(option), option == _selectedLanguage, () =>
-                    {
-                        _selectedLanguage = option;
-                    });
-                }
-                genericMenu.DropDown(posit);
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
-        protected string SmartDropdown(string label, List<string> options, string select, Action<string> action, int width = 300)
-        {
-            string selected = string.Empty;
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, GUILayout.Width(width));
-            if (EditorGUILayout.DropdownButton(new GUIContent(select), FocusType.Passive))
-            {
-                Rect posit = new Rect(new Vector2(310, 0), new Vector2(200, 20));
-                genericMenu = new GenericMenu();
-                foreach (string option in options)
-                {
-                    genericMenu.AddItem(new GUIContent(option), option == select, () =>
-                    {
-                        selected = option;
-                    });
-                }
-                genericMenu.DropDown(posit);
-            }
-            EditorGUILayout.EndHorizontal();
-            return selected;
         }
 
         protected void ValidateLocalizationSettings()
@@ -132,7 +87,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
         }
 
-        protected bool LoadSettings()
+        protected bool UpdateLocalization()
         {
             _localizationSettings = SimpleInterfaceLocalization.GetLocalizationSettings();
 
