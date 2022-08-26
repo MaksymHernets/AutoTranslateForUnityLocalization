@@ -42,3 +42,7 @@ Use 'Window/Auto Localization/Auto Translate for Tables' to begin working with t
 As a result, thanks to the plugin, you can save a lot of time.
 
 ![GitHub Logo](/Screenshots/ResultStringTable.png)
+
+Package Manager
+
+![GitHub Logo](/Screenshots/PackageManager.png)
