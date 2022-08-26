@@ -36,9 +36,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnEnable();
 
-            List<string> Tablelists = _sharedStringTables.Select(w => w.TableCollectionName).ToList();
-            Tablelists.Add(KEYWORD_NEWTABLE);
-            _dropdownTables = new DropdownGUI("Select string Table", Tablelists);
+            List<string> tablelists;
+            if (_sharedStringTables != null)
+            {
+                tablelists = _sharedStringTables.Select(w => w.TableCollectionName).ToList();
+            }
+            else tablelists = new List<string>();
+
+            tablelists.Add(KEYWORD_NEWTABLE);
+            _dropdownTables = new DropdownGUI("Select string Table", tablelists);
             _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
             _checkListSearchElements = new CheckListGUI(SearchTextForLocalization.GetAvailableForSearchUIElements());

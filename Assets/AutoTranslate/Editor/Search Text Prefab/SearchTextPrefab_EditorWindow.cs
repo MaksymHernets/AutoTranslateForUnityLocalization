@@ -2,7 +2,8 @@
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.SceneManagement;
+using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
+using UnityEditor.SceneManagement; 
 using UnityEngine;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows

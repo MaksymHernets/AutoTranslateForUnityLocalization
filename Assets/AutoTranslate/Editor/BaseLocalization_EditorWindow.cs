@@ -34,7 +34,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             UpdateLocalization();
 
-            _dropdownLanguages = new DropdownGUI("Source language", _locales.Select(w => w.name).ToList());
+            if (_locales != null)
+                _dropdownLanguages = new DropdownGUI("Source language", _locales.Select(w => w.name).ToList());
+            else
+                _dropdownLanguages = new DropdownGUI("Source language", new List<string>());
             InitDefaultDropdownLocalization();
         }
 

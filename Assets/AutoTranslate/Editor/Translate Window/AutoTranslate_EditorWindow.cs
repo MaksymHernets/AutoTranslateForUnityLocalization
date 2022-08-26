@@ -1,6 +1,7 @@
 using GoodTime.Tools.Helpers;
 using GoodTime.Tools.Helpers.GUI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using UnityEditor;
@@ -37,7 +38,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnEnable();
             _isErrorConnection = WebInformation.IsConnectedToInternet();
 
-            _checkListStringTable = new CheckListGUI(_sharedStringTables.Select(w=>w.TableCollectionName).ToList());
+            if (_sharedStringTables != null)
+                _checkListStringTable = new CheckListGUI(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+            else
+                _checkListStringTable = new CheckListGUI(new List<string>());
         }
 
         protected override void OnFocus()
@@ -45,7 +49,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnFocus();
             _isErrorConnection = WebInformation.IsConnectedToInternet();
 
-            _checkListStringTable?.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+            if (_sharedStringTables != null)
+                _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
         }
 
         void OnGUI()
