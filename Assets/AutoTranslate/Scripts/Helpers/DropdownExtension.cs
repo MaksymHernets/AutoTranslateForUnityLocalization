@@ -22,7 +22,7 @@ namespace GoodTime.Tools.Helpers
         public static void SetOptions(this Dropdown dropdown, string line)
 		{
             dropdown.options.Clear();
-            dropdown.AddOptions(line.Split("][").ToList());
+            dropdown.AddOptions(line.Split("][".ToCharArray() , 2).ToList());
         }
     }
 }
