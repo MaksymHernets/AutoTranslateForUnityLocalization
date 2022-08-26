@@ -45,7 +45,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnFocus();
             _isErrorConnection = WebInformation.IsConnectedToInternet();
 
-            _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+            _checkListStringTable?.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
         }
 
         void OnGUI()

@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace GoodTime.HernetsMaksym.AutoTranslate.UI
 {
 	public class DropdownLanguage : MonoBehaviour
 	{

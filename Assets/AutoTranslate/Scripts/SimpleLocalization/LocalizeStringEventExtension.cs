@@ -6,7 +6,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
+namespace GoodTime.HernetsMaksym.AutoTranslate
 {
 	public static class LocalizeStringEventExtension
     {
