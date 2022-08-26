@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
@@ -22,35 +23,33 @@ public class InstalledPackages_AutoTranslate : AssetPostprocessor
 	[MenuItem("Window/Auto Localization/Add Define Auto Localization", false, 11)]
 	public static void AddDefine_AutoTranslate()
 	{
-		List<NamedBuildTarget> namedBuildTargets = NamedBuildTargetExtension.GetNamedBuildTargets();
-		string[] Names;
-		List<string> lists;
+		List<BuildTargetGroup> namedBuildTargets = NamedBuildTargetExtension.GetNamedBuildTargets();
+		string names;
+		List<string> list;
 
-		foreach (NamedBuildTarget namedBuildTarget in namedBuildTargets)
+		foreach (BuildTargetGroup namedBuildTarget in namedBuildTargets)
 		{
-			PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget, out Names);
-			lists = Names.ToList();
-			if (!lists.Contains(NameDefine_AutoTranslate))
-				lists.Add(NameDefine_AutoTranslate);
-			PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget, lists.ToArray());
+			names = PlayerSettings.GetScriptingDefineSymbolsForGroup(namedBuildTarget);
+			list = names.Split(',').ToList();
+			if (!list.Contains(NameDefine_AutoTranslate))
+				list.Add(NameDefine_AutoTranslate);
+			names = string.Join("," , list.ToArray());
+			PlayerSettings.SetScriptingDefineSymbolsForGroup(namedBuildTarget, names);
 		}
 	}
 }
 
 public static class NamedBuildTargetExtension
 {
-	public static List<NamedBuildTarget> GetNamedBuildTargets()
+	public static List<BuildTargetGroup> GetNamedBuildTargets()
 	{
-		List<NamedBuildTarget> namedBuildTargets = new List<NamedBuildTarget>();
-		namedBuildTargets.Add(NamedBuildTarget.Android); // +
-		namedBuildTargets.Add(NamedBuildTarget.CloudRendering);
-		namedBuildTargets.Add(NamedBuildTarget.EmbeddedLinux);
-		namedBuildTargets.Add(NamedBuildTarget.iOS); // +
-		namedBuildTargets.Add(NamedBuildTarget.NintendoSwitch);
-		namedBuildTargets.Add(NamedBuildTarget.PS4);
-		namedBuildTargets.Add(NamedBuildTarget.WindowsStoreApps); // + 
-		namedBuildTargets.Add(NamedBuildTarget.WebGL); // +
-		namedBuildTargets.Add(NamedBuildTarget.Standalone); // +
+		List<BuildTargetGroup> namedBuildTargets = new List<BuildTargetGroup>();
+		namedBuildTargets.Add(BuildTargetGroup.Android); // +
+		namedBuildTargets.Add(BuildTargetGroup.iOS); // +
+		namedBuildTargets.Add(BuildTargetGroup.Lumin);
+		namedBuildTargets.Add(BuildTargetGroup.PS4);
+		namedBuildTargets.Add(BuildTargetGroup.WebGL); // +
+		namedBuildTargets.Add(BuildTargetGroup.Standalone); // +
 		
 		return namedBuildTargets;
 	}
