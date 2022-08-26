@@ -47,7 +47,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnFocus()
         {
             base.OnFocus();
-            _checkListSearchElements.Update(SearchTextForLocalization.GetAvailableForSearchUIElements());
+            _checkListSearchElements?.Update(SearchTextForLocalization.GetAvailableForSearchUIElements());
         }
     }
 }
