@@ -1,104 +1,69 @@
 using GoodTime.Tools.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using TMPro;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Localization.Components;
-using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.Localization.Tables.SharedTableData;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
+namespace GoodTime.HernetsMaksym.AutoTranslate
 {
 	public static class SearchTextForLocalization 
     {
-        public static string Search(SearchTextParameters parameters, Scene scene)
-		{
-            GameObject[] gameObjects = DatabaseProject.GetGameObjects(scene.name);
-            if (gameObjects.Length == 0) return "gameObjects is 0";
-            string result = AddLocalization(parameters, gameObjects);
-            EditorSceneManager.SaveScene(scene);
-            return result;
-        }
-
-        public static string Search(SearchTextParameters parameters, GameObject mainPrefab)
-        {
-            GameObject[] gameObjects = new GameObject[1];
-            gameObjects[0] = mainPrefab;
-            string result = AddLocalization(parameters, gameObjects);
-            EditorUtility.SetDirty(mainPrefab);
-            return result;
-        }
-
         public static List<string> GetAvailableForSearchUIElements()
-		{
+        {
             List<string> Checklists = new List<string>();
             Checklists.Add("Text Legacy");
-            Checklists.Add("Dropdown Legacy (not work)");
-            Checklists.Add("Text Mesh Pro (not work)");
-            Checklists.Add("Dropdown Mesh Pro (not work)");
+            Checklists.Add("Dropdown Legacy");
+            Checklists.Add("Text Mesh Pro");
+            Checklists.Add("Dropdown Mesh Pro");
             return Checklists;
         }
 
-        public static string AddLocalization(SearchTextParameters parameters, GameObject[] gameObjects)
-        {
-            StatusLocalizationScene statusLocalizationScene = SearchForLocalization(gameObjects, parameters.IsSkipPrefab);
-
-            SharedTableData sharedTable = SharedTableDataExtension.GetOrAdd_SharedTableData(parameters.NameTable);
-
-            LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
-            SharedTableEntry sharedTableEntry = default(SharedTableEntry);
-            StringTable stringTable = default(StringTable);
-
-            foreach (Text text in statusLocalizationScene.LegacyTexts)
-            {
-                if (parameters.IsSkipPrefab == true && PrefabUtility.IsPartOfAnyPrefab(text.gameObject)) continue;
-
-                localizeStringEvent = GetOrAdd_LocalizeStringEventComponent(text.gameObject);
-
-                sharedTableEntry = SharedTableData_AddEntry(sharedTable, text, "TextLegacy");
-
-                stringTable = SimpleInterfaceStringTable.GetStringTable(sharedTable, parameters.SourceLocale);
-                stringTable.AddEntry(sharedTableEntry.Key, text.text);
-
-                localizeStringEvent.Clear_OnUpdateString();
-                localizeStringEvent.Sign_ReferenceTable(sharedTable.TableCollectionName, sharedTableEntry.Key);
-                localizeStringEvent.Sign_OnUpdateString(text);
-            }
-
-            return "Completed";
-        }
-
-        public static StatusLocalizationScene CheckTextAboutLocalization(Scene scene, bool skipPrefab)
+        public static StatusLocalizationScene Search(Scene scene, SearchTextParameters parameters)
         {
             GameObject[] gameObjects = DatabaseProject.GetGameObjects(scene.name);
 
-            return SearchForLocalization(gameObjects, skipPrefab);
+            return Search(gameObjects, parameters);
         }
 
-        public static StatusLocalizationScene CheckTextAboutLocalization(GameObject gameObject, bool skipPrefab)
+        public static StatusLocalizationScene Search(GameObject gameObject, SearchTextParameters parameters)
         {
             GameObject[] gameObjects = new GameObject[1];
             gameObjects[0] = gameObject;
 
-            return SearchForLocalization(gameObjects, skipPrefab);
+            return Search(gameObjects, parameters);
         }
 
-        private static StatusLocalizationScene SearchForLocalization(GameObject[] gameObjects, bool skipPrefab)
+        public static StatusLocalizationScene Search(GameObject[] gameObjects, SearchTextParameters parameters)
 		{
             StatusLocalizationScene statusLocalizationScene = new StatusLocalizationScene();
 
-            List<Text> texts = GameObjectHelper.GetComponentsInChildrens<Text>(gameObjects);
-            statusLocalizationScene.LegacyTexts = FilterTextLegacy(texts, skipPrefab, statusLocalizationScene);
-
-            List<Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<Dropdown>(gameObjects);
-            statusLocalizationScene.LegacyDropdowns = FilterDropdownLegacy(dropdowns, skipPrefab, statusLocalizationScene);
-
-            statusLocalizationScene.Prefabs = GameObjectHelper.DetectPrefabs(gameObjects);
-
+            if ( parameters.Lists.ContainsKey("Text Legacy") && parameters.Lists["Text Legacy"])
+			{
+                List<Text> texts = GameObjectHelper.GetComponentsInChildrens<Text>(gameObjects);
+                statusLocalizationScene.LegacyTexts = FilterTextLegacy(texts, parameters.SkipPrefab, statusLocalizationScene);
+            }
+            if ( parameters.Lists.ContainsKey("Text Mesh Pro") && parameters.Lists["Text Mesh Pro"])
+            {
+                List<TextMeshProUGUI> textMeshs = GameObjectHelper.GetComponentsInChildrens<TextMeshProUGUI>(gameObjects);
+                statusLocalizationScene.TextMeshs = FilterTextMesh(textMeshs, parameters.SkipPrefab, statusLocalizationScene);
+            }
+            if ( parameters.Lists.ContainsKey("Dropdown Legacy") && parameters.Lists["Dropdown Legacy"])
+            {
+                List<Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<Dropdown>(gameObjects);
+                statusLocalizationScene.LegacyDropdowns = FilterDropdownLegacy(dropdowns, parameters.SkipPrefab, statusLocalizationScene);
+            }
+            if (parameters.Lists.ContainsKey("Dropdown Mesh Pro") && parameters.Lists["Dropdown Mesh Pro"])
+            {
+                List<TMP_Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<TMP_Dropdown>(gameObjects);
+                statusLocalizationScene.TMP_Dropdowns = FilterDropdownTMP(dropdowns, parameters.SkipPrefab, statusLocalizationScene);
+            }
+            if ( parameters.SkipPrefab == false )
+            {
+                statusLocalizationScene.Prefabs = GameObjectHelper.DetectPrefabs(gameObjects);
+            }
             return statusLocalizationScene;
         }
 
@@ -140,26 +105,42 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
             return result;
         }
 
-        private static LocalizeStringEvent GetOrAdd_LocalizeStringEventComponent(GameObject gameObject)
-		{
+        public static List<TMP_Dropdown> FilterDropdownTMP(List<TMP_Dropdown> texts, bool skipPrefab, StatusLocalizationScene statusLocalizationScene)
+        {
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
-            if (gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                return gameObject.GetComponent<LocalizeStringEvent>();
-            else
-                return gameObject.AddComponent<LocalizeStringEvent>();
+            List<TMP_Dropdown> result = new List<TMP_Dropdown>();
+
+            foreach (TMP_Dropdown text in texts)
+            {
+                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && skipPrefab == true)
+                    continue;
+
+                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
+                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
+
+                result.Add(text);
+            }
+
+            return result;
         }
 
-        private static SharedTableEntry SharedTableData_AddEntry(SharedTableData sharedTable, Text text, string typeText)
-		{
-            string name = String.Format("[{0}][{1}][{2}]", text.gameObject.name, text.gameObject.transform.parent?.name, typeText);
-            int variants = 1;
-            while (sharedTable.Contains(name))
+        public static List<TextMeshProUGUI> FilterTextMesh(List<TextMeshProUGUI> texts, bool skipPrefab, StatusLocalizationScene statusLocalizationScene)
+        {
+            LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
+            List<TextMeshProUGUI> result = new List<TextMeshProUGUI>();
+
+            foreach (TextMeshProUGUI text in texts)
             {
-                name = String.Format("[{0}][{1}][{2}][{3}]", text.gameObject.name, text.gameObject.transform.parent?.name, typeText, variants);
-                ++variants;
+                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && skipPrefab == true)
+                    continue;
+
+                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
+                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
+
+                result.Add(text);
             }
-            SharedTableEntry sharedTableEntry = sharedTable.AddKey(name);
-            return sharedTableEntry;
+
+            return result;
         }
     }
 }

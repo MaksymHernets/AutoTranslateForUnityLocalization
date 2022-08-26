@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.SceneManagement;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
+namespace GoodTime.HernetsMaksym.AutoTranslate
 {
-    public class SearchTextParameters
-    {
-        public string NameTable;
-        public bool IsSkipPrefab;
-        public Locale SourceLocale;
-    }
+	public class SearchTextParameters
+	{
+		public bool SkipPrefab = false;
+		public Dictionary<string, bool> Lists;
+		//public bool IsLegacyText = true;
+		//public bool IsLegacyDropdown = true;
+		//public bool IsTextMeshPro = true;
+	}
 }

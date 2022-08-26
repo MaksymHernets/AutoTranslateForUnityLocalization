@@ -27,14 +27,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnEnable()
         {
             base.OnEnable();
-            UpdateLocalization();
             UpdateParameter();
         }
 
         protected override void OnFocus()
         {
             base.OnFocus();
-            UpdateLocalization();
             UpdateParameter();
             _infoLocalization = string.Empty;
             _statusLocalizationScene = null;
@@ -82,7 +80,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (GUILayout.Button("Search text for localization"))
             {
-                _statusLocalizationScene = SearchTextForLocalization.CheckTextAboutLocalization(_currentScene, _skipPrefab);
+                _searchTextParameters.SkipPrefab = _skipPrefab;
+                _searchTextParameters.Lists = _checkListSearchElements.GetElements();
+
+                _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
             }
 
             if ( _statusLocalizationScene != null ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
@@ -102,7 +103,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private string StartSearch()
 		{
-            SearchTextParameters parameters = new SearchTextParameters();
+            AddLocalizationParameters parameters = new AddLocalizationParameters();
 
             if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
             {
@@ -117,8 +118,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             parameters.IsSkipPrefab = _skipPrefab;
             parameters.SourceLocale = _selectedLocale;
+            parameters.Lists = _checkListSearchElements.GetElements();
 
-            return SearchTextForLocalization.Search(parameters, _currentScene);
+            return AddLocalization.Execute(parameters, _statusLocalizationScene);
 		}
     }
 }

@@ -10,6 +10,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 	public class BaseSearchText_EditorWindow : BaseLocalization_EditorWindow
     {
         protected StatusLocalizationScene _statusLocalizationScene;
+        protected SearchTextParameters _searchTextParameters;
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
         protected bool _skipPrefab;
@@ -46,6 +47,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             tablelists.Add(KEYWORD_NEWTABLE);
             _dropdownTables = new DropdownGUI("Select string Table", tablelists);
             _dropdownTables.Selected = KEYWORD_NEWTABLE;
+
+            _searchTextParameters = new SearchTextParameters();
 
             _checkListSearchElements = new CheckListGUI(SearchTextForLocalization.GetAvailableForSearchUIElements());
         }

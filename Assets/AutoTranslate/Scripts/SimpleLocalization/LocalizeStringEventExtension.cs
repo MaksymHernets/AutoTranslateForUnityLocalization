@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEngine.Events;
@@ -25,7 +26,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             localizeStringEvent.StringReference = localizedString;
         }
 
-        public static void Sign_OnUpdateString(this LocalizeStringEvent localizeStringEvent, Text text)
+        public static void Sign_OnUpdateString_TextLegacy(this LocalizeStringEvent localizeStringEvent, Text text)
         {
             var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
             if (targetinfo != null)
@@ -33,6 +34,28 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), text, targetinfo, false) as UnityAction<string>;
                 UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
                 EditorUtility.SetDirty(text.gameObject);
+            }
+        }
+
+        public static void Sign_OnUpdateString_TextMeshPro(this LocalizeStringEvent localizeStringEvent, TextMeshProUGUI text)
+        {
+            var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
+            if (targetinfo != null)
+            {
+                UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), text, targetinfo, false) as UnityAction<string>;
+                UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
+                EditorUtility.SetDirty(text.gameObject);
+            }
+        }
+
+        public static void Sign_OnUpdateString_DropdownLegacy(this LocalizeStringEvent localizeStringEvent, Dropdown dropdown)
+        {
+            var targetinfo = UnityEvent.GetValidMethodInfo(dropdown, "set_text", new Type[] { typeof(string) });
+            if (targetinfo != null)
+            {
+                UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), dropdown, targetinfo, false) as UnityAction<string>;
+                UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
+                EditorUtility.SetDirty(dropdown.gameObject);
             }
         }
     }

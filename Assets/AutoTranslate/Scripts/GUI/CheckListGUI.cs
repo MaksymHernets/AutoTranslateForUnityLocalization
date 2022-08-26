@@ -7,7 +7,7 @@ namespace GoodTime.Tools.Helpers.GUI
 {
 	public class CheckListGUI
 	{
-		public List<RowCheckList> RowCheckLists;
+		public List<RowCheckList> RowCheckLists { get; private set; }
 		public int Width;
 		public Color BackColor = Color.white;
 
@@ -31,6 +31,7 @@ namespace GoodTime.Tools.Helpers.GUI
 
 		private void FillElements(List<string> elements, bool isActive = true)
 		{
+			RowCheckLists.Clear();
 			foreach (string element in elements)
 			{
 				RowCheckLists.Add(new RowCheckList(element, isActive));
@@ -85,6 +86,16 @@ namespace GoodTime.Tools.Helpers.GUI
 			result.Apply();
  
 			return result;
+		}
+
+		public Dictionary<string, bool> GetElements()
+		{
+			Dictionary<string, bool> elements = new Dictionary<string, bool>();
+			foreach (RowCheckList rowCheckList in RowCheckLists)
+			{
+				elements.Add(rowCheckList.Name, rowCheckList.IsActive);
+			}
+			return elements;
 		}
 	}
 
