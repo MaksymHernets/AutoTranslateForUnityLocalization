@@ -1,11 +1,10 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEditor.SceneManagement; 
 using UnityEngine;
+using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -35,6 +34,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnFocus();
             UpdateParameter();
+            _infoLocalization = string.Empty;
+            _statusLocalizationScene = null;
         }
 
         private void UpdateParameter()
