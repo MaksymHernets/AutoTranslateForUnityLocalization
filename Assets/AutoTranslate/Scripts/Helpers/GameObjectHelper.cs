@@ -39,5 +39,24 @@ namespace GoodTime.Tools.Helpers
             }
             return prefabs;
         }
+
+        public static string GetFullName(this GameObject gameObject)
+        {
+            string fullName = string.Empty;
+            if ( gameObject.transform.parent != null) fullName = string.Format("[{0}][{1}]", gameObject.transform.parent.name, gameObject.name);
+            else fullName = string.Format("[{0}][{1}]", "null", gameObject.name);
+            return fullName;
+        }
+
+        public static string GetFullName(this GameObject gameObject, string text, int length = 70)
+        {
+            string subtext = string.Empty;
+            if (text.Length < length) subtext = text.Substring(0, text.Length);
+            else subtext = text.Substring(0, length);
+            string fullName = string.Empty;
+            if (gameObject.transform.parent != null) fullName = string.Format("[{0}][{1}][{2}]", gameObject.transform.parent.name, gameObject.name, subtext);
+            else fullName = string.Format("[{0}][{1}][{2}]", "null", gameObject.name, text);
+            return fullName;
+        }
     }
 }

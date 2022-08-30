@@ -80,28 +80,39 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (GUILayout.Button("Search text for localization"))
             {
-                _searchTextParameters.SkipPrefab = _skipPrefab;
-                _searchTextParameters.Lists = _checkListSearchElements.GetElements();
-
-                _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
+                StartSearch();
+                FillDispalay_StatusLocalization();
             }
 
-            if ( _statusLocalizationScene != null ) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString() , MessageType.Info);
+            if ( _statusLocalizationScene != null )
+			{
+                EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
+                _TabsGUI.Draw();
+            }
 
             CheckNameStringTable();
 
             ValidateLocalizationSettings();
             ValidateLocales();
 
+            GUILayout.Space(10);
             if (GUILayout.Button("Add localization"))
             {
-                _infoLocalization = StartSearch();
+                _infoLocalization = StartAddLocalization();
             }
 
             if ( !string.IsNullOrEmpty(_infoLocalization) ) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
         }
 
-        private string StartSearch()
+        private void StartSearch()
+		{
+            _searchTextParameters.SkipPrefab = _skipPrefab;
+            _searchTextParameters.Lists = _checkListSearchElements.GetElements();
+
+            _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
+        }
+
+        private string StartAddLocalization()
 		{
             AddLocalizationParameters parameters = new AddLocalizationParameters();
 
@@ -119,6 +130,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             parameters.IsSkipPrefab = _skipPrefab;
             parameters.SourceLocale = _selectedLocale;
             parameters.Lists = _checkListSearchElements.GetElements();
+
+            if (_statusLocalizationScene == null) StartSearch();
+            else GetCheckTable();
 
             return AddLocalization.Execute(parameters, _statusLocalizationScene);
 		}

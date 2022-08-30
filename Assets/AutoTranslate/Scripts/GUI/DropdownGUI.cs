@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace GoodTime.Tools.Helpers.GUIElements
 {
-    public class DropdownGUI
+    public class DropdownGUI : IGUI
     {
         public List<string> Options { get; private set; }
         public UnityAction<string> UpdateSelected;

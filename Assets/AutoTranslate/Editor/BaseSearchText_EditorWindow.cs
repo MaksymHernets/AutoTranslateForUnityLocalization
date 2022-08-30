@@ -1,9 +1,12 @@
 ﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using GoodTime.Tools.Helpers;
 using GoodTime.Tools.Helpers.GUIElements;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -18,6 +21,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected DropdownGUI _dropdownTables;
         protected CheckListGUI _checkListSearchElements;
+        protected SmartToolbar _TabsGUI;
+
+        protected List<CheckListGUI> _checkLists;
 
         protected void CheckNameStringTable()
         {
@@ -50,13 +56,54 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _searchTextParameters = new SearchTextParameters();
 
-            _checkListSearchElements = new CheckListGUI(SearchTextForLocalization.GetAvailableForSearchUIElements());
+            List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
+            _checkListSearchElements = new CheckListGUI(rowCheckLists);
+
+            _checkLists = new List<CheckListGUI>();
+            List<TabGUI> tabGUIs = new List<TabGUI>();
+            foreach (var item in rowCheckLists)
+			{
+                CheckListGUI checkListGUI = new CheckListGUI(new List<string>());
+                checkListGUI.Width = 1000;
+                checkListGUI.Height = 200;
+                _checkLists.Add(checkListGUI);
+                tabGUIs.Add(new TabGUI(item.Name, checkListGUI));
+            }
+            _TabsGUI = new SmartToolbar(tabGUIs);
         }
 
         protected override void OnFocus()
         {
             base.OnFocus();
             _checkListSearchElements?.Update(SearchTextForLocalization.GetAvailableForSearchUIElements().Select(w=>w.Name).ToList());
+        }
+
+        protected void FillDispalay_StatusLocalization()
+		{
+            _checkLists[0].FillElements(_statusLocalizationScene.LegacyTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[2].FillElements(_statusLocalizationScene.LegacyDropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
+            _checkLists[3].FillElements(_statusLocalizationScene.TMP_Dropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
+        }
+
+        protected void GetCheckTable()
+		{
+            _statusLocalizationScene.LegacyTexts = GetBack<Text>(_statusLocalizationScene.LegacyTexts, _checkLists[0].GetElements());
+            _statusLocalizationScene.TextMeshs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshs, _checkLists[1].GetElements());
+            _statusLocalizationScene.LegacyDropdowns = GetBack<Dropdown>(_statusLocalizationScene.LegacyDropdowns, _checkLists[2].GetElements());
+            _statusLocalizationScene.TMP_Dropdowns = GetBack<TMP_Dropdown>(_statusLocalizationScene.TMP_Dropdowns, _checkLists[3].GetElements());
+        }
+
+        protected List<T> GetBack<T>(List<T> lists, Dictionary<string, bool> keyValuePairs)
+		{
+            List<T> newsList = new List<T>();
+            int index = 0;
+			foreach (var item in keyValuePairs)
+			{
+                if (item.Value == true) newsList.Add(lists[index]);
+                ++index;
+            }
+            return newsList;
         }
     }
 }
