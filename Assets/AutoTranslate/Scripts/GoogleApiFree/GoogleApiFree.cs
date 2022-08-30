@@ -9,7 +9,7 @@ using System.Text;
 
 namespace GoodTime.Tools.InterfaceTranslate
 {
-    public class GoogleApiTranslate : ITranslateApi
+    public class GoogleApiFree : ITranslateApi
     {
         private const int MAXCHARS_FORREQUST = 5000;
         private const String SEPARATE_STRING = "[$]";

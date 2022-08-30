@@ -11,7 +11,7 @@ namespace GoodTime.Tools.FactoryTranslate
 
             if (setting.PlatformForTranslate == TypePlatformTranslate.GoogleApiFree)
             {
-                return new GoogleApiTranslate();
+                return new GoogleApiFree();
             }
             else if (setting.PlatformForTranslate == TypePlatformTranslate.GoogleApi)
             {
