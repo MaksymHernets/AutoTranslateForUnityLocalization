@@ -7,7 +7,7 @@ Auto translation of the whole game in one click, using unity localization and tr
 You can get the plugin through the unity package manager using the link:
 https://github.com/MaksymHernets/AutoTranslateForUnityLocalization.git?path=/Assets
 
-Also, this plugin can be found on the unity asset store, here is the link:
+Also, this plugin can be found on the unity asset store, here is the link:  
 https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unity-localization-212842
 
 ## Dependencies
