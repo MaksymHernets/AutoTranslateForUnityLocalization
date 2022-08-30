@@ -13,6 +13,7 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 ## Dependencies
 - Localization 1.3.2 
 - Addressables 1.20.5
+- TextMeshPro 3.0.6
 
 ## Functions currently available:
 - Translation of text into hundreds of languages to choose from;
