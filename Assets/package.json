@@ -12,7 +12,7 @@
       	"Unity",
       	"Tool",
 		"Auto",
-		"Translate",
+		"Translate"
     	],
     	"dependencies": 
 	{
@@ -30,8 +30,7 @@
     	{
 		"registry":"https://npm.pkg.github.com"
     	},
-	"samples": 
-	[
+	"samples": [
     	{
       	"displayName": "Short Tutorial",
       	"description": "The scene contains a short instruction on how to use the tool and also this scene can be used as a sample.",
