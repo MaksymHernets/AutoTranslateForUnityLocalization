@@ -13,6 +13,7 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 ## Dependencies
 - Localization 1.3.2 
 - Addressables 1.20.5
+- TextMeshPro 3.0.6
 
 ## Functions currently available:
 - Translation of text into hundreds of languages to choose from;
@@ -42,3 +43,7 @@ Use 'Window/Auto Localization/Auto Translate for Tables' to begin working with t
 As a result, thanks to the plugin, you can save a lot of time.
 
 ![GitHub Logo](/Screenshots/ResultStringTable.png)
+
+Package Manager
+
+![GitHub Logo](/Screenshots/PackageManager.png)

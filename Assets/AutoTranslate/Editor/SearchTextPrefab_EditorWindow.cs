@@ -2,9 +2,9 @@
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEditor.SceneManagement; 
 using UnityEngine;
+using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -28,13 +28,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnEnable();
             UpdateParameter();
-            _statusLocalizationScene = new StatusLocalizationScene();
         }
 
         protected override void OnFocus()
         {
             base.OnFocus();
             UpdateParameter();
+            _infoLocalization = string.Empty;
+            _statusLocalizationScene = null;
         }
 
         private void UpdateParameter()
@@ -91,28 +92,39 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (GUILayout.Button("Search text for localization"))
             {
-                _searchTextParameters.SkipPrefab = _skipPrefab;
-                _searchTextParameters.Lists = _checkListSearchElements.GetElements();
-
-                _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
+                StartSearch();
+                FillDispalay_StatusLocalization();
             }
 
-            if (_statusLocalizationScene != null) EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
-
+            if (_statusLocalizationScene != null)
+            {
+                EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
+                _TabsGUI.Draw();
+            }
+               
             CheckNameStringTable();
 
             ValidateLocalizationSettings();
             ValidateLocales();
 
+            GUILayout.Space(10);
             if (GUILayout.Button("Add localization"))
             {
-                _infoLocalization = StartSearch();
+                _infoLocalization = StartAddLocalization();
             }
 
             if (!string.IsNullOrEmpty(_infoLocalization)) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
         }
 
-        private string StartSearch()
+        private void StartSearch()
+        {
+            _searchTextParameters.SkipPrefab = _skipPrefab;
+            _searchTextParameters.Lists = _checkListSearchElements.GetElements();
+
+            _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
+        }
+
+        private string StartAddLocalization()
         {
             AddLocalizationParameters parameters = new AddLocalizationParameters();
 
@@ -130,6 +142,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 			parameters.IsSkipPrefab = _skipPrefab;
 			parameters.SourceLocale = _selectedLocale;
             parameters.Lists = _checkListSearchElements.GetElements();
+
+            if (_statusLocalizationScene == null) StartSearch();
+            else GetCheckTable();
 
             return AddLocalization.Execute(parameters, _statusLocalizationScene);
         }

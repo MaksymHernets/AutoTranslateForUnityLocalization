@@ -4,31 +4,36 @@ using UnityEngine;
 
 namespace GoodTime.Tools.Helpers.GUIElements
 {
-	public class CheckListGUI
+	public class CheckListGUI : IGUI
 	{
 		public List<RowCheckList> RowCheckLists { get; private set; }
 		public int Width;
+		public int Height;
 		public Color BackColor = Color.white;
 
 		private GUIStyle CheckListStyle;
 		private Texture2D texture2D;
 
-		public CheckListGUI(List<string> elements, bool isActive = true, int width = 400)
+		private Vector2 vector2 = Vector2.zero;
+
+		public CheckListGUI(List<string> elements, bool isActive = true, int width = 400, int height = 0)
 		{
 			Width = width;
+			Height = height;
 			RowCheckLists = new List<RowCheckList>();
 			FillElements(elements, isActive);
-			texture2D = MakeTex(600, 10, BackColor);
+			texture2D = GUIHelper.MakeTex(600, 10, BackColor);
 		}
 
-		public CheckListGUI(List<RowCheckList> elements, int width = 400)
+		public CheckListGUI(List<RowCheckList> elements, int width = 400, int height = 0)
 		{
 			Width = width;
+			Height = height;
 			RowCheckLists = elements;
-			texture2D = MakeTex(600, 10, BackColor);
+			texture2D = GUIHelper.MakeTex(600, 10, BackColor);
 		}
 
-		private void FillElements(List<string> elements, bool isActive = true)
+		public void FillElements(List<string> elements, bool isActive = true)
 		{
 			RowCheckLists.Clear();
 			foreach (string element in elements)
@@ -43,14 +48,15 @@ namespace GoodTime.Tools.Helpers.GUIElements
 			CheckListStyle.padding = new RectOffset(7, 7, 7, 7);
 			CheckListStyle.normal.background = texture2D;
 
-			EditorGUILayout.BeginVertical(CheckListStyle);
+			vector2 = EditorGUILayout.BeginScrollView(vector2, CheckListStyle, GUILayout.MaxHeight(Height));
+			EditorGUIUtility.labelWidth = Width;
 			foreach (RowCheckList element in RowCheckLists)
 			{
 				GUI.enabled = element.IsAvailable;
 				element.IsActive = EditorGUILayout.Toggle(element.Name, element.IsActive);
 			}
 			GUI.enabled = true;
-			EditorGUILayout.EndVertical();
+			EditorGUILayout.EndScrollView();
 		}
 
 		public void Update(List<string> elements)
@@ -73,20 +79,6 @@ namespace GoodTime.Tools.Helpers.GUIElements
 			}
 
 			RowCheckLists = newRowCheckLists;
-		}
-
-		private Texture2D MakeTex(int width, int height, Color col)
-		{
-			Color[] pix = new Color[width*height];
- 
-			for(int i = 0; i < pix.Length; i++)
-				pix[i] = col;
- 
-			Texture2D result = new Texture2D(width, height);
-			result.SetPixels(pix);
-			result.Apply();
- 
-			return result;
 		}
 
 		public Dictionary<string, bool> GetElements()
