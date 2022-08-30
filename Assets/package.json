@@ -6,7 +6,8 @@
 	"license": "ISC",
     	"unity": "2019.4",
 	"type": "tool",
-    	"description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Functions currently available:\n• Translation of text into hundreds of languages to choose from;\n•Automatically search for files for translation in the project. \n Use 'Window/Auto Localization/Find Text for Tables in Scene \n Use 'Window/Auto localization/Auto Translate for Tables'",
+	"category": "tool",
+    	"description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Main features:\n• Translation of text into hundreds of languages to choose from;\n• Automatically search for files for translation in the project. \n\n Use 'Window/Auto Localization/Find Text for Tables in Scene \n Use 'Window/Auto localization/Auto Translate for Tables'",
     	"keywords": 
 	[
       	"Unity",
