@@ -1,7 +1,10 @@
 # Changelog
 
 ## [0.3.9]
- 
+- Renamed GoogleApiFree;
+- Renamed asmdef AutoTranslatel;
+- Relocated Tutorial scene into folder Sample~
+- Filled changelog, added documentation and addition package.
 ## [0.3.8] 
 - Added the ability to select elements for localization;
 - Сode optimization;
