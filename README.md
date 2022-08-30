@@ -30,6 +30,9 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Add documentation;
 - Add unit tests.
 
+### What's new?  
+https://github.com/MaksymHernets/AutoTranslateForUnityLocalization/blob/master/Assets/CHANGELOG.md
+
 ## Screenshots
 
 Use 'Window/Auto Localization/Find Text for Tables in Scene'
