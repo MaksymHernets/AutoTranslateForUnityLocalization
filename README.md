@@ -25,6 +25,7 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Test Mesh Pro ( Text, Button, Toggle, Input Field )
 
 ## Plans to add to the package:
+- Add Support UI Documents;
 - Add text translation on textures;
 - Add Translation of Audio Files;
 - Add documentation;
