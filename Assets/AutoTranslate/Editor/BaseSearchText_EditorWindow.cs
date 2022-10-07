@@ -62,9 +62,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _searchTextParameters = new SearchTextParameters();
 
             List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
-            _checkListSearchElements = new CheckListGUI(rowCheckLists);
-            _checkListSearchElements.Width = 200;
-            _checkListSearchElements.Height = 200;
+            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 150);
 
             _checkLists = new List<CheckListGUI>();
             List<TabGUI> tabGUIs = new List<TabGUI>();
@@ -72,7 +70,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 			{
                 CheckListGUI checkListGUI = new CheckListGUI(new List<string>());
                 checkListGUI.Width = 1000;
-                checkListGUI.Height = 900;
+                checkListGUI.Height = 800;
                 _checkLists.Add(checkListGUI);
                 tabGUIs.Add(new TabGUI(item.Name, checkListGUI));
             }
@@ -111,6 +109,33 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 ++index;
             }
             return newsList;
+        }
+
+        protected void Toggle_SkipPrefabs()
+		{
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Skip prefabs", GUILayout.Width(k_SeparationWidth));
+            _skipPrefab = EditorGUILayout.Toggle(_skipPrefab);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected void Toggle_SkipEmptyText()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Skip empty text", GUILayout.Width(k_SeparationWidth));
+            _skipEmptyText = EditorGUILayout.Toggle(_skipEmptyText);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected void TextField_NewStringTable()
+		{
+            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
+                _nameTable = EditorGUILayout.TextField("", _nameTable);
+                EditorGUILayout.EndHorizontal();
+            }
         }
     }
 }

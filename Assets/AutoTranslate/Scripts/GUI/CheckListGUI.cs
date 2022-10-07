@@ -54,7 +54,7 @@ namespace GoodTime.Tools.Helpers.GUIElements
 				GUI.enabled = element.IsAvailable;
 				EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
 				EditorGUILayout.LabelField(element.Name);
-				element.IsActive = EditorGUILayout.Toggle(element.IsActive, GUILayout.ExpandWidth(true), GUILayout.Width(20));
+				element.IsActive = EditorGUILayout.Toggle(element.IsActive, GUILayout.Width(20));
 				EditorGUILayout.EndHorizontal();
 			}
 			GUI.enabled = true;

@@ -15,7 +15,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
     public class BaseLocalization_EditorWindow : EditorWindow
     {
         // Window parameters
-        protected int k_SeparationWidth = 400;
+        protected int k_SeparationWidth = 200;
 
         // Arguments for execute
         protected LocalizationSettings _localizationSettings;
@@ -56,7 +56,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected void ShowNameWindow(string name)
         {
             GUI.enabled = false;
-            GUILayout.Button(name, GUILayout.Height(50));
+            GUILayout.Button(name, GUILayout.Height(30));
             GUI.enabled = true;
             GUILayout.Space(10);
         }

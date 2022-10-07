@@ -55,38 +55,32 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             ShowNameWindow(k_WindowTitle);
 
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
-            EditorGUILayout.BeginFadeGroup(0);
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
+			EditorGUILayout.BeginFadeGroup(1); // Begin 0
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth), GUILayout.ExpandWidth(true));
+            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
             EditorGUILayout.LabelField(_currentScene.name);
             EditorGUILayout.EndHorizontal();
 
             _dropdownTables.Draw();
 
-            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
-			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth), GUILayout.ExpandWidth(true));
-                _nameTable = EditorGUILayout.TextField("", _nameTable);
-                EditorGUILayout.EndHorizontal();
-            }
+            TextField_NewStringTable();
             CheckNameStringTable();
 
             _dropdownLanguages.Draw();
 
-            _skipPrefab = EditorGUILayout.Toggle("Skip prefabs" , _skipPrefab);
-            _skipEmptyText = EditorGUILayout.Toggle("Skip empty text", _skipEmptyText);
+            Toggle_SkipPrefabs();
+            Toggle_SkipEmptyText();
 
-            EditorGUILayout.EndFadeGroup();
-            EditorGUILayout.BeginFadeGroup(1);
+            EditorGUILayout.EndFadeGroup(); // End 0
+			EditorGUILayout.BeginFadeGroup(1); // Begin 1
 
             EditorGUILayout.LabelField("Search UI Elements:");
             _checkListSearchElements.Draw();
 
-            EditorGUILayout.EndFadeGroup();
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndFadeGroup(); // End 1
+            EditorGUILayout.EndHorizontal(); // Main End  
 
             if (GUILayout.Button("Search text for localization"))
             {

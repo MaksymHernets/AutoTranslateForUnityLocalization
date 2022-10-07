@@ -57,8 +57,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             bool IsOpenPrefab = _prefabStage == null;
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.BeginFadeGroup(0);
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170));
+            EditorGUILayout.BeginFadeGroup(1);
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Current Prefab", GUILayout.Width(k_SeparationWidth));
@@ -70,18 +70,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _dropdownTables.Draw();
 
-            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
-                _nameTable = EditorGUILayout.TextField("", _nameTable);
-                EditorGUILayout.EndHorizontal();
-            }
+            TextField_NewStringTable();
+            CheckNameStringTable();
 
             _dropdownLanguages.Draw();
 
-            _skipPrefab = EditorGUILayout.Toggle("Skip sub prefabs", _skipPrefab);
-            _skipEmptyText = EditorGUILayout.Toggle("Skip empty text", _skipEmptyText);
+            Toggle_SkipPrefabs();
+            Toggle_SkipEmptyText();
 
             EditorGUILayout.EndFadeGroup();
             EditorGUILayout.BeginFadeGroup(1);
@@ -110,8 +105,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _TabsGUI.Draw();
             }
                
-            CheckNameStringTable();
-
             ValidateLocalizationSettings();
             ValidateLocales();
 
