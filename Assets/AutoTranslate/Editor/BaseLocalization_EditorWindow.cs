@@ -38,6 +38,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _dropdownLanguages = new DropdownGUI("Source language", _locales.Select(w => w.name).ToList());
             else
                 _dropdownLanguages = new DropdownGUI("Source language", new List<string>());
+            _dropdownLanguages.Width = k_SeparationWidth;
             InitDefaultDropdownLocalization();
         }
 
@@ -55,7 +56,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected void ShowNameWindow(string name)
         {
             GUI.enabled = false;
-            GUILayout.Button(name, GUILayout.Height(60));
+            GUILayout.Button(name, GUILayout.Height(50));
             GUI.enabled = true;
             GUILayout.Space(10);
         }

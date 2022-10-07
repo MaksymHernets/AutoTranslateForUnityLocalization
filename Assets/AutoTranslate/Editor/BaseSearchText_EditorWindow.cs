@@ -32,7 +32,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorGUILayout.HelpBox("StringTable - " + _nameTable + " exists. In this case, the table will be cleared and filled again. ", MessageType.Warning);
             }
+        }
 
+        protected void IsNullOrEmpty_NameStringTable()
+        {
             if (string.IsNullOrEmpty(_nameTable))
             {
                 EditorGUILayout.HelpBox("Name table is empty", MessageType.Error);
@@ -53,12 +56,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             tablelists.Add(KEYWORD_NEWTABLE);
             _dropdownTables = new DropdownGUI("Select string Table", tablelists);
+            _dropdownTables.Width = k_SeparationWidth;
             _dropdownTables.Selected = KEYWORD_NEWTABLE;
 
             _searchTextParameters = new SearchTextParameters();
 
             List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
             _checkListSearchElements = new CheckListGUI(rowCheckLists);
+            _checkListSearchElements.Width = 200;
+            _checkListSearchElements.Height = 200;
 
             _checkLists = new List<CheckListGUI>();
             List<TabGUI> tabGUIs = new List<TabGUI>();
@@ -66,7 +72,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 			{
                 CheckListGUI checkListGUI = new CheckListGUI(new List<string>());
                 checkListGUI.Width = 1000;
-                checkListGUI.Height = 200;
+                checkListGUI.Height = 900;
                 _checkLists.Add(checkListGUI);
                 tabGUIs.Add(new TabGUI(item.Name, checkListGUI));
             }

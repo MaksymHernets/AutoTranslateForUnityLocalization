@@ -54,10 +54,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            EditorGUIUtility.labelWidth = k_SeparationWidth;
+
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
+            EditorGUILayout.BeginFadeGroup(0);
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
+            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth), GUILayout.ExpandWidth(true));
             EditorGUILayout.LabelField(_currentScene.name);
             EditorGUILayout.EndHorizontal();
 
@@ -66,19 +68,25 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
 			{
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth));
+                EditorGUILayout.LabelField("New string table", GUILayout.Width(k_SeparationWidth), GUILayout.ExpandWidth(true));
                 _nameTable = EditorGUILayout.TextField("", _nameTable);
                 EditorGUILayout.EndHorizontal();
             }
+            CheckNameStringTable();
 
             _dropdownLanguages.Draw();
 
-            _skipPrefab = EditorGUILayout.Toggle("Skip prefabs", _skipPrefab);
+            _skipPrefab = EditorGUILayout.Toggle("Skip prefabs" , _skipPrefab);
             _skipEmptyText = EditorGUILayout.Toggle("Skip empty text", _skipEmptyText);
+
+            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.BeginFadeGroup(1);
 
             EditorGUILayout.LabelField("Search UI Elements:");
             _checkListSearchElements.Draw();
-            GUILayout.Space(10);
+
+            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("Search text for localization"))
             {
@@ -92,7 +100,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _TabsGUI.Draw();
             }
 
-            CheckNameStringTable();
+            IsNullOrEmpty_NameStringTable();
 
             ValidateLocalizationSettings();
             ValidateLocales();
