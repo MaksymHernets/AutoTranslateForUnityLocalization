@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Events;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
@@ -57,6 +58,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
                 EditorUtility.SetDirty(dropdown.gameObject);
             }
+        }
+
+        public static LocalizeStringEvent GetOrAdd_LocalizeStringEventComponent(GameObject gameObject)
+        {
+            LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
+            if (gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
+                return gameObject.GetComponent<LocalizeStringEvent>();
+            else
+                return gameObject.AddComponent<LocalizeStringEvent>();
         }
     }
 }

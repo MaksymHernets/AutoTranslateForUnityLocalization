@@ -17,6 +17,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
         protected bool _skipPrefab;
+        protected bool _skipEmptyText = true;
         protected const string KEYWORD_NEWTABLE = "-New-";
 
         protected DropdownGUI _dropdownTables;

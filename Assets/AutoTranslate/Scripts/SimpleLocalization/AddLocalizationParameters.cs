@@ -10,6 +10,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
     {
         public string NameTable;
         public bool IsSkipPrefab;
+        public bool IsSkipEmptyText;
         public Dictionary<string, bool> Lists;
         public Locale SourceLocale;
     }

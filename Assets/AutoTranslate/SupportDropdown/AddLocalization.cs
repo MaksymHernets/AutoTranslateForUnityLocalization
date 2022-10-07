@@ -1,19 +1,14 @@
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 using GoodTime.Tools.Helpers;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Tables;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.Localization.Tables.SharedTableData;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace GoodTime.HernetsMaksym.AutoTranslate.SupportDropdown
 {
     public static partial class AddLocalization
     {
@@ -24,28 +19,28 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             SharedTableData sharedTable = SharedTableDataExtension.GetOrAdd_SharedTableData(parameters.NameTable);
             StringTable stringTable = SimpleInterfaceStringTable.GetStringTable(sharedTable, parameters.SourceLocale);
 
-            if (parameters.Lists.ContainsKey("Text Legacy") && parameters.Lists["Text Legacy"])
+            if (parameters.Lists.ContainsKey("Dropdown") && parameters.Lists["Dropdown"])
             {
-                AddLocalization_TextLegacy(statusLocalizationScene.LegacyTexts, stringTable, sharedTable);
+                //AddLocalization_DropdownLegacy(statusLocalizationScene.TextMeshs, stringTable, sharedTable);
             }
         }
 
-        private static void AddLocalization_TextLegacy(List<Text> texts, StringTable stringTable, SharedTableData sharedTable)
+        private static void AddLocalization_DropdownLegacy(List<Dropdown> dropdowns, StringTable stringTable, SharedTableData sharedTable)
         {
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
             SharedTableEntry sharedTableEntry = default(SharedTableEntry);
 
-            foreach (Text text in texts)
+            foreach (Dropdown text in dropdowns)
             {
                 localizeStringEvent = LocalizeStringEventExtension.GetOrAdd_LocalizeStringEventComponent(text.gameObject);
 
-                sharedTableEntry = SharedTableDataExtension.SharedTableData_AddEntry(sharedTable, text.gameObject.name, text.transform.parent?.name, "TextLegacy");
+                sharedTableEntry = SharedTableDataExtension.SharedTableData_AddEntry(sharedTable, text.gameObject.name, text.transform.parent?.name, "Dropdown");
 
-                stringTable.AddEntry(sharedTableEntry.Key, text.text);
+                stringTable.AddEntry(sharedTableEntry.Key, text.GetLineOptions());
 
                 localizeStringEvent.Clear_OnUpdateString();
                 localizeStringEvent.Sign_ReferenceTable(sharedTable.TableCollectionName, sharedTableEntry.Key);
-                localizeStringEvent.Sign_OnUpdateString_TextLegacy(text);
+                localizeStringEvent.Sign_OnUpdateString_DropdownLegacy(text);
             }
         }
     }

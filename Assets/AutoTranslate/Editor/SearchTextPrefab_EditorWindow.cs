@@ -79,6 +79,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _dropdownLanguages.Draw();
 
             _skipPrefab = EditorGUILayout.Toggle("Skip sub prefabs", _skipPrefab);
+            _skipEmptyText = EditorGUILayout.Toggle("Skip empty text", _skipEmptyText);
 
             EditorGUILayout.LabelField("Search UI Elements:");
             _checkListSearchElements.Draw();
@@ -119,6 +120,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void StartSearch()
         {
             _searchTextParameters.SkipPrefab = _skipPrefab;
+            _searchTextParameters.SkipEmptyText = _skipEmptyText;
             _searchTextParameters.Lists = _checkListSearchElements.GetElements();
 
             _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
@@ -140,13 +142,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 			if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
 			parameters.IsSkipPrefab = _skipPrefab;
-			parameters.SourceLocale = _selectedLocale;
+            parameters.IsSkipEmptyText = _skipEmptyText;
+            parameters.SourceLocale = _selectedLocale;
             parameters.Lists = _checkListSearchElements.GetElements();
 
             if (_statusLocalizationScene == null) StartSearch();
             else GetCheckTable();
 
-            return AddLocalization.Execute(parameters, _statusLocalizationScene);
+            AddLocalization.Execute(parameters, _statusLocalizationScene);
+            return "Good";
         }
     }
 }
