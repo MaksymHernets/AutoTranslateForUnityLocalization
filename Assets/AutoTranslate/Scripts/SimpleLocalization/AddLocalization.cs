@@ -3,8 +3,10 @@ using GoodTime.Tools.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Localization;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Localization.Components;
@@ -27,6 +29,33 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             if (parameters.Lists.ContainsKey("Text Legacy") && parameters.Lists["Text Legacy"])
             {
                 AddLocalization_TextLegacy(statusLocalizationScene.LegacyTexts, stringTable, sharedTable);
+            }
+		}
+
+        public static void RemoveMiss_LocalizeStringEvent(List<LocalizeStringEvent> list)
+		{
+            var locales = LocalizationEditorSettings.GetLocales();
+            var tableCollections = LocalizationEditorSettings.GetStringTableCollections();
+
+            foreach (LocalizeStringEvent localizeStringEvent in list)
+            {
+                var m_SelectedTableCollection = tableCollections.FirstOrDefault(t => t.TableCollectionName == localizeStringEvent.StringReference.TableReference);
+                if (localizeStringEvent.StringReference.TableEntryReference.ReferenceType == TableEntryReference.Type.Name)
+                {
+                    SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.Key);
+                    if (m_SelectedEntry == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                    }
+                }
+                else
+                {
+                    SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.KeyId);
+                    if (m_SelectedEntry == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                    }
+                }
             }
         }
 

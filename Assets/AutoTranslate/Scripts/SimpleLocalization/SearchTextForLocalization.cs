@@ -65,6 +65,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             {
                 statusLocalizationScene.Prefabs = GameObjectHelper.DetectPrefabs(gameObjects);
             }
+            statusLocalizationScene.LocalizeStringEvents = GetAllLocalizeStringEvents(gameObjects);
             return statusLocalizationScene;
         }
 
@@ -80,9 +81,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
                 if ( string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true) 
                     continue;
-
-                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
 
                 result.Add(text);
             }
@@ -100,9 +98,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;
 
-                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
-
                 result.Add(text);
             }
 
@@ -118,9 +113,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;
-
-                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
 
                 result.Add(text);
             }
@@ -141,13 +133,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)
                     continue;
 
-                if (text.gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
-                    statusLocalizationScene.LocalizeStringEvents.Add(localizeStringEvent);
-
                 result.Add(text);
             }
 
             return result;
+        }
+
+        public static List<LocalizeStringEvent> GetAllLocalizeStringEvents(GameObject[] gameObjects)
+		{
+            List<LocalizeStringEvent> localizeStringEvents = GameObjectHelper.GetComponentsInChildrens<LocalizeStringEvent>(gameObjects);
+            return localizeStringEvents;
         }
     }
 }

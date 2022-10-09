@@ -19,6 +19,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected bool _skipPrefab;
         protected bool _skipEmptyText = true;
         protected const string KEYWORD_NEWTABLE = "-New-";
+        protected bool _removeMissStringEvents = true;
 
         protected DropdownGUI _dropdownTables;
         protected CheckListGUI _checkListSearchElements;
@@ -124,6 +125,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Skip empty text", GUILayout.Width(k_SeparationWidth));
             _skipEmptyText = EditorGUILayout.Toggle(_skipEmptyText);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected void Toggle_RemoveMissStringEvents()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Remove miss stringEvents", GUILayout.Width(k_SeparationWidth));
+            _removeMissStringEvents = EditorGUILayout.Toggle(_removeMissStringEvents);
             EditorGUILayout.EndHorizontal();
         }
 

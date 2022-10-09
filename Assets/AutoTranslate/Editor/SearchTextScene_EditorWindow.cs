@@ -72,6 +72,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             Toggle_SkipPrefabs();
             Toggle_SkipEmptyText();
+            Toggle_RemoveMissStringEvents();
 
             EditorGUILayout.EndFadeGroup(); // End 0
 			EditorGUILayout.BeginFadeGroup(1); // Begin 1
@@ -121,14 +122,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 		{
             AddLocalizationParameters parameters = new AddLocalizationParameters();
 
-            if (_dropdownTables.Selected == KEYWORD_NEWTABLE)
-            {
-                parameters.NameTable = _nameTable;
-            }
-            else
-            {
-                parameters.NameTable = _dropdownTables.Selected;
-            }
+            if (_dropdownTables.Selected == KEYWORD_NEWTABLE) parameters.NameTable = _nameTable;
+            else parameters.NameTable = _dropdownTables.Selected;
 
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
@@ -141,6 +136,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             else GetCheckTable();
 
             AddLocalization.Execute(parameters, _statusLocalizationScene);
+            if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
             return "Good";
 		}
     }
