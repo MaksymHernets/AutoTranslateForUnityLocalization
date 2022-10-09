@@ -16,10 +16,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected SearchTextParameters _searchTextParameters;
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
-        protected bool _skipPrefab;
+
+        protected bool _skipPrefab = true;
         protected bool _skipEmptyText = true;
-        protected const string KEYWORD_NEWTABLE = "-New-";
         protected bool _removeMissStringEvents = true;
+        protected bool _autoSave = true;
+
+        protected const string KEYWORD_NEWTABLE = "-New-";
 
         protected DropdownGUI _dropdownTables;
         protected CheckListGUI _checkListSearchElements;
@@ -133,6 +136,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Remove miss stringEvents", GUILayout.Width(k_SeparationWidth));
             _removeMissStringEvents = EditorGUILayout.Toggle(_removeMissStringEvents);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected void Toggle_AutoSave()
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Auto Save", GUILayout.Width(k_SeparationWidth));
+            _autoSave = EditorGUILayout.Toggle(_autoSave);
             EditorGUILayout.EndHorizontal();
         }
 

@@ -78,6 +78,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             Toggle_SkipPrefabs();
             Toggle_SkipEmptyText();
             Toggle_RemoveMissStringEvents();
+            Toggle_AutoSave();
 
             EditorGUILayout.EndFadeGroup();
             EditorGUILayout.BeginFadeGroup(1);
@@ -146,6 +147,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             AddLocalization.Execute(parameters, _statusLocalizationScene);
             if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
+            if (_autoSave) EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
             return "Good";
         }
     }
