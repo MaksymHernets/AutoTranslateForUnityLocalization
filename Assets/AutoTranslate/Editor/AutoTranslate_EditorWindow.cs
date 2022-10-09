@@ -24,7 +24,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isErrorConnection = false;
         private CheckListGUI _checkListStringTable;
 
-        [MenuItem("Window/Auto Localization/Auto Translate for Tables")]
+        [MenuItem("Window/Auto Localization/Auto Translate for Tables", false, 1)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

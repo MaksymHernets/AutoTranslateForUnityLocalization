@@ -17,7 +17,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private Scene _currentScene;
 
-        [MenuItem("Window/Auto Localization/Search Text for Tables in Scene")]
+        [MenuItem("Window/Auto Localization/Search Text for Tables in Scene", false, 40)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

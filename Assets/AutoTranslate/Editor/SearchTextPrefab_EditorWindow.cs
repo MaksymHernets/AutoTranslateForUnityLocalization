@@ -15,7 +15,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private PrefabStage _prefabStage;
 
-        [MenuItem("Window/Auto Localization/Search Text for Tables in Prefab")]
+        [MenuItem("Window/Auto Localization/Search Text for Tables in Prefab", false, 41)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
