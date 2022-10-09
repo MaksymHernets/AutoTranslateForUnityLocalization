@@ -1,28 +1,29 @@
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
+using UnityEngine.SceneManagement;
+using GoodTime.Tools.Helpers;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class SearchTextScene_EditorWindow : BaseSearchText_EditorWindow
+    public class SearchText_EditorWindow : BaseSearchText_EditorWindow
     {
         // Window parameters
-        private const string k_WindowTitle = "Search text for Localization in Scene";
+        private const string k_WindowTitle = "Search text";
 
+        private PrefabStage _prefabStage;
         private Scene _currentScene;
 
-        [MenuItem("Window/Auto Localization/Search Text for Tables in Scene", false, 40)]
+        [MenuItem("Window/Auto Localization/Search Text", false, 40)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
-            SearchTextScene_EditorWindow window = GetWindow<SearchTextScene_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
-            window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.SearchTextScene);
+            SearchText_EditorWindow window = GetWindow<SearchText_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
+            window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.SearchText);
             window.Show();
         }
 
@@ -41,15 +42,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         }
 
         private void UpdateParameter()
-		{
-            if ( _dropdownTables != null )
-			{
-                if (_sharedStringTables != null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
-                else _dropdownTables.Selected = KEYWORD_NEWTABLE;
-            }
-            
+        {
+            if (_sharedStringTables != null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
+            else _dropdownTables.Selected = KEYWORD_NEWTABLE;
+
             _currentScene = DatabaseProject.GetCurrentScene();
-            _nameTable = "StringTable_" + _currentScene.name + "_Scene";
+            _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+
+            if (_prefabStage == null) _nameTable = "StringTable_" + _currentScene.name + "_Scene";
+            else _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";       
         }
 
         private void OnGUI()
@@ -57,12 +58,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             ShowNameWindow(k_WindowTitle);
 
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
-			EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginFadeGroup(1); // Begin 0
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
-            EditorGUILayout.LabelField(_currentScene.name);
-            EditorGUILayout.EndHorizontal();
+            if (_prefabStage == null)
+			{
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
+                EditorGUILayout.LabelField(_currentScene.name);
+                EditorGUILayout.EndHorizontal();
+            }
+            else
+			{
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Current Prefab", GUILayout.Width(k_SeparationWidth));
+                EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
+                EditorGUILayout.EndHorizontal();
+            }
 
             _dropdownTables.Draw();
 
@@ -77,7 +88,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             Toggle_AutoSave();
 
             EditorGUILayout.EndFadeGroup(); // End 0
-			EditorGUILayout.BeginFadeGroup(1); // Begin 1
+            EditorGUILayout.BeginFadeGroup(1); // Begin 1
 
             EditorGUILayout.LabelField("Search UI Elements:");
             _checkListSearchElements.Draw();
@@ -91,8 +102,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 FillDispalay_StatusLocalization();
             }
 
-            if ( _statusLocalizationScene != null )
-			{
+            if (_statusLocalizationScene != null)
+            {
                 EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
                 _TabsGUI.Draw();
             }
@@ -108,20 +119,21 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _infoLocalization = StartAddLocalization();
             }
 
-            if ( !string.IsNullOrEmpty(_infoLocalization) ) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
+            if (!string.IsNullOrEmpty(_infoLocalization)) EditorGUILayout.HelpBox(_infoLocalization, MessageType.Info);
         }
 
         private void StartSearch()
-		{
+        {
             _searchTextParameters.SkipPrefab = _skipPrefab;
             _searchTextParameters.SkipEmptyText = _skipEmptyText;
             _searchTextParameters.Lists = _checkListSearchElements.GetElements();
 
-            _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
+            if (_prefabStage == null) _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
+            else _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
         }
 
         private string StartAddLocalization()
-		{
+        {
             AddLocalizationParameters parameters = new AddLocalizationParameters();
 
             if (_dropdownTables.Selected == KEYWORD_NEWTABLE) parameters.NameTable = _nameTable;
@@ -139,8 +151,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             AddLocalization.Execute(parameters, _statusLocalizationScene);
             if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
-            if (_autoSave) EditorSceneManager.SaveOpenScenes();
-            return "Good";
-		}
+            if (_autoSave)
+            {
+                EditorSceneManager.SaveOpenScenes();
+                EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
+            }
+            
+            return "Completed";
+        }
+
     }
 }
