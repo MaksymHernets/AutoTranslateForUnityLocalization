@@ -5,19 +5,17 @@ namespace GoodTime.Tools.FactoryTranslate
 {
     public class FactoryTranslateApi
     {
-        public static ITranslateApi GetTranslateApi()
+        public static ITranslateApi GetTranslateApi(TypePlatformTranslate typePlatformTranslate)
         {
-            AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
-
-            if (setting.PlatformForTranslate == TypePlatformTranslate.GoogleApiFree)
+            if (typePlatformTranslate == TypePlatformTranslate.GoogleApiFree)
             {
                 return new GoogleApiFree();
             }
-            else if (setting.PlatformForTranslate == TypePlatformTranslate.GoogleApi)
+            else if (typePlatformTranslate == TypePlatformTranslate.GoogleApi)
             {
                 new Exception("not work yet");
             }
-            else if (setting.PlatformForTranslate == TypePlatformTranslate.BingApi)
+            else if (typePlatformTranslate == TypePlatformTranslate.BingApi)
             {
                 new Exception("not work yet");
             }
