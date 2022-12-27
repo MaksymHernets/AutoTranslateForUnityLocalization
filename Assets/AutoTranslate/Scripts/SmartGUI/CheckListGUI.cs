@@ -49,11 +49,13 @@ namespace GoodTime.Tools.Helpers.GUIElements
 			CheckListStyle.normal.background = texture2D;
 
 			vector2 = EditorGUILayout.BeginScrollView(vector2, CheckListStyle, GUILayout.MaxHeight(Height));
-			EditorGUIUtility.labelWidth = Width;
 			foreach (RowCheckList element in RowCheckLists)
 			{
 				GUI.enabled = element.IsAvailable;
-				element.IsActive = EditorGUILayout.Toggle(element.Name, element.IsActive);
+				EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
+				EditorGUILayout.LabelField(element.Name);
+				element.IsActive = EditorGUILayout.Toggle(element.IsActive, GUILayout.Width(20));
+				EditorGUILayout.EndHorizontal();
 			}
 			GUI.enabled = true;
 			EditorGUILayout.EndScrollView();

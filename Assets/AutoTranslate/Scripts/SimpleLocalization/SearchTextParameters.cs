@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
 {
@@ -9,8 +7,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 		public bool SkipPrefab = false;
 		public bool SkipEmptyText = false;
 		public Dictionary<string, bool> Lists;
-		//public bool IsLegacyText = true;
-		//public bool IsLegacyDropdown = true;
-		//public bool IsTextMeshPro = true;
+		public bool IsRemoveMiss_StringTable = false;
 	}
 }

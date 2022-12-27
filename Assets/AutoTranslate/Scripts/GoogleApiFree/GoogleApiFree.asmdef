@@ -1,0 +1,16 @@
+{
+    "name": "GoogleApiFree",
+    "rootNamespace": "",
+    "references": [
+        "GUID:16c12dadba0de0b49bf48ed9c461846c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

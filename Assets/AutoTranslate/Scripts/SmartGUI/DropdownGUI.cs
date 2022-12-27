@@ -22,8 +22,9 @@ namespace GoodTime.Tools.Helpers.GUIElements
         private Rect Position;
 
         private const string ConstString = "";
+        protected const string KEYWORD_NEWTABLE = "-New-";
 
-        public DropdownGUI(string label, List<string> options, string selected = ConstString, int width = 400)
+        public DropdownGUI(string label, List<string> options, string selected = ConstString, int width = 400, bool newOption = false)
 		{
             Name = label;
             Options = options;
@@ -64,6 +65,17 @@ namespace GoodTime.Tools.Helpers.GUIElements
                 genericMenu.DropDown(Position);
             }
             EditorGUILayout.EndHorizontal();
+        }
+
+        public void DrawNewLine()
+		{
+            if (Selected == KEYWORD_NEWTABLE)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("New string table", GUILayout.Width(Width));
+                Name = EditorGUILayout.TextField("", Name);
+                EditorGUILayout.EndHorizontal();
+            }
         }
     }
 }

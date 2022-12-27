@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Localization;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
@@ -31,10 +32,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         public static List<Locale> GetAvailableLocales()
         {
             return LocalizationSettings.Instance.GetAvailableLocales().Locales;
+            //return LocalizationEditorSettings.GetLocales();
         }
 
         public static Locale GetSelectedLocale()
         {
+            
             Locale selectedLocale = LocalizationSettings.SelectedLocale;
             if (selectedLocale != null)
             {

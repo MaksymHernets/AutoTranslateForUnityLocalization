@@ -13,6 +13,8 @@ namespace GoodTime.Tools.InterfaceTranslate
     {
         private const int MAXCHARS_FORREQUST = 5000;
         private const String SEPARATE_STRING = "[$]";
+        private const String SEPARATE_STRING2 = "[$ ]";
+        private const String SEPARATE_STRING3 = "[ $]";
 
         public string Translate(string sourceText, string sourceLanguage, string targetLanguage)
         {
@@ -56,8 +58,10 @@ namespace GoodTime.Tools.InterfaceTranslate
 
             respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
             string response = respontTranslateGoogle.FullRespont;
-            String[] mass = new String[1];
+            String[] mass = new String[3];
             mass[0] = SEPARATE_STRING;
+            mass[1] = SEPARATE_STRING2;
+            mass[2] = SEPARATE_STRING3;
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
             int index = 0;
