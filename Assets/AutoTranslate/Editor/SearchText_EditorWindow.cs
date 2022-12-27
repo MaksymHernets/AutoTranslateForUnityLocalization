@@ -10,13 +10,10 @@ using GoodTime.Tools.Helpers;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-    public class SearchText_EditorWindow : BaseSearchText_EditorWindow
+    public class SearchText_EditorWindow : BaseSearch_EditorWindow
     {
         // Window parameters
         private const string k_WindowTitle = "Search text";
-
-        private PrefabStage _prefabStage;
-        private Scene _currentScene;
 
         [MenuItem("Window/Auto Localization/Search Text", false, 40)]
         public static void ShowWindow()

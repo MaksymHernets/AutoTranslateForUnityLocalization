@@ -12,11 +12,8 @@ using UnityEngine.Localization.Tables;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-    public class BaseLocalization_EditorWindow : EditorWindow
+    public class BaseLocalization_EditorWindow : BaseCustomWindow_EditorWindow
     {
-        // Window parameters
-        protected int k_SeparationWidth = 200;
-
         // Arguments for execute
         protected LocalizationSettings _localizationSettings;
         protected List<Locale> _locales;
@@ -51,14 +48,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 		{
             if (_selectedLocale != null) _dropdownLanguages.Selected = _selectedLocale.LocaleName;
             else _dropdownLanguages.Selected = string.Empty;
-        }
-
-        protected void ShowNameWindow(string name)
-        {
-            GUI.enabled = false;
-            GUILayout.Button(name, GUILayout.Height(30));
-            GUI.enabled = true;
-            GUILayout.Space(10);
         }
 
         protected void ValidateLocalizationSettings()

@@ -5,15 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class BaseSearchText_EditorWindow : BaseLocalization_EditorWindow
+	public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
     {
+        protected PrefabStage _prefabStage;
+        protected Scene _currentScene;
+
         protected StatusLocalizationScene _statusLocalizationScene;
         protected SearchTextParameters _searchTextParameters;
+
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
 
@@ -51,14 +58,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnEnable();
 
-            List<string> tablelists;
-            if (_sharedStringTables != null)
-            {
-                tablelists = _sharedStringTables.Select(w => w.TableCollectionName).ToList();
-            }
-            else tablelists = new List<string>();
-
+            List<string> tablelists = new List<string>();
+            if (_sharedStringTables != null) tablelists = _sharedStringTables.Select(w => w.TableCollectionName).ToList();
             tablelists.Add(KEYWORD_NEWTABLE);
+
             _dropdownTables = new DropdownGUI("Select string Table", tablelists);
             _dropdownTables.Width = k_SeparationWidth;
             _dropdownTables.Selected = KEYWORD_NEWTABLE;
@@ -156,6 +159,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _nameTable = EditorGUILayout.TextField("", _nameTable);
                 EditorGUILayout.EndHorizontal();
             }
+        }
+
+        private void Check()
+		{
+            _currentScene = DatabaseProject.GetCurrentScene();
+            _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
         }
     }
 }

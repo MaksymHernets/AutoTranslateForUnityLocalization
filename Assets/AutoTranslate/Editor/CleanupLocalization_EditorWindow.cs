@@ -5,15 +5,20 @@ using UnityEngine;
 using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEngine.SceneManagement;
 using GoodTime.Tools.Helpers;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-    public class CleanupLocalization_EditorWindow : EditorWindow
+    public class CleanupLocalization_EditorWindow : BaseCustomWindow_EditorWindow
     {
         private const string k_WindowTitle = "Clean up Localization";
 
         private Scene _currentScene;
         private PrefabStage _prefabStage;
+
+        protected StatusLocalizationScene _statusLocalizationScene;
+        protected SearchTextParameters _searchTextParameters;
 
         [MenuItem("Window/Auto Localization/Clean up Localization", false, 80)]
         public static void ShowWindow()
@@ -26,22 +31,31 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected void OnEnable()
         {
+            _searchTextParameters = new SearchTextParameters();
+            Dictionary<string, bool> list = new Dictionary<string, bool>();
+            foreach (var item in SearchTextForLocalization.GetAvailableForSearchUIElements())
+			{
+                list.Add(item.Name, true);
+            }
+            _searchTextParameters.Lists = list;
+
             _currentScene = DatabaseProject.GetCurrentScene();
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+
+            Check();
         }
 
         protected void OnFocus()
         {
             _currentScene = DatabaseProject.GetCurrentScene();
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+
+            Check();
         }
 
         private void OnGUI()
         {
-            GUI.enabled = false;
-            GUILayout.Button(k_WindowTitle, GUILayout.Height(30));
-            GUI.enabled = true;
-            GUILayout.Space(10);
+            ShowNameWindow(k_WindowTitle);
 
             if (_prefabStage == null)
 			{
@@ -57,6 +71,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
                 EditorGUILayout.EndHorizontal();
             }
+
+            if (_statusLocalizationScene != null)
+            {
+                EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
+            }
             GUILayout.Space(10);
             if (GUILayout.Button("Remove miss Localization"))
             {
@@ -67,6 +86,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
 
             }
+        }
+
+        private void Check()
+		{
+            if (_prefabStage == null) _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
+            else _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
         }
     }
 }
