@@ -12,7 +12,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         public TranslateLocalization()
         {
             AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
-            translator = FactoryTranslateApi.GetTranslateApi(setting.PlatformForTranslate);
+            translator = FactoryTranslateApi.GetTranslateApi(setting.CurrentServiceTranslate);
         }
 
         public IEnumerable<TranslateStatus> Make(TranslateParameters translateParameters, TranslateData translateData)

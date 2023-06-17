@@ -2,7 +2,8 @@
     "name": "GoogleApiFree",
     "rootNamespace": "",
     "references": [
-        "GUID:16c12dadba0de0b49bf48ed9c461846c"
+        "GUID:16c12dadba0de0b49bf48ed9c461846c",
+        "GUID:3e4d760db2efec5458ddaab207df22af"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
