@@ -1,22 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.Helpers.GUIElements
+namespace GoodTime.Tools.GUIPro
 {
-    public class SmartToolbar : IGUI
+    public class ToolbarGUI : BaseGUI
     {
         public int Selected = 0;
         public List<TabGUI> TabGUIs { get; private set; }
         private Texture2D texture2D;
         private GUIStyle CheckListStyle;
 
-        public SmartToolbar(List<TabGUI> tabGUIs)
+        public ToolbarGUI(List<TabGUI> tabGUIs)
 		{
             TabGUIs = tabGUIs;
-            texture2D = GUIHelper.MakeTex(600, 10, Color.black);
+            texture2D = HelperGUI.MakeTex(600, 10, Color.black);
         }
 
         public void DrawCustom()
@@ -53,9 +52,9 @@ namespace GoodTime.Tools.Helpers.GUIElements
     public class TabGUI
 	{
         public string Name;
-        public IGUI GUIelement;
+        public BaseGUI GUIelement;
 
-        public TabGUI(string name, IGUI gUIelement)
+        public TabGUI(string name, BaseGUI gUIelement)
 		{
             Name = name;
             GUIelement = gUIelement;

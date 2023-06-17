@@ -1,19 +1,17 @@
-﻿using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.Helpers;
-using GoodTime.Tools.Helpers.GUIElements;
+﻿using GoodTime.Tools.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GoodTime.Tools.GUIPro;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
+    public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
     {
         protected PrefabStage _prefabStage;
         protected Scene _currentScene;
@@ -33,7 +31,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected DropdownGUI _dropdownTables;
         protected CheckListGUI _checkListSearchElements;
-        protected SmartToolbar _TabsGUI;
+        protected ToolbarGUI _TabsGUI;
 
         protected List<CheckListGUI> _checkLists;
 
@@ -81,7 +79,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _checkLists.Add(checkListGUI);
                 tabGUIs.Add(new TabGUI(item.Name, checkListGUI));
             }
-            _TabsGUI = new SmartToolbar(tabGUIs);
+            _TabsGUI = new ToolbarGUI(tabGUIs);
         }
 
         protected override void OnFocus()

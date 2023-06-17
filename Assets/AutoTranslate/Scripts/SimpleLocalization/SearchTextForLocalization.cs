@@ -1,5 +1,4 @@
 using GoodTime.Tools.Helpers;
-using GoodTime.Tools.Helpers.GUIElements;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -7,10 +6,11 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GoodTime.Tools.GUIPro;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
 {
-	public static class SearchTextForLocalization 
+    public static class SearchTextForLocalization 
     {
         public static List<RowCheckList> GetAvailableForSearchUIElements()
         {

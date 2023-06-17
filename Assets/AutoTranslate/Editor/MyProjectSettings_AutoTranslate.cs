@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using GoodTime.Tools.InterfaceTranslate;
-using GoodTime.Tools.Helpers.GUIElements;
+using GoodTime.Tools.GUIPro;
 using GoodTime.Tools.Helpers;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Editor

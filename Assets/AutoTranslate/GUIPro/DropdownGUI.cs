@@ -1,14 +1,12 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace GoodTime.Tools.Helpers.GUIElements
+namespace GoodTime.Tools.GUIPro
 {
-    public class DropdownGUI : IGUI
+    public class DropdownGUI : BaseGUI
     {
         public List<string> Options { get; private set; }
         public UnityAction<string> UpdateSelected;
@@ -17,9 +15,7 @@ namespace GoodTime.Tools.Helpers.GUIElements
         public string Selected;
         public int Width;
 
-#if UNITY_EDITOR
         private GenericMenu genericMenu;
-#endif
         private List<GUIContent> GUIContents;
         private Rect Position;
 
@@ -50,7 +46,6 @@ namespace GoodTime.Tools.Helpers.GUIElements
 
         public void Draw()
         {
-#if UNITY_EDITOR
             Position = EditorGUILayout.BeginHorizontal();
             Position.x = Width;
             EditorGUILayout.LabelField(Name, GUILayout.Width(Width));
@@ -68,7 +63,6 @@ namespace GoodTime.Tools.Helpers.GUIElements
                 genericMenu.DropDown(Position);
             }
             EditorGUILayout.EndHorizontal();
-#endif
         }
 
         public void DrawNewLine()

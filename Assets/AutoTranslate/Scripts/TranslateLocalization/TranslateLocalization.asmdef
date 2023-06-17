@@ -2,12 +2,12 @@
     "name": "TranslateLocalization",
     "rootNamespace": "",
     "references": [
-        "GUID:238116ef0a86e5d4f9c5a08a965c37ee",
         "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
         "GUID:2e77701fe0ceda44fb763f03ee704c37",
         "GUID:d2f119fba2ab41541aa81be3d47d0600",
         "GUID:e08d2e60becaa9143a2b79c04c199fa1",
-        "GUID:16c12dadba0de0b49bf48ed9c461846c"
+        "GUID:16c12dadba0de0b49bf48ed9c461846c",
+        "GUID:d08e4ff11a9c76a479939aba13818f0c"
     ],
     "includePlatforms": [
         "Editor"

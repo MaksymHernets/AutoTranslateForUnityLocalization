@@ -1,5 +1,5 @@
 using GoodTime.Tools.Helpers;
-using GoodTime.Tools.Helpers.GUIElements;
+using GoodTime.Tools.GUIPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
