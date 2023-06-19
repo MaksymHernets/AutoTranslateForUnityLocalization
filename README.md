@@ -1,5 +1,5 @@
 # Auto Translate For Unity Localization
-## Compatibility Unity 2019.4.0 or high
+## Compatibility Unity 2020.3.48 or high
 
 Auto translation of the whole game in one click, using unity localization and translate service api.
 
