@@ -5,7 +5,15 @@ namespace GoodTime.Tools.GUIPro
 {
     public static class LinesGUI
     {
-        private static bool DrawLineCheck(string name, bool key)
+        public static void DrawTexts(string name, string name2, int width = 200)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(name, GUILayout.Width(width));
+            EditorGUILayout.LabelField(name2);
+            EditorGUILayout.EndHorizontal();
+        }
+
+        public static bool DrawLineCheck(string name, bool key)
         {
             bool keyout = false;
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
@@ -15,7 +23,7 @@ namespace GoodTime.Tools.GUIPro
             return keyout;
         }
 
-        private static float DrawLineFloat(string name, float key)
+        public static float DrawLineFloat(string name, float key)
         {
             float keyout = 0;
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
@@ -25,7 +33,7 @@ namespace GoodTime.Tools.GUIPro
             return keyout;
         }
 
-        private static int DrawLineInt(string name, int key)
+        public static int DrawLineInt(string name, int key)
         {
             int keyout = 0;
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
@@ -35,7 +43,7 @@ namespace GoodTime.Tools.GUIPro
             return keyout;
         }
 
-        private static float DrawLineSlider(string name, float key, int min = 0, int max = 5)
+        public static float DrawLineSlider(string name, float key, int min = 0, int max = 5)
         {
             float keyout = 0;
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
