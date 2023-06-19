@@ -1,6 +1,6 @@
 {
     "name": "GUIPro",
-    "rootNamespace": "",
+    "rootNamespace": "GoodTime.Tools.GUIPro",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
