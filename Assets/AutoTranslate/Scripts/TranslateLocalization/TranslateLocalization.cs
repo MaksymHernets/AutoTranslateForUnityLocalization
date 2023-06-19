@@ -34,7 +34,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                     {
                         if (table.LocaleIdentifier != translateData.selectedLocale.Identifier)
                         {
-                            tablesForTranslate.Add(table);
+                            foreach (var locale in translateData.locales)
+                            {
+                                if (locale.Identifier == table.LocaleIdentifier)
+                                {
+                                    tablesForTranslate.Add(table);
+                                }
+                            }
                         }
                         else
                         {

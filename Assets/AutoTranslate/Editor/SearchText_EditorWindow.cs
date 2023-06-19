@@ -73,10 +73,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _dropdownLanguages.Draw();
 
-            _skipPrefab = LinesGUI.DrawLineCheck("Skip prefabs", _skipPrefab);
-            _skipEmptyText = LinesGUI.DrawLineCheck("Skip empty text", _skipEmptyText);
-            _removeMissStringEvents = LinesGUI.DrawLineCheck("Remove miss stringEvents", _removeMissStringEvents);
-            _autoSave = LinesGUI.DrawLineCheck("Auto Save", _autoSave);
+            _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
+            _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
+            _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
             EditorGUILayout.EndFadeGroup(); // End 0
             EditorGUILayout.BeginFadeGroup(1); // Begin 1

@@ -7,6 +7,7 @@ using System.Net;
 using UnityEditor;
 using UnityEngine;
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using UnityEngine.Localization;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -24,6 +25,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private double _timeNeedForWaitErrorMinute = 10;
         private bool _isErrorConnection = false;
         private CheckListGUI _checkListStringTable;
+        private CheckListGUI _checkListLanguages;
+        private bool LS = false;
 
         [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
         public static void ShowWindow()
@@ -43,6 +46,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _checkListStringTable = new CheckListGUI(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
             else
                 _checkListStringTable = new CheckListGUI(new List<string>());
+
+            if (_locales != null)
+            {
+                _checkListLanguages = new CheckListGUI(_locales.Select(w => w.name).ToList());
+                _checkListLanguages.UpdateCheck(new List<string>() { _dropdownLanguages.Selected }, false, false);
+            }
+            else
+                _checkListLanguages = new CheckListGUI(new List<string>());
+
+            _dropdownLanguages.UpdateSelected += DropdownLanguages_UpdateSelected;
+        }
+
+        private void DropdownLanguages_UpdateSelected(string name)
+        {
+            _checkListLanguages.FillElements(_locales.Select(w => w.name).ToList());
+            _checkListLanguages.UpdateCheck(new List<string>() { name }, false, false);
         }
 
         protected override void OnFocus()
@@ -51,7 +70,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _isErrorConnection = WebInformation.IsConnectedToInternet();
 
             if (_sharedStringTables != null)
+            {
                 _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+            }
+            if (_locales != null)
+            {
+                _checkListLanguages = new CheckListGUI(_locales.Select(w => w.name).ToList());
+                _checkListLanguages.UpdateCheck(new List<string>() { _dropdownLanguages.Selected }, false, false);
+            }
         }
 
         void OnGUI()
@@ -59,11 +85,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             ShowNameWindow(k_WindowTitle);
             EditorGUIUtility.labelWidth = k_SeparationWidth;
 
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Selected collection tables for translation:");
+            _checkListStringTable.Draw();
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical();
             _dropdownLanguages.Draw();
 
-            _translateParameters.canOverrideWords = EditorGUILayout.Toggle("Override words that have a translation", _translateParameters.canOverrideWords);
-            _translateParameters.canTranslateEmptyWords = EditorGUILayout.Toggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords);
-            _translateParameters.canTranslateSmartWords = EditorGUILayout.Toggle("Translate smart words", _translateParameters.canTranslateSmartWords);
+            _translateParameters.canOverrideWords = LinesGUI.DrawLineToggle("Override words that have a translation", _translateParameters.canOverrideWords, k_SeparationWidth);
+            _translateParameters.canTranslateEmptyWords = LinesGUI.DrawLineToggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords, k_SeparationWidth);
+            _translateParameters.canTranslateSmartWords = LinesGUI.DrawLineToggle("Translate smart words", _translateParameters.canTranslateSmartWords, k_SeparationWidth);
 
             GUILayout.Space(10);
 
@@ -71,9 +103,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 "\n  Found " + _sharedStringTables?.Count + " table collection" + 
                 "\n  Found " + _stringTables?.Count + " string tables" + 
                 "\n  Found " + _assetTables?.Count + " asset tables", MessageType.Info);
-
-            EditorGUILayout.LabelField("Selected collection tables for translation:");
-            _checkListStringTable.Draw();
 
             if ( _isErrorConnection ) EditorGUILayout.HelpBox("No internet connection", MessageType.Error);
 
@@ -84,6 +113,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 if (_diedLineErrorTooManyRequests < DateTime.Now) _isErrorTooManyRequests = false;
             }
 
+            LS = EditorGUILayout.BeginFoldoutHeaderGroup(LS, "Target languages");
+            if (LS) _checkListLanguages.DrawButtons();
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            
             ValidateLocalizationSettings();
             ValidateLocales();
             ValidateStringTables();
@@ -91,6 +124,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             GUILayout.Space(10);
 
             if (GUILayout.Button("Translate")) ButtonTranslate_Click();
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
         }
 
         private void ButtonTranslate_Click()
@@ -110,6 +145,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             translateData.selectedLocale = _selectedLocale;
             translateData.sharedtables = _sharedStringTables.ToList();
             translateData.stringTables = _stringTables.ToList();
+            translateData.locales = new List<Locale>();
+
+            foreach (RowCheckList rowCheckList in _checkListLanguages.RowCheckLists)
+            {
+                if (rowCheckList.IsActive == false ) continue;
+                foreach (Locale locale in _locales)
+                {
+                    if (locale.LocaleName == rowCheckList.Name)
+                    {
+                        translateData.locales.Add(locale);
+                    }
+                }
+            }
 
             TranslateLocalization translateLocalization = new TranslateLocalization();
 
