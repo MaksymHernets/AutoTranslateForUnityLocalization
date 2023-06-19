@@ -139,14 +139,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorUtility.ClearProgressBar();
                 return;
             }
-            catch (Exception exception)
-            {
-                Debug.LogError(exception.Message);
-                EditorUtility.ClearProgressBar();
-                return;
-            }
-
-            _isErrorConnection = false;
 
             SaveStringTables();
 
