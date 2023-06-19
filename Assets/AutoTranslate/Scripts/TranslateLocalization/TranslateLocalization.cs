@@ -74,6 +74,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             continue;
                         }
 
+
                         StringTableEntry targetWord;
                         if (targetLanguageTable.TryGetValue(entry.Id, out targetWord))
                         {
@@ -81,6 +82,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             {
                                 continue;
                             }
+                        }
+
+                        if (sourceWord.IsSmart == true)
+                        {
+                            targetWord.IsSmart = true;
                         }
 
                         lists.Add(entry.Key, sourceWord.Value);
