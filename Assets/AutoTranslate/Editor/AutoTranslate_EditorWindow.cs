@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using UnityEditor;
 using UnityEngine;
+using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -24,7 +25,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool _isErrorConnection = false;
         private CheckListGUI _checkListStringTable;
 
-        [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, 1)]
+        [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

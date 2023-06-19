@@ -10,6 +10,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 {
     public static class MyProjectSettings_AutoTranslate
     {
+        public const int BaseIndex = 10000;
+
         [SettingsProvider]
         public static SettingsProvider CreateMyCustomSettingsProvider()
         {

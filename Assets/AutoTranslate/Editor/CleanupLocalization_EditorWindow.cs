@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using GoodTime.Tools.Helpers;
 using GoodTime.Tools.GUIPro;
+using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -20,7 +21,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected StatusLocalizationScene _statusLocalizationScene;
         protected SearchTextParameters _searchTextParameters;
 
-        [MenuItem("Window/Auto Localization/Clean up Localization", false, 80)]
+        [MenuItem("Window/Auto Localization/Clean up Localization", false, MyProjectSettings_AutoTranslate.BaseIndex + 80)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

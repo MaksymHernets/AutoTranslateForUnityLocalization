@@ -15,7 +15,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Window parameters
         private const string k_WindowTitle = "Search text";
 
-        [MenuItem("Window/Auto Localization/Search Text", false, 40)]
+        [MenuItem("Window/Auto Localization/Search Text", false, MyProjectSettings_AutoTranslate.BaseIndex + 40)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

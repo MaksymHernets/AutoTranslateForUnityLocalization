@@ -1,3 +1,4 @@
+using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
     {
         private const string k_WindowTitle = "Search Audio";
 
-        [MenuItem("Window/Auto Localization/Search Audio", false, 43)]
+        [MenuItem("Window/Auto Localization/Search Audio", false, MyProjectSettings_AutoTranslate.BaseIndex + 43)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
