@@ -1,12 +1,12 @@
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using GoodTime.Tools.GUIPro;
+using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
-using UnityEngine.SceneManagement;
-using GoodTime.Tools.Helpers;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -15,7 +15,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Window parameters
         private const string k_WindowTitle = "Search text";
 
-        [MenuItem("Window/Auto Localization/Search Text", false, 40)]
+        [MenuItem("Window/Auto Localization/Search Text", false, MyProjectSettings_AutoTranslate.BaseIndex + 40)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
@@ -59,17 +59,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_prefabStage == null)
 			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Scene", GUILayout.Width(k_SeparationWidth));
-                EditorGUILayout.LabelField(_currentScene.name);
-                EditorGUILayout.EndHorizontal();
+                LinesGUI.DrawTexts("Current Scene", _currentScene.name, k_SeparationWidth);
             }
             else
 			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Prefab", GUILayout.Width(k_SeparationWidth));
-                EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
-                EditorGUILayout.EndHorizontal();
+                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
             }
 
             _dropdownTables.Draw();
@@ -79,10 +73,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _dropdownLanguages.Draw();
 
-            Toggle_SkipPrefabs();
-            Toggle_SkipEmptyText();
-            Toggle_RemoveMissStringEvents();
-            Toggle_AutoSave();
+            _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
+            _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
+            _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
             EditorGUILayout.EndFadeGroup(); // End 0
             EditorGUILayout.BeginFadeGroup(1); // Begin 1

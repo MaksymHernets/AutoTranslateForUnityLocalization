@@ -1,5 +1,4 @@
-
-using GoodTime.Tools.Helpers.GUIElements;
+using GoodTime.Tools.GUIPro;
 using System.Collections.Generic;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate

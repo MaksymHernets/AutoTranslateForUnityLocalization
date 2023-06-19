@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace GoodTime.Tools.Helpers.GUIElements
+namespace GoodTime.Tools.GUIPro
 {
-	public static class GUIHelper
+	public static class HelperGUI
 	{
 		public static Texture2D MakeTex(int width, int height, Color col)
 		{

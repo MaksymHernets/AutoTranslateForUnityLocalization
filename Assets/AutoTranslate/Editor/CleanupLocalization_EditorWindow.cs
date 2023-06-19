@@ -4,9 +4,10 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEngine.SceneManagement;
-using GoodTime.Tools.Helpers;
-using System.Linq;
 using System.Collections.Generic;
+using GoodTime.Tools.Helpers;
+using GoodTime.Tools.GUIPro;
+using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -20,7 +21,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected StatusLocalizationScene _statusLocalizationScene;
         protected SearchTextParameters _searchTextParameters;
 
-        [MenuItem("Window/Auto Localization/Clean up Localization", false, 80)]
+        [MenuItem("Window/Auto Localization/Clean up Localization", false, MyProjectSettings_AutoTranslate.BaseIndex + 80)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
@@ -58,25 +59,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             ShowNameWindow(k_WindowTitle);
 
             if (_prefabStage == null)
-			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Scene", GUILayout.Width(200));
-                EditorGUILayout.LabelField(_currentScene.name);
-                EditorGUILayout.EndHorizontal();
+            {
+                LinesGUI.DrawTexts("Current Scene", _currentScene.name, k_SeparationWidth);
             }
             else
-			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Prefab", GUILayout.Width(200));
-                EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
-                EditorGUILayout.EndHorizontal();
+            {
+                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
             }
 
             if (_statusLocalizationScene != null)
             {
                 EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
             }
+
             GUILayout.Space(10);
+            EditorGUILayout.HelpBox("Not yet supported. In the plan to add", MessageType.Error);
+            GUI.enabled = false;
             if (GUILayout.Button("Remove miss Localization"))
             {
 

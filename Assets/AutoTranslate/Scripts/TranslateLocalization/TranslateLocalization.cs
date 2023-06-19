@@ -12,7 +12,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         public TranslateLocalization()
         {
             AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
-            translator = FactoryTranslateApi.GetTranslateApi(setting.PlatformForTranslate);
+            translator = FactoryTranslateApi.GetTranslateApi(setting.CurrentServiceTranslate);
         }
 
         public IEnumerable<TranslateStatus> Make(TranslateParameters translateParameters, TranslateData translateData)
@@ -34,7 +34,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                     {
                         if (table.LocaleIdentifier != translateData.selectedLocale.Identifier)
                         {
-                            tablesForTranslate.Add(table);
+                            foreach (var locale in translateData.locales)
+                            {
+                                if (locale.Identifier == table.LocaleIdentifier)
+                                {
+                                    tablesForTranslate.Add(table);
+                                }
+                            }
                         }
                         else
                         {
@@ -68,6 +74,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             continue;
                         }
 
+
                         StringTableEntry targetWord;
                         if (targetLanguageTable.TryGetValue(entry.Id, out targetWord))
                         {
@@ -75,6 +82,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             {
                                 continue;
                             }
+                        }
+
+                        if (sourceWord.IsSmart == true)
+                        {
+                            targetWord.IsSmart = true;
                         }
 
                         lists.Add(entry.Key, sourceWord.Value);

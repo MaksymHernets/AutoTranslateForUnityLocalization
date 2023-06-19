@@ -1,0 +1,16 @@
+{
+    "name": "com.goodtime.tools.guipro",
+    "displayName": "GUI Pro",
+    "version": "0.1.0",
+	"author": "Hernets Maksym",
+	"license": "ISC",
+    "unity": "2019.4",
+	"category": "tool",
+    "description": "",
+    "keywords": 
+	[
+      	"Unity",
+      	"GUI",
+		"Pro"
+    ]
+}

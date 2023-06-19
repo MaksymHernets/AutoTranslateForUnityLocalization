@@ -9,10 +9,10 @@ namespace GoodTime.Tools.InterfaceTranslate
     {
         public const string k_MyCustomSettingsPath = "Assets/AutoTranslate/ProjectSettings/AutoTranslateSetting.asset";
 
-        [SerializeField] public TypePlatformTranslate PlatformForTranslate;
-        [SerializeField] public string KeyForService = string.Empty;
+        [SerializeField] public TypeServiceTranslate CurrentServiceTranslate;
+        [SerializeField] public ServiceApi[] ServiceApis;
 
-        [NonSerialized] public string[] Platforms;
+        [NonSerialized] public string TempKeyForService = string.Empty;
 
         public static AutoTranslateSetting GetOrCreateSettings()
         {
@@ -30,28 +30,97 @@ namespace GoodTime.Tools.InterfaceTranslate
                 
                 AssetDatabase.CreateAsset(settings, k_MyCustomSettingsPath);
                 AssetDatabase.SaveAssets();
-
-                settings.Platforms = GetNamePlatformTranslate();
-                if (settings.Platforms.Length != 0)
-                {
-                    settings.PlatformForTranslate = TypePlatformTranslate.GoogleApiFree;
-                }
             }
-
-            settings.Platforms = GetNamePlatformTranslate();
+            if(settings.ServiceApis == null )
+			{
+                settings.ServiceApis = GetNamePlatformTranslate();
+            }
+            if (settings.ServiceApis.Length != 0)
+            {
+                settings.CurrentServiceTranslate = TypeServiceTranslate.GoogleApiFree;
+                settings.ServiceApis[0].HasLimit = true;
+                settings.ServiceApis[0].IsActive = true;
+                settings.ServiceApis[0].Description = "Free api service from google for text translation.";
+            }
 
             return settings;
         }
 
-        public static string[] GetNamePlatformTranslate()
+        public static ServiceApi[] GetNamePlatformTranslate()
 		{
+            List<ServiceApi> services = new List<ServiceApi>();
 
-            return Enum.GetNames(typeof(TypePlatformTranslate));
+            string[] names = Enum.GetNames(typeof(TypeServiceTranslate));
+			foreach (string name in names)
+			{
+                ServiceApi service = new ServiceApi(name);
+                services.Add(service);
+            }
+
+            return services.ToArray();
         }
 
         internal static SerializedObject GetSerializedSettings()
         {
             return new SerializedObject(GetOrCreateSettings());
+        }
+
+        public void SetCurrentKey(string key)
+		{
+            ServiceApis[GetServiceIndex()].SetKey(key);
+        }
+
+        public string GetCurrentKey()
+		{
+            return ServiceApis[GetServiceIndex()].Key;
+        }
+
+        private int GetServiceIndex()
+		{
+            string nameservice = CurrentServiceTranslate.ToString();
+            for (int i = 0; i < ServiceApis.Length; ++i)
+            {
+                if (ServiceApis[i].Name == nameservice)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public ServiceApi GetCurrentService()
+		{
+            return ServiceApis[GetServiceIndex()];
+        }
+    }
+
+    public class ServiceApi
+	{
+        public string Name;
+        public string Key;
+        public DateTime KeyEnter;
+        public bool IsActive;
+        public bool HasLimit;
+        public int IsOnline;
+        public string Description;
+
+        public ServiceApi(string name, string key = null)
+		{
+            Name = name;
+            if( key != null )
+			{
+                Key = key;
+                KeyEnter = DateTime.Now;
+            }
+            IsActive = false;
+            HasLimit = false;
+            IsOnline = -2;
+        }
+
+        public void SetKey(string key)
+		{
+            Key = key;
+            KeyEnter = DateTime.Now;
         }
     }
 }

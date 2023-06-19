@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GoodTime.Tools.InterfaceTranslate
 {
-    public enum TypePlatformTranslate 
+    public enum TypeServiceTranslate 
     {
         GoogleApiFree,
         GoogleApi,

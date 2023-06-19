@@ -1,3 +1,4 @@
+using GoodTime.Tools.Helpers;
 using GoodTime.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,16 +17,21 @@ namespace GoodTime.Tools.InterfaceTranslate
         private const String SEPARATE_STRING2 = "[$ ]";
         private const String SEPARATE_STRING3 = "[ $]";
 
-        public string Translate(string sourceText, string sourceLanguage, string targetLanguage)
+		public bool CheckService()
+		{
+            return WebInformation.CheckService("https://translate.googleapis.com");
+        }
+
+		public string Translate(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
         {
-            string translationFromGoogle = RequestToGoogleApi(sourceText, sourceLanguage, targetLanguage);
+            string translationFromGoogle = RequestToGoogleApi(sourceText, sourceLanguage, targetLanguage, key);
 
             RespontTranslateGoogle respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
 
             return respontTranslateGoogle.FullRespont;
         }
 
-        public Dictionary<string, string> Translate(Dictionary<string, string> words, string sourceLanguage, string targetLanguage)
+        public Dictionary<string, string> Translate(Dictionary<string, string> words, string sourceLanguage, string targetLanguage, string key = null)
         {
             List<string> listRespontWords = new List<string>();
             Dictionary<string, string> targetWords = new Dictionary<string, string>();
@@ -42,7 +48,7 @@ namespace GoodTime.Tools.InterfaceTranslate
                 sourceTryText.Append(temp);
                 if (sourceTryText.Length > MAXCHARS_FORREQUST)
                 {
-                    translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage);
+                    translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage, key);
                     respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
                     listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
                     sourceTryText.Clear();
@@ -97,14 +103,26 @@ namespace GoodTime.Tools.InterfaceTranslate
             return respontTranslateGoogle;
         }
 
-        private string RequestToGoogleApi(string sourceText, string sourceLanguage, string targetLanguage)
+        private string RequestToGoogleApi(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
         {
             string translationFromGoogle = "";
 
-            string url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+            string url = string.Empty;
+            if ( key == null )
+			{
+                url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
                                                 sourceLanguage,
                                                 targetLanguage,
                                                 sourceText);
+            }
+            else
+			{
+                url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}&key={3}",
+                                                sourceLanguage,
+                                                targetLanguage,
+                                                sourceText,
+                                                key);
+            }
 
             using (WebClient wc = new WebClient())
             {

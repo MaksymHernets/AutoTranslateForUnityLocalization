@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.Helpers.GUIElements
+namespace GoodTime.Tools.GUIPro
 {
-	public class TableGUI : IGUI
+    public class TableGUI : BaseGUI
 	{
 		public List<ColumnTableGUI> Columns { get; private set; }
 		public List<RowTableGUI> Rows { get; private set; }

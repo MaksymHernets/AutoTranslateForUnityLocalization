@@ -17,11 +17,11 @@ using static UnityEngine.Localization.Tables.SharedTableData;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
 {
-    public static partial class AddLocalization
+    public static class AddLocalization
     {
-        public static partial void Execute(AddLocalizationParameters parameters, StatusLocalizationScene statusLocalizationScene);
+        //public static partial void Execute(AddLocalizationParameters parameters, StatusLocalizationScene statusLocalizationScene);
 
-        public static partial void Execute(AddLocalizationParameters parameters, StatusLocalizationScene statusLocalizationScene)
+        public static void Execute(AddLocalizationParameters parameters, StatusLocalizationScene statusLocalizationScene)
         {
             SharedTableData sharedTable = SharedTableDataExtension.GetOrAdd_SharedTableData(parameters.NameTable);
             StringTable stringTable = SimpleInterfaceStringTable.GetStringTable(sharedTable, parameters.SourceLocale);

@@ -6,7 +6,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 	public class BaseCustomWindow_EditorWindow : EditorWindow
     {
         // Window parameters
-        protected int k_SeparationWidth = 200;
+        protected int k_SeparationWidth = 260;
 
         //public static void ShowWindow()
         //{

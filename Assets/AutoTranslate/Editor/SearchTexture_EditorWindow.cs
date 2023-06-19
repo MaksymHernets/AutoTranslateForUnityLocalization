@@ -1,3 +1,4 @@
+using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
     {
         private const string k_WindowTitle = "Search Texture";
 
-        [MenuItem("Window/Auto Localization/Search Texture", false, 42)]
+        [MenuItem("Window/Auto Localization/Search Texture", false, MyProjectSettings_AutoTranslate.BaseIndex + 42)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

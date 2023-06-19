@@ -1,14 +1,13 @@
 {
-    "name": "AddLocalization",
+    "name": "SimpleLocalization",
     "rootNamespace": "",
     "references": [
-        "GUID:213ea582fc33e3643b5514b498f99a59",
-        "GUID:e08d2e60becaa9143a2b79c04c199fa1",
-        "GUID:13504d7826c44604f838a75c0e25f725",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
         "GUID:3e4d760db2efec5458ddaab207df22af",
-        "GUID:38a5d4a3e75f043438664563e0506dbf"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6546d7765b4165b40850b3667f981c26",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:2e77701fe0ceda44fb763f03ee704c37",
+        "GUID:d08e4ff11a9c76a479939aba13818f0c"
     ],
     "includePlatforms": [
         "Editor"
