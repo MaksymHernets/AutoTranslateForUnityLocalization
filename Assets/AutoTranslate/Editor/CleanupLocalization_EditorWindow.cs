@@ -6,6 +6,7 @@ using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using GoodTime.Tools.Helpers;
+using GoodTime.Tools.GUIPro;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -57,25 +58,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             ShowNameWindow(k_WindowTitle);
 
             if (_prefabStage == null)
-			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Scene", GUILayout.Width(200));
-                EditorGUILayout.LabelField(_currentScene.name);
-                EditorGUILayout.EndHorizontal();
+            {
+                LinesGUI.DrawTexts("Current Scene", _currentScene.name, k_SeparationWidth);
             }
             else
-			{
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Current Prefab", GUILayout.Width(200));
-                EditorGUILayout.LabelField(_prefabStage.prefabContentsRoot.name);
-                EditorGUILayout.EndHorizontal();
+            {
+                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
             }
 
             if (_statusLocalizationScene != null)
             {
                 EditorGUILayout.HelpBox(_statusLocalizationScene.ToString(), MessageType.Info);
             }
+
             GUILayout.Space(10);
+            EditorGUILayout.HelpBox("Not yet supported. In the plan to add", MessageType.Error);
+            GUI.enabled = false;
             if (GUILayout.Button("Remove miss Localization"))
             {
 

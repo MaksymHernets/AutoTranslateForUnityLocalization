@@ -116,38 +116,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             return newsList;
         }
 
-        protected void Toggle_SkipPrefabs()
-		{
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Skip prefabs", GUILayout.Width(k_SeparationWidth));
-            _skipPrefab = EditorGUILayout.Toggle(_skipPrefab);
-            EditorGUILayout.EndHorizontal();
-        }
-
-        protected void Toggle_SkipEmptyText()
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Skip empty text", GUILayout.Width(k_SeparationWidth));
-            _skipEmptyText = EditorGUILayout.Toggle(_skipEmptyText);
-            EditorGUILayout.EndHorizontal();
-        }
-
-        protected void Toggle_RemoveMissStringEvents()
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Remove miss stringEvents", GUILayout.Width(k_SeparationWidth));
-            _removeMissStringEvents = EditorGUILayout.Toggle(_removeMissStringEvents);
-            EditorGUILayout.EndHorizontal();
-        }
-
-        protected void Toggle_AutoSave()
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Auto Save", GUILayout.Width(k_SeparationWidth));
-            _autoSave = EditorGUILayout.Toggle(_autoSave);
-            EditorGUILayout.EndHorizontal();
-        }
-
         protected void TextField_NewStringTable()
 		{
             if (_dropdownTables.Selected == KEYWORD_NEWTABLE)

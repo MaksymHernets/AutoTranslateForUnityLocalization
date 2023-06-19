@@ -1,11 +1,10 @@
+using GoodTime.Tools.GUIPro;
+using GoodTime.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Linq;
-using GoodTime.Tools.InterfaceTranslate;
-using GoodTime.Tools.GUIPro;
-using GoodTime.Tools.Helpers;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 {
@@ -40,25 +39,28 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 
                     dropdownGUI.Draw();
 
-                    EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField("Key for service", GUILayout.Width(200));
-                    string key = EditorGUILayout.TextField("", setting.TempKeyForService);
-                    if ( !string.Equals(key, setting.TempKeyForService))
-					{
-                        setting.SetCurrentKey(key);
+                    if (setting.CurrentServiceTranslate != TypeServiceTranslate.GoogleApiFree)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Key for service", GUILayout.Width(200));
+                        string key = EditorGUILayout.TextField("", setting.TempKeyForService);
+                        if (!string.Equals(key, setting.TempKeyForService))
+                        {
+                            setting.SetCurrentKey(key);
+                        }
+                        EditorGUILayout.EndHorizontal();
                     }
-                    EditorGUILayout.EndHorizontal();
-
+                    
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("Check service", GUILayout.Width(200)))
                     {
-                        service.IsOnline = -1;
+                        service.IsOnline = 2;
                     }
 
-                    if (service.IsOnline == -2) { GUI.contentColor = Color.grey; EditorGUILayout.LabelField("Unknown"); }
-                    else if (service.IsOnline == -1) { GUI.contentColor = Color.yellow; EditorGUILayout.LabelField("Cheking"); }
-                    else if (service.IsOnline == 0) { GUI.contentColor = Color.green; EditorGUILayout.LabelField("Online"); }
-                    else if (service.IsOnline == 1) { GUI.contentColor = Color.red; EditorGUILayout.LabelField("Offline"); }
+                    if (service.IsOnline == (int)StatusConnect.Unknown) { GUI.contentColor = Color.grey; EditorGUILayout.LabelField(StatusConnect.Unknown.ToString()); }
+                    else if (service.IsOnline == (int)StatusConnect.Cheking) { GUI.contentColor = Color.yellow; EditorGUILayout.LabelField(StatusConnect.Cheking.ToString()); }
+                    else if (service.IsOnline == (int)StatusConnect.Online) { GUI.contentColor = Color.green; EditorGUILayout.LabelField(StatusConnect.Online.ToString()); }
+                    else if (service.IsOnline == (int)StatusConnect.Offline) { GUI.contentColor = Color.red; EditorGUILayout.LabelField(StatusConnect.Offline.ToString()); }
 
                     GUI.contentColor = Color.white;
                     EditorGUILayout.EndHorizontal();
@@ -72,5 +74,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 
             return provider;
         }
+    }
+
+    public enum StatusConnect
+    {
+        Unknown = -2,
+        Cheking = -1,
+        Online = 0,
+        Offline = 1,
+        Error = 2
     }
 }
