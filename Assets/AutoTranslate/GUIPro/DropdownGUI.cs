@@ -47,7 +47,7 @@ namespace GoodTime.Tools.GUIPro
         public void Draw()
         {
             Position = EditorGUILayout.BeginHorizontal();
-            Position.x = Width;
+            Position.x = Position.x + Width;
             EditorGUILayout.LabelField(Name, GUILayout.Width(Width));
             if (EditorGUILayout.DropdownButton(new GUIContent(Selected), FocusType.Passive))
             {

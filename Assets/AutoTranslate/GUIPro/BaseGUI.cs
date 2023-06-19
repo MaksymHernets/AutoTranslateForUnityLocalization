@@ -3,5 +3,5 @@
 	public interface BaseGUI
 	{
 		void Draw();
-	}
+    }
 }

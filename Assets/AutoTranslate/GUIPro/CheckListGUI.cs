@@ -74,19 +74,26 @@ namespace GoodTime.Tools.GUIPro
 			EditorGUILayout.EndScrollView();
 		}
 
-		public void DrawButtons(string name = "")
-		{
-			SetStyle();
-            GUILayout.Label(name);
+        public void DrawButtons()
+        {
+            SetStyle();
             EditorGUILayout.BeginHorizontal();
-			if (GUILayout.Button("Deselect All")) { RowCheckLists.Where(w=> w.IsAvailable == true).ToList().ForEach(w => w.IsActive = false); }
+            if (GUILayout.Button("Deselect All")) { RowCheckLists.Where(w => w.IsAvailable == true).ToList().ForEach(w => w.IsActive = false); }
             if (GUILayout.Button("Select All")) { RowCheckLists.Where(w => w.IsAvailable == true).ToList().ForEach(w => w.IsActive = true); }
             EditorGUILayout.EndHorizontal();
 
-			DrawElements();
+            DrawElements();
 
             GUI.enabled = true;
             EditorGUILayout.EndScrollView();
+        }
+
+        public void DrawButtons(string name)
+		{
+			SetStyle();
+            GUILayout.Label(name);
+
+			DrawButtons();
         }
 
         public void Update(List<string> elements, bool newvalue = false)

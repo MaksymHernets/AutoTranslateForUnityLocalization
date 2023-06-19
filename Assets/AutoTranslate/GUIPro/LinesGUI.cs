@@ -13,11 +13,11 @@ namespace GoodTime.Tools.GUIPro
             EditorGUILayout.EndHorizontal();
         }
 
-        public static bool DrawLineCheck(string name, bool key)
+        public static bool DrawLineToggle(string name, bool key, int width = 200)
         {
             bool keyout = false;
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
-            EditorGUILayout.LabelField(name);
+            EditorGUILayout.LabelField(name, GUILayout.Width(width));
             keyout = EditorGUILayout.Toggle(key);
             EditorGUILayout.EndHorizontal();
             return keyout;
