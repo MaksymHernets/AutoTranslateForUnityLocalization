@@ -188,6 +188,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorUtility.ClearProgressBar();
                 return;
             }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
 
             SaveStringTables();
 
