@@ -84,7 +84,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             }
                         }
 
-                        if (sourceWord.IsSmart == true)
+                        if (targetWord != null && sourceWord.IsSmart == true)
                         {
                             targetWord.IsSmart = true;
                         }
@@ -92,11 +92,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                         lists.Add(entry.Key, sourceWord.Value);
                     }
 
-                    Dictionary<string, string> result = translator.Translate(lists, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
-
-                    foreach (var item in result)
+                    if ( lists.Count != 0 ) 
                     {
-                        targetLanguageTable.AddEntry(item.Key, item.Value);
+                        Dictionary<string, string> result = translator.Translate(lists, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+
+                        foreach (var item in result)
+                        {
+                            targetLanguageTable.AddEntry(item.Key, item.Value);
+                        }
                     }
 
                     lists.Clear();

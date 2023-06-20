@@ -102,10 +102,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
 
             _assetTables = SimpleInterfaceLocalization.GetAvailableAssetTable();
-            if (_assetTables != null)
-            {
-                _sharedAssetTables = _assetTables.Select(w => w.SharedData).Distinct().ToList();
-            }
+            //if (_assetTables != null)
+            //{
+            //    _sharedAssetTables = _assetTables.Select(w => w.SharedData).Distinct().ToList();
+            //}
 
             return true;
         }
