@@ -71,12 +71,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_sharedStringTables != null)
             {
-                _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+                if (_checkListLanguages != null) 
+                {
+                    _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+                }
+                else
+                {
+                    _checkListStringTable = new CheckListGUI(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
+                }
             }
             if (_locales != null)
             {
                 _checkListLanguages = new CheckListGUI(_locales.Select(w => w.name).ToList());
-                _checkListLanguages.UpdateCheck(new List<string>() { _dropdownLanguages.Selected }, false, false);
+                if (_dropdownLanguages != null) _checkListLanguages.UpdateCheck(new List<string>() { _dropdownLanguages.Selected }, false, false);
             }
         }
 
@@ -88,7 +95,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("Selected collection tables for translation:");
-            _checkListStringTable.Draw();
+            _checkListStringTable.DrawButtons();
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical();
             _dropdownLanguages.Draw();
