@@ -1,11 +1,11 @@
 {
-    "name": "com.maksymhernets.autotranslateforunitylocalization",
+    "name": "com.goodtime.autotranslateforunitylocalization",
     "displayName": "Auto Translate for Unity Localization",
     "version": "0.4.2",
 	"author": "Hernets Maksym",
 	"license": "ISC",
     "unity": "2020.3",
-	"category": "tool",
+	"category": "Tool",
     "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Main features: \n• Translation of text into hundreds of languages to choose from;\n Use 'Window/Auto localization/Auto Translate for String Tables'\n• Automatic search text for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Text'\n• Automatic search files for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Textures'\n Use 'Window/Auto Localization/Search Audio'",
     "keywords": 
 	[
@@ -35,7 +35,7 @@
       	"path": "Samples~/ShortTutorial"
     	}
 	],
-	"upm": 
+	"_upm": 
 	{
 		"changelog": "- Added ability select target languages\n- Up mimimum version Unity 2020.3.48\n- Fixed build errors[14]\n- Fixed bug smartwords[16]\n- Fixed some UI"
 	}
