@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.2]
+- Added ability select target languages
+- Up mimimum version Unity 2020.3.48
+- Fixed build errors
+- Fixed bug smartwords
+- Fixed some UI
+- Some refactoring...
+## [0.4.1]
+- Added autotests for GoogleApiFree;
+- Added new windows for cleanup Localization, search audio and texture;
+- Added the ability to auto save;
+- Added the ability to remove unnecessary "string event" components;
+- Fixed a bug when the delimiter character was not found when using GoogleApiFree;
+- Refactiring.
+## [0.4.0]
+- Added ability to skip empty text while searching for localization.
+- Code refactoring
 ## [0.3.9]
 - Renamed GoogleApiFree;
 - Renamed asmdef AutoTranslatel;
