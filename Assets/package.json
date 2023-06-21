@@ -1,41 +1,42 @@
 {
-    	"name": "com.maksymhernets.autotranslateforunitylocalization",
-    	"displayName": "Auto Translate",
-    	"version": "0.4.2",
+    "name": "com.maksymhernets.autotranslateforunitylocalization",
+    "displayName": "Auto Translate for Unity Localization",
+    "version": "0.4.2",
 	"author": "Hernets Maksym",
 	"license": "ISC",
-    	"unity": "2019.4",
-	"type": "tool",
+    "unity": "2020.3.48",
 	"category": "tool",
-    	"description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Main features:\n• Translation of text into hundreds of languages to choose from;\n• Automatically search for files for translation in the project. \n\n Use 'Window/Auto Localization/Find Text for Tables in Scene \n Use 'Window/Auto localization/Auto Translate for Tables'",
-    	"keywords": 
+    "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Main features: \n• Translation of text into hundreds of languages to choose from;\n Use 'Window/Auto localization/Auto Translate for String Tables'\n• Automatic search text for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Text'\n• Automatic search files for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Textures'\n Use 'Window/Auto Localization/Search Audio'",
+    "keywords": 
 	[
-      	"Unity",
-      	"Tool",
-		"Auto",
-		"Translate"
-    	],
-    	"dependencies": 
+      	"Unity", "Tool", "Auto", "Translate", "Google", "Localization"
+    ],
+    "dependencies": 
 	{
-    		"com.unity.localization": "1.3.2",
+    	"com.unity.localization": "1.3.2",
 		"com.unity.addressables": "1.20.5",
 		"com.unity.textmeshpro": "3.0.6"
-    	},
-    	"repository": 
-    	{ 
-		"url": "https://github.com/MaksymHernets/AutoTranslateForLocalizationUnity.git",
+    },
+    "repository": 
+    { 
+		"url": "https://github.com/MaksymHernets/AutoTranslateForUnityLocalization.git",
 		"type": "git",
 		"directory": "Assets"
 	},
-    	"publishConfig": 
-    	{
+    "publishConfig": 
+    {
 		"registry":"https://npm.pkg.github.com"
-    	},
-	"samples": [
+    },
+	"samples": 
+	[
     	{
       	"displayName": "Short Tutorial",
       	"description": "The scene contains a short instruction on how to use the tool and also this scene can be used as a sample.",
       	"path": "Samples~/ShortTutorial"
     	}
-	]
-   }
+	],
+	"upm": 
+	{
+		"changelog": "- Added ability select target languages\n- Up mimimum version Unity 2020.3.48\n- Fixed build errors[14]\n- Fixed bug smartwords[16]\n- Fixed some UI"
+	}
+}
