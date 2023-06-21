@@ -1,7 +1,7 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate for Unity Localization",
-    "version": "0.4.2",
+    "version": "0.4.3",
 	"author": "Hernets Maksym",
 	"license": "ISC",
     "unity": "2020.3",
