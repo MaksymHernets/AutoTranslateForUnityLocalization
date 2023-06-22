@@ -37,6 +37,6 @@
 	],
 	"_upm": 
 	{
-		"changelog": "- Added ability select target languages\n- Up mimimum version Unity 2020.3.48\n- Fixed build errors[14]\n- Fixed bug smartwords[16]\n- Fixed some UI"
+		"changelog": "### Added\n - Added mapping dialects of languages for google free api\n ### Changed\n - Change default translate parameters\n ### Fixed\n - Fixed translate SmartWord when key translated\n- Fixed dropdown when update options"
 	}
 }
