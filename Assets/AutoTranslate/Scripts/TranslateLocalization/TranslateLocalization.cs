@@ -131,7 +131,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
                             foreach (var keyValuePair in keyValuePairs)
                             {
-                                word = word.Replace(keyValuePair.Value, keyValuePair.Key);
+                                word = word.Replace("{" + keyValuePair.Value + "}", "{" + keyValuePair.Key + "}");
                             }
                         }
 
