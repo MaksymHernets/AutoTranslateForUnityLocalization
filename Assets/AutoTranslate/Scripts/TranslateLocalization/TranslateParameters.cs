@@ -5,8 +5,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 {
     public class TranslateParameters
     {
-        public bool canOverrideWords = true;
-        public bool canTranslateEmptyWords = true;
+        public bool canOverrideWords = false;
+        public bool canTranslateEmptyWords = false;
         public bool canTranslateSmartWords = true;
         public Dictionary<string, bool> IsTranslateStringTables = new Dictionary<string, bool>();
 
