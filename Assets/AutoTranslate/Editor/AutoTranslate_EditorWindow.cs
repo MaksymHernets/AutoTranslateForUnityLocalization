@@ -8,6 +8,8 @@ using UnityEditor;
 using UnityEngine;
 using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 using UnityEngine.Localization;
+using GoodTime.Tools.FactoryTranslate;
+using GoodTime.Tools.InterfaceTranslate;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -27,6 +29,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private CheckListGUI _checkListStringTable;
         private CheckListGUI _checkListLanguages;
         private bool LS = false;
+        private bool WLS = false;
+        private ITranslateApi translator;
+        private Vector2 _position = Vector2.zero;
 
         [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
         public static void ShowWindow()
@@ -56,10 +61,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _checkListLanguages = new CheckListGUI(new List<string>());
 
             _dropdownLanguages.UpdateSelected += DropdownLanguages_UpdateSelected;
+
+            AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
+            translator = FactoryTranslateApi.GetTranslateApi(setting.CurrentServiceTranslate);
         }
 
         private void DropdownLanguages_UpdateSelected(string name)
         {
+            _selectedLocale = _locales.First(w => w.LocaleName == _dropdownLanguages.Selected);
             _checkListLanguages.FillElements(_locales.Select(w => w.name).ToList());
             _checkListLanguages.UpdateCheck(new List<string>() { name }, false, false);
         }
@@ -71,7 +80,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_sharedStringTables != null)
             {
-                if (_checkListLanguages != null) 
+                if (_checkListStringTable != null) 
                 {
                     _checkListStringTable.Update(_sharedStringTables.Select(w => w.TableCollectionName).ToList());
                 }
@@ -85,6 +94,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _checkListLanguages = new CheckListGUI(_locales.Select(w => w.name).ToList());
                 if (_dropdownLanguages != null) _checkListLanguages.UpdateCheck(new List<string>() { _dropdownLanguages.Selected }, false, false);
             }
+
+            AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
+            translator = FactoryTranslateApi.GetTranslateApi(setting.CurrentServiceTranslate);
         }
 
         void OnGUI()
@@ -99,6 +111,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical();
             _dropdownLanguages.Draw();
+            if ( translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
+            {
+                EditorGUILayout.HelpBox(translator.GetNameService() + " service does not support some dialects of languages, the choice of language will be changed to the generally accepted.", MessageType.Warning);
+            }
 
             _translateParameters.canOverrideWords = LinesGUI.DrawLineToggle("Override words that have a translation", _translateParameters.canOverrideWords, k_SeparationWidth);
             _translateParameters.canTranslateEmptyWords = LinesGUI.DrawLineToggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords, k_SeparationWidth);
@@ -123,7 +139,24 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             LS = EditorGUILayout.BeginFoldoutHeaderGroup(LS, "Target languages");
             if (LS) _checkListLanguages.DrawButtons();
             EditorGUILayout.EndFoldoutHeaderGroup();
-            
+
+            var names = GetNames();
+
+            if (names.Count != 0)
+            {
+                WLS = EditorGUILayout.BeginFoldoutHeaderGroup(WLS, "Warning " + names.Count.ToString() + " languages");
+                if (WLS)
+                {
+                    _position = EditorGUILayout.BeginScrollView(_position);
+                    foreach (var name in names)
+                    {
+                        EditorGUILayout.HelpBox(name + " " + translator.GetNameService() + " service does not support some dialects of languages, the choice of language will be changed to the generally accepted.", MessageType.Warning);
+                    }
+                    EditorGUILayout.EndScrollView();
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+            }
+
             ValidateLocalizationSettings();
             ValidateLocales();
             ValidateStringTables();
@@ -133,6 +166,25 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if (GUILayout.Button("Translate")) ButtonTranslate_Click();
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
+        }
+
+        private List<string> GetNames()
+        {
+            List<string> strings = new List<string>();
+            foreach (RowCheckList rowCheckList in _checkListLanguages.RowCheckLists)
+            {
+                foreach (Locale locale in _locales)
+                {
+                    if ( locale != null && locale.name == rowCheckList.Name)
+                    {
+                        if (rowCheckList.IsActive == true && translator.ValidateLocale(locale.Identifier.Code) == false)
+                        {
+                            strings.Add(rowCheckList.Name);
+                        }
+                    }
+                }
+            }
+            return strings;
         }
 
         private void ButtonTranslate_Click()
