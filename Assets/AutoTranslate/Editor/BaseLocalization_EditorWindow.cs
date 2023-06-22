@@ -41,7 +41,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected virtual void OnFocus()
         {
+            _localizationSettings = SimpleInterfaceLocalization.GetLocalizationSettings();
+
             UpdateLocalization();
+
+            if (_locales != null)
+            {
+                if ( _dropdownLanguages != null)
+                {
+                    _dropdownLanguages.ClearOptions();
+                    _dropdownLanguages.AddOptions(_locales.Select(w => w.name).ToList());
+                }
+                else
+                {
+                    _dropdownLanguages = new DropdownGUI("Source language", _locales.Select(w => w.name).ToList());
+                }
+            }
         }
 
         protected void InitDefaultDropdownLocalization()
@@ -86,14 +101,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 return false;
             }
 
-            _locales = SimpleInterfaceLocalization.GetAvailableLocales();
+            _locales = _localizationSettings.GetAvailableLocales().Locales;
 
             if (_locales == null)
             {
                 return false;
             }
 
-            _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
+            if (_selectedLocale == null ) _selectedLocale = SimpleInterfaceLocalization.GetSelectedLocale();
 
             _stringTables = SimpleInterfaceLocalization.GetAvailableStringTable();
             if (_stringTables != null)

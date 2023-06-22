@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.Progress;
 
 namespace GoodTime.Tools.GUIPro
 {
@@ -42,6 +43,20 @@ namespace GoodTime.Tools.GUIPro
 		{
             Options.Add(name);
             GUIContents.Add(new GUIContent(name));
+        }
+
+        public void AddOptions(List<string> names)
+        {
+            foreach (string name in names)
+            {
+                AddOption(name);
+            }
+        }
+
+        public void ClearOptions()
+        {
+            Options.Clear();
+            GUIContents.Clear();
         }
 
         public void Draw()
