@@ -1,5 +1,6 @@
 using GoodTime.Tools.FactoryTranslate;
 using GoodTime.Tools.InterfaceTranslate;
+using System;
 using System.Collections.Generic;
 using UnityEngine.Localization.Tables;
 
@@ -108,7 +109,23 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                                     key = false;
                                     if (start - end >= 1) continue;
                                     string subkey = word.Substring(start, end - start);
-                                    keyValuePairs.Add(keyValuePairs.Count.ToString(), subkey);
+                                    int tempkey = 0;
+                                    if( int.TryParse(subkey, out tempkey) == false)
+                                    {
+                                        keyValuePairs.Add(keyValuePairs.Count.ToString(), subkey);
+                                    }
+                                    else
+                                    {
+                                        if ( keyValuePairs.ContainsKey(subkey) )
+                                        {
+                                            keyValuePairs.Add(keyValuePairs.Count.ToString(), keyValuePairs[subkey]);
+                                            keyValuePairs[subkey] = subkey;
+                                        }
+                                        else
+                                        {
+                                            keyValuePairs.Add(subkey, subkey);
+                                        }
+                                    }
                                 }
                             }
 
