@@ -58,6 +58,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
                     yield return new TranslateStatus(progress, sharedtable.TableCollectionName, targetLanguageTable.LocaleIdentifier.CultureInfo.DisplayName);
 
+
+                    Dictionary<string,string> keyValuePairs = new Dictionary<string,string>();
                     foreach (var entry in sharedtable.Entries)
                     {
                         StringTableEntry sourceWord;
@@ -84,12 +86,39 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             }
                         }
 
+                        string word = sourceWord.Value;
+
                         if (targetWord != null && sourceWord.IsSmart == true)
                         {
                             targetWord.IsSmart = true;
+
+                            
+                            bool key = false;
+                            int start = 0; int end = 0;
+                            for (int i = 0; i < word.Length; ++i)
+                            {
+                                if ( key == false && word[i] == '{')
+                                {
+                                    start = i+1;
+                                    key = true;
+                                }
+                                if ( key == true && word[i] == '}')
+                                {
+                                    end = i;
+                                    key = false;
+                                    if (start - end >= 1) continue;
+                                    string subkey = word.Substring(start, end - start);
+                                    keyValuePairs.Add(keyValuePairs.Count.ToString(), subkey);
+                                }
+                            }
+
+                            foreach (var keyValuePair in keyValuePairs)
+                            {
+                                word = word.Replace(keyValuePair.Value, keyValuePair.Key);
+                            }
                         }
 
-                        lists.Add(entry.Key, sourceWord.Value);
+                        lists.Add(entry.Key, word);
                     }
 
                     if ( lists.Count != 0 ) 
@@ -98,7 +127,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
                         foreach (var item in result)
                         {
-                            targetLanguageTable.AddEntry(item.Key, item.Value);
+                            string word = item.Value;
+                            foreach (var keyValuePair in keyValuePairs)
+                            {
+                                word = word.Replace("{" + keyValuePair.Key + "}", "{" + keyValuePair.Value + "}");
+                            }
+                            targetLanguageTable.AddEntry(item.Key, word);
                         }
                     }
 
