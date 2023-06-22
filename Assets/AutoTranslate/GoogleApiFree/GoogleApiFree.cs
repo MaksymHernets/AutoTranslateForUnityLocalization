@@ -17,12 +17,42 @@ namespace GoodTime.Tools.InterfaceTranslate
         private const String SEPARATE_STRING2 = "[$ ]";
         private const String SEPARATE_STRING3 = "[ $]";
 
+        private Dictionary<string, string> _ignoreLocale;
+
+        public GoogleApiFree() 
+        {
+            _ignoreLocale = new Dictionary<string, string>();
+            //_ignoreLocale.Add("en-gb", "en-gb");
+            //_ignoreLocale.Add("pt-pt", "pt-pt");
+            //_ignoreLocale.Add("pt-br", "pt-br");
+            _ignoreLocale.Add("zh-cn", "zh-cn");
+            _ignoreLocale.Add("zh-tw", "zh-tw");
+        }
+
 		public bool CheckService()
 		{
             return WebInformation.CheckService("https://translate.googleapis.com");
         }
 
-		public string Translate(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
+        public string GetNameService()
+        {
+            return "GoogleApiFree";
+        }
+
+        public string MappingLocale(string namelocale)
+        {
+            namelocale = namelocale.ToLower();
+            if ( namelocale.Contains("-") )
+            {
+                if (_ignoreLocale.ContainsKey(namelocale)) return _ignoreLocale[namelocale];
+                int index = namelocale.IndexOf('-');
+                return namelocale.Remove(index, namelocale.Length - index);
+            }
+            if (namelocale.Length > 2) throw new Exception("Locale Code invalide");
+            return namelocale;
+        }
+
+        public string Translate(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
         {
             string translationFromGoogle = RequestToGoogleApi(sourceText, sourceLanguage, targetLanguage, key);
 
@@ -41,6 +71,9 @@ namespace GoodTime.Tools.InterfaceTranslate
 
             string translationFromGoogle = string.Empty;
             RespontTranslateGoogle respontTranslateGoogle;
+
+            sourceLanguage = MappingLocale(sourceLanguage);
+            targetLanguage = MappingLocale(targetLanguage);
 
             foreach (var item in words)
             {
@@ -78,6 +111,16 @@ namespace GoodTime.Tools.InterfaceTranslate
             }
 
             return targetWords;
+        }
+
+        public bool ValidateLocale(string namelocale)
+        {
+            namelocale = namelocale.ToLower();
+            if ( namelocale.Contains("-") == true)
+            {
+                return _ignoreLocale.ContainsKey(namelocale);
+            }
+            return namelocale.Length < 3;
         }
 
         private RespontTranslateGoogle DeserializeRespont(string json)

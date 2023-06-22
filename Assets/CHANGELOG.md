@@ -3,6 +3,15 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [0.4.3] - 2023-06-22
+### Added
+- Added mapping dialects of languages for google free api
+### Changed
+- Change default translate parameters
+### Fixed
+- Fixed translate SmartWord when key translated
+- Fixed dropdown when update options
+
 ## [0.4.2] - 2023-06-20
 ### Added
 - Added ability select target languages
