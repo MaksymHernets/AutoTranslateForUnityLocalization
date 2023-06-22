@@ -90,7 +90,6 @@ namespace GoodTime.Tools.GUIPro
 
         public void DrawButtons(string name)
 		{
-			SetStyle();
             GUILayout.Label(name);
 
 			DrawButtons();
