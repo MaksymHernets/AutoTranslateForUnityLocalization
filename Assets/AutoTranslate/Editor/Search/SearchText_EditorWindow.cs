@@ -13,9 +13,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
     public class SearchText_EditorWindow : BaseSearch_EditorWindow
     {
         // Window parameters
-        private const string k_WindowTitle = "Search text";
+        private const string k_WindowTitle = "Search Text in Scene or Prefab";
 
-        [MenuItem("Window/Auto Localization/Search Text", false, MyProjectSettings_AutoTranslate.BaseIndex + 40)]
+        [MenuItem("Window/Auto Localization/Search Text in Scene or Prefab", false, MyProjectSettings_AutoTranslate.BaseIndex + 40)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
@@ -53,7 +53,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-
+            if (_prefabStage == null)
+            {
+                EditorGUILayout.HelpBox("Tip. You can also search for localization text for a prefab by opening prefab edit", MessageType.Info);
+            }
             EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
             EditorGUILayout.BeginFadeGroup(1); // Begin 0
 
