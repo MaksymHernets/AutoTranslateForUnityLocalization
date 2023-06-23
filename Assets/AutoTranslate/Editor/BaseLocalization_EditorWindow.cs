@@ -1,7 +1,4 @@
-﻿using GoodTime.HernetsMaksym.AutoTranslate;
-using GoodTime.Tools.GUIPro;
-using System;
-using System.Collections;
+﻿using GoodTime.Tools.GUIPro;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -27,8 +24,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         protected DropdownGUI _dropdownLanguages;
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             UpdateLocalization();
 
             if (_locales != null)
@@ -39,8 +37,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             InitDefaultDropdownLocalization();
         }
 
-        protected virtual void OnFocus()
+        protected override void OnFocus()
         {
+            base.OnFocus();
             _localizationSettings = SimpleInterfaceLocalization.GetLocalizationSettings();
 
             UpdateLocalization();

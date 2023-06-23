@@ -144,7 +144,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             else GetCheckTable();
 
             AddLocalization.Execute(parameters, _statusLocalizationScene);
-            if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
+            if (_removeMissStringEvents) ClearUpLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
             if (_autoSave)
             {
                 EditorSceneManager.SaveOpenScenes();

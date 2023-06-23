@@ -13,9 +13,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
     public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
     {
-        protected PrefabStage _prefabStage;
-        protected Scene _currentScene;
-
         protected StatusLocalizationScene _statusLocalizationScene;
         protected SearchTextParameters _searchTextParameters;
 
