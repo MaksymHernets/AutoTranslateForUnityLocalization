@@ -40,6 +40,24 @@ namespace GoodTime.Tools.Helpers
             return scenes;
         }
 
+        public static List<Scene> GetScenes(List<string> names)
+        {
+            Scene[] scenes = GetScenes();
+            List<Scene> activeScenes = new List<Scene>();
+            foreach (Scene scene in scenes)
+            {
+                foreach (string name in names)
+                {
+                    if (scene.name == name)
+                    {
+                        activeScenes.Add(scene);
+                        continue;
+                    }
+                }
+            }
+            return activeScenes;
+        }
+
         public static void OpenScene(string guid)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -66,6 +84,24 @@ namespace GoodTime.Tools.Helpers
                 }
             }
             return gameObjects;
+        }
+
+        public static List<GameObject> GetPrefabs(List<string> names)
+        {
+            List<GameObject> gameObjects = GetPrefabs();
+            List<GameObject> newgameObjects = new List<GameObject>();
+            foreach (GameObject gameObject in gameObjects)
+            {
+                foreach (string name in names)
+                {
+                    if (gameObject.name == name)
+                    {
+                        newgameObjects.Add(gameObject);
+                        continue;
+                    }
+                }
+            }
+            return newgameObjects;
         }
 
         public static void SaveScene(Scene scene)
