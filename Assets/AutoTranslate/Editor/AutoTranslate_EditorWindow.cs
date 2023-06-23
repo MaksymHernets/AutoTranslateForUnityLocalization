@@ -16,7 +16,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 	public class AutoTranslate_EditorWindow : BaseLocalization_EditorWindow
     {
         // Window parameters
-        protected const string k_WindowTitle = "Auto Translate for Localization";
+        protected const string k_WindowTitle = "Auto Translate for Unity Localization";
 
         // Arguments for execute
         private TranslateParameters _translateParameters = new TranslateParameters();
