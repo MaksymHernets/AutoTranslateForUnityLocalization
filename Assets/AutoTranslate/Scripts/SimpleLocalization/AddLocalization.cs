@@ -32,33 +32,6 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             }
 		}
 
-        public static void RemoveMiss_LocalizeStringEvent(List<LocalizeStringEvent> list)
-		{
-            var locales = LocalizationEditorSettings.GetLocales();
-            var tableCollections = LocalizationEditorSettings.GetStringTableCollections();
-
-            foreach (LocalizeStringEvent localizeStringEvent in list)
-            {
-                var m_SelectedTableCollection = tableCollections.FirstOrDefault(t => t.TableCollectionName == localizeStringEvent.StringReference.TableReference);
-                if (localizeStringEvent.StringReference.TableEntryReference.ReferenceType == TableEntryReference.Type.Name)
-                {
-                    SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.Key);
-                    if (m_SelectedEntry == null)
-                    {
-                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
-                    }
-                }
-                else
-                {
-                    SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.KeyId);
-                    if (m_SelectedEntry == null)
-                    {
-                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
-                    }
-                }
-            }
-        }
-
         private static void AddLocalization_TextLegacy(List<Text> texts, StringTable stringTable, SharedTableData sharedTable)
         {
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
