@@ -108,8 +108,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
                     ClearUpLocalization.Execute(_searchTextParameters, openScene);
 
-                    EditorSceneManager.SaveOpenScenes();
+                    //EditorSceneManager.MarkSceneDirty(_currentScene);
+                    //EditorSceneManager.SaveScene(_currentScene);
 
+                    EditorSceneManager.SaveOpenScenes();
                 }
                 ++index;
             }

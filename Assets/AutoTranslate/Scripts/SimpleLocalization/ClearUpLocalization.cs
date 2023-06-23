@@ -37,7 +37,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             foreach (GameObject gameObject in gameObjects)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(gameObject) && parameters.SkipPrefab == true) continue;
-
+                EditorUtility.SetDirty(gameObject);
                 if (parameters.Lists.ContainsKey("LocalizeStringEvent") ) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
                 if (parameters.Lists.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
                 if (parameters.Lists.ContainsKey("LocalizeTextureEvent")) RemoveComponents<LocalizeTextureEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
