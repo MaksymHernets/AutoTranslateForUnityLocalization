@@ -133,17 +133,33 @@ namespace GoodTime.Tools.GUIPro
             }
         }
 
-		public Dictionary<string, bool> GetElements()
-		{
-			Dictionary<string, bool> elements = new Dictionary<string, bool>();
-			foreach (RowCheckList rowCheckList in RowCheckLists)
-			{
-				elements.Add(rowCheckList.Name, rowCheckList.IsActive);
-			}
-			return elements;
-		}
+        public Dictionary<string, bool> GetElements(bool OnlyActive = false, bool OnlyAvailable = false)
+        {
+            Dictionary<string, bool> elements = new Dictionary<string, bool>();
+            foreach (RowCheckList rowCheckList in RowCheckLists)
+            {
+                if (rowCheckList.IsActive == OnlyActive && rowCheckList.IsAvailable == OnlyAvailable)
+                {
+                    elements.Add(rowCheckList.Name, rowCheckList.IsActive);
+                }
+            }
+            return elements;
+        }
 
-		public bool CheckDifferent(List<string> elements)
+        public List<string> GetNames(bool OnlyActive = false, bool OnlyAvailable = false)
+        {
+            List<string> names = new List<string>();
+            foreach (RowCheckList rowCheckList in RowCheckLists)
+            {
+                if (rowCheckList.IsActive == OnlyActive && rowCheckList.IsAvailable == OnlyAvailable)
+                {
+                    names.Add(rowCheckList.Name);
+                }
+            }
+            return names;
+        }
+
+        public bool CheckDifferent(List<string> elements)
 		{
             foreach (string newelement in elements)
             {
