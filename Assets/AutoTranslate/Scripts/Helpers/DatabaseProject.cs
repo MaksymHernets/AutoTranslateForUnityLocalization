@@ -31,9 +31,9 @@ namespace GoodTime.Tools.Helpers
 
         public static Scene[] GetScenes()
         {
-            Scene[] scenes = new Scene[EditorSceneManager.sceneCountInBuildSettings];
+            Scene[] scenes = new Scene[EditorSceneManager.sceneCount];
 
-            for (int i = 0; i < EditorSceneManager.sceneCountInBuildSettings; ++i)
+            for (int i = 0; i < EditorSceneManager.sceneCount; ++i)
             {
                 scenes[i] = EditorSceneManager.GetSceneAt(i);
             }
