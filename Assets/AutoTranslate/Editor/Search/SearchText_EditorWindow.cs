@@ -4,9 +4,10 @@ using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement; // For Unity 2019.4 !!!!
+using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -120,7 +121,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             _searchTextParameters.SkipPrefab = _skipPrefab;
             _searchTextParameters.SkipEmptyText = _skipEmptyText;
-            _searchTextParameters.Lists = _checkListSearchElements.GetElements();
+            _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
 
             if (_prefabStage == null) _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
             else _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
@@ -138,7 +139,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             parameters.IsSkipPrefab = _skipPrefab;
             parameters.IsSkipEmptyText = _skipEmptyText;
             parameters.SourceLocale = _selectedLocale;
-            parameters.Lists = _checkListSearchElements.GetElements();
+            parameters.Lists = _checkListSearchElements.GetElements(true, true);
 
             if (_statusLocalizationScene == null) StartSearch();
             else GetCheckTable();
@@ -147,8 +148,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if (_removeMissStringEvents) ClearUpLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
             if (_autoSave)
             {
+                //EditorSceneManager.SaveScene(scene);
                 EditorSceneManager.SaveOpenScenes();
-                EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
+                if(_prefabStage != null) EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
             }
             
             return "Completed";
