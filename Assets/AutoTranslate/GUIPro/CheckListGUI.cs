@@ -133,7 +133,7 @@ namespace GoodTime.Tools.GUIPro
             }
         }
 
-        public Dictionary<string, bool> GetElements(bool OnlyActive = false, bool OnlyAvailable = false)
+        public Dictionary<string, bool> GetElements(bool OnlyActive = true, bool OnlyAvailable = true)
         {
             Dictionary<string, bool> elements = new Dictionary<string, bool>();
             foreach (RowCheckList rowCheckList in RowCheckLists)
@@ -146,7 +146,7 @@ namespace GoodTime.Tools.GUIPro
             return elements;
         }
 
-        public List<string> GetNames(bool OnlyActive = false, bool OnlyAvailable = false)
+        public List<string> GetNames(bool OnlyActive = true, bool OnlyAvailable = true)
         {
             List<string> names = new List<string>();
             foreach (RowCheckList rowCheckList in RowCheckLists)
