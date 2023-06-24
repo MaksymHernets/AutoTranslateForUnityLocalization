@@ -41,14 +41,6 @@ https://github.com/MaksymHernets/AutoTranslateForUnityLocalization/blob/master/A
 ![GitHub Logo](/Screenshots/Screenshots2.png)
 ![GitHub Logo](/Screenshots/Screenshots3.png)
 
-Use 'Window/Auto Localization/Find Text for Tables in Scene'
-
-![GitHub Logo](/Screenshots/SearchTextSceneWIndow.png)
-
-Use 'Window/Auto Localization/Auto Translate for Tables' to begin working with the system.
-
-![GitHub Logo](/Screenshots/TextTranslateWindow.png)
-
 As a result, thanks to the plugin, you can save a lot of time.
 
 ![GitHub Logo](/Screenshots/ResultStringTable.png)
