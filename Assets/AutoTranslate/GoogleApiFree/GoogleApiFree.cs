@@ -16,6 +16,8 @@ namespace GoodTime.Tools.InterfaceTranslate
         private const String SEPARATE_STRING = "[$]";
         private const String SEPARATE_STRING2 = "[$ ]";
         private const String SEPARATE_STRING3 = "[ $]";
+        private const String SEPARATE_STRING4 = "[[ $]";
+        private const String SEPARATE_STRING5 = "[ $]]";
 
         private Dictionary<string, string> _ignoreLocale;
 
@@ -97,10 +99,12 @@ namespace GoodTime.Tools.InterfaceTranslate
 
             respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
             string response = respontTranslateGoogle.FullRespont;
-            String[] mass = new String[3];
+            String[] mass = new String[5];
             mass[0] = SEPARATE_STRING;
             mass[1] = SEPARATE_STRING2;
             mass[2] = SEPARATE_STRING3;
+            mass[3] = SEPARATE_STRING4;
+            mass[4] = SEPARATE_STRING5;
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
             int index = 0;

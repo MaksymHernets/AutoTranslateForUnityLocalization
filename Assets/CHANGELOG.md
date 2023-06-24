@@ -3,6 +3,18 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+
+## [0.4.5] - 2023-06-24
+### Changed
+- Updated screenshots
+### Fixed
+- Fixed parsing of google translate response
+- Fixed show scenes in project in cleanuplocalizationscenes
+- Fixed dont save after remove localization in scene
+- Fixed dont work to search TextMeshPro
+- Fixed nullreferense prefab when autosave searchtext in prerab
+- Fixed CheckList when default parameters be false
+
 ## [0.4.4] - 2023-06-23
 ### Added
 - Added window ClearUpLocalization for Scenes and Prefabs

@@ -36,6 +36,11 @@ https://github.com/MaksymHernets/AutoTranslateForUnityLocalization/blob/master/A
 
 ## Screenshots
 
+![GitHub Logo](/Screenshots/Screenshots0.png)
+![GitHub Logo](/Screenshots/Screenshots1.png)
+![GitHub Logo](/Screenshots/Screenshots2.png)
+![GitHub Logo](/Screenshots/Screenshots3.png)
+
 Use 'Window/Auto Localization/Find Text for Tables in Scene'
 
 ![GitHub Logo](/Screenshots/SearchTextSceneWIndow.png)

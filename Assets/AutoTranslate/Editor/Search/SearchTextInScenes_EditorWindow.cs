@@ -28,15 +28,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnEnable()
         {
             base.OnEnable();
-            Scene[] scenes = DatabaseProject.GetScenes();
-            _checkListScenes = new CheckListGUI(scenes.Select(w => w.name).ToList());
+            string[] scenes = DatabaseProject.GetPathScenes();
+            _checkListScenes = new CheckListGUI(scenes.ToList());
         }
 
         protected override void OnFocus()
         {
             base.OnFocus();
-            Scene[] scenes = DatabaseProject.GetScenes();
-            _checkListScenes.UpdateCheck(scenes.Select(w => w.name).ToList(), true);
+            string[] scenes = DatabaseProject.GetPathScenes();
+            _checkListScenes.Update(scenes.ToList());
         }
 
         private void OnGUI()

@@ -41,8 +41,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             _searchTextParameters.Lists = list;
 
-            Scene[] scenes = DatabaseProject.GetScenes();
-            _checkListScenes = new CheckListGUI(scenes.Select(w => w.name).ToList());
+            string[] scenes = DatabaseProject.GetPathScenes();
+            _checkListScenes = new CheckListGUI(scenes.ToList());
 
             List<string> list2 = new List<string>();
             list2.Add("LocalizeStringEvent");
@@ -57,8 +57,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnFocus();
 
-            Scene[] scenes = DatabaseProject.GetScenes();
-            _checkListScenes = new CheckListGUI(scenes.Select(w => w.name).ToList());
+            string[] scenes = DatabaseProject.GetPathScenes();
+            _checkListScenes.Update(scenes.ToList());
         }
 
         private void OnGUI()
@@ -95,21 +95,23 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 EditorUtility.DisplayProgressBar("Cleanup Localization in Scenes", "Load scenes", 0);
 
                 _searchTextParameters.Lists = _checkListComponents.GetElements(true, true);
-                List<Scene> scenes = DatabaseProject.GetScenes(_checkListScenes.GetNames(true, true));
+                List<string> paths = _checkListScenes.GetNames(true, true);
 
-                float dola = scenes.Count * 0.1f;
+                float dola = paths.Count * 0.1f;
                 int index = 0;
 
-                foreach (Scene scene in scenes)
+                foreach (string path in paths)
                 {
-                    EditorUtility.DisplayProgressBar("Cleanup Localization in Scenes", "Scene: " + scene.name, index * dola);
+                    EditorUtility.DisplayProgressBar("Cleanup Localization in Scenes", "Scene: " + path, index * dola);
 
-                    Scene openScene = EditorSceneManager.OpenScene(scene.path);
+                    Scene openScene = EditorSceneManager.OpenScene(path);
 
                     ClearUpLocalization.Execute(_searchTextParameters, openScene);
 
-                    EditorSceneManager.SaveOpenScenes();
+                    //EditorSceneManager.MarkSceneDirty(_currentScene);
+                    //EditorSceneManager.SaveScene(_currentScene);
 
+                    EditorSceneManager.SaveOpenScenes();
                 }
                 ++index;
             }

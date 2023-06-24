@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
@@ -31,13 +33,31 @@ namespace GoodTime.Tools.Helpers
 
         public static Scene[] GetScenes()
         {
+            string[] guids = GetGuidScenes();
             Scene[] scenes = new Scene[EditorSceneManager.sceneCount];
 
-            for (int i = 0; i < EditorSceneManager.sceneCount; ++i)
+            int index = 0;
+            foreach (string guid in guids)
             {
-                scenes[i] = EditorSceneManager.GetSceneAt(i);
+                string path = AssetDatabase.AssetPathToGUID(guid);
+
+                scenes[index] = EditorSceneManager.OpenScene(path);
             }
             return scenes;
+        }
+
+        public static string[] GetPathScenes()
+        {
+            string[] guids = GetGuidScenes();
+            string[] paths = new string[guids.Length];
+
+            int index = 0;
+            foreach (string guid in guids)
+            {
+                paths[index] = AssetDatabase.GUIDToAssetPath(guid);
+                ++index;
+            }
+            return paths;
         }
 
         public static List<Scene> GetScenes(List<string> names)
