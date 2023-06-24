@@ -101,10 +101,11 @@ namespace GoodTime.Tools.InterfaceTranslate
             string response = respontTranslateGoogle.FullRespont;
             String[] mass = new String[5];
             mass[0] = SEPARATE_STRING;
-            mass[1] = SEPARATE_STRING2;
-            mass[2] = SEPARATE_STRING3;
-            mass[3] = SEPARATE_STRING4;
-            mass[4] = SEPARATE_STRING5;
+            mass[1] = SEPARATE_STRING4;
+            mass[2] = SEPARATE_STRING5;
+            mass[3] = SEPARATE_STRING2;
+            mass[4] = SEPARATE_STRING3;
+            
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
             int index = 0;
