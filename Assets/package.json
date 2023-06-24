@@ -1,7 +1,7 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate for Unity Localization",
-    "version": "0.4.4",
+    "version": "0.4.5",
 	"author": "Hernets Maksym",
 	"license": "ISC",
     "unity": "2020.3",
@@ -37,6 +37,6 @@
 	],
 	"_upm": 
 	{
-		"changelog": "### Added\n- Added window ClearUpLocalization for Scenes and Prefabs\n- Added tips for search text in scenes or prefabs\n### Changed\n- Renamed window Auto Translate for Unity Localization\n### Fixed\n- Fixed swap word into key when translate smart word\n- Fixed when code key to replace string key in smartword"
+		"changelog": "### Changed\n- Updated screenshots\n### Fixed\n- Fixed parsing of google translate response\n- Fixed show scenes in project in cleanuplocalizationscenes\n- Fixed dont save after remove localization in scene\n- Fixed dont work to search TextMeshPro\n- Fixed nullreferense prefab when autosave searchtext in prerab\n- Fixed CheckList when default parameters be false"
 	}
 }
