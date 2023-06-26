@@ -31,7 +31,7 @@ namespace GoodTime.Tools.Helpers
                 GameObject[] subGameObjects = GameObjectHelper.GetSubGameObjects(gameObject);
                 foreach (GameObject subGameObject in subGameObjects)
                 {
-                    if (PrefabUtility.IsAnyPrefabInstanceRoot(subGameObject))
+                    if (PrefabUtility.IsAnyPrefabInstanceRoot(subGameObject) && !PrefabUtility.IsPartOfVariantPrefab(subGameObject))
                     {
                         prefabs.Add(subGameObject);
                     }
