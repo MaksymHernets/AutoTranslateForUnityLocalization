@@ -16,6 +16,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         {
             List<RowCheckList> Checklists = new List<RowCheckList>();
             Checklists.Add(new RowCheckList("Text Legacy", true, true));
+            Checklists.Add(new RowCheckList("Text Mesh Legacy", true, true));
+            Checklists.Add(new RowCheckList("Text Mesh Pro UI", true, true));
             Checklists.Add(new RowCheckList("Text Mesh Pro", true, true));
             Checklists.Add(new RowCheckList("Dropdown Legacy", false, false));
             Checklists.Add(new RowCheckList("Dropdown Mesh Pro", false, false));
@@ -46,10 +48,20 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 List<Text> texts = GameObjectHelper.GetComponentsInChildrens<Text>(gameObjects);
                 statusLocalizationScene.LegacyTexts = FilterTextLegacy(texts, parameters, statusLocalizationScene);
             }
-            if ( parameters.Lists.ContainsKey("Text Mesh Pro") && parameters.Lists["Text Mesh Pro"])
+            if ( parameters.Lists.ContainsKey("Text Mesh Pro UI") && parameters.Lists["Text Mesh Pro UI"])
             {
                 List<TextMeshProUGUI> textMeshs = GameObjectHelper.GetComponentsInChildrens<TextMeshProUGUI>(gameObjects);
-                statusLocalizationScene.TextMeshs = FilterTextMesh(textMeshs, parameters, statusLocalizationScene);
+                statusLocalizationScene.TextMeshProUIs = FilterTextMeshProUI(textMeshs, parameters, statusLocalizationScene);
+            }
+            if (parameters.Lists.ContainsKey("Text Mesh Legacy") && parameters.Lists["Text Mesh Legacy"])
+            {
+                List<TextMesh> texts = GameObjectHelper.GetComponentsInChildrens<TextMesh>(gameObjects);
+                statusLocalizationScene.LegacyMeshTexts = FilterTextMeshLegacy(texts, parameters, statusLocalizationScene);
+            }
+            if (parameters.Lists.ContainsKey("Text Mesh Pro") && parameters.Lists["Text Mesh Pro"])
+            {
+                List<TextMeshPro> textMeshs = GameObjectHelper.GetComponentsInChildrens<TextMeshPro>(gameObjects);
+                statusLocalizationScene.TextMeshPros = FilterTextMeshPro(textMeshs, parameters, statusLocalizationScene);
             }
             if ( parameters.Lists.ContainsKey("Dropdown Legacy") && parameters.Lists["Dropdown Legacy"])
             {
@@ -120,12 +132,50 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             return result;
         }
 
-        public static List<TextMeshProUGUI> FilterTextMesh(List<TextMeshProUGUI> texts, SearchTextParameters parameters, StatusLocalizationScene statusLocalizationScene)
+        public static List<TextMeshProUGUI> FilterTextMeshProUI(List<TextMeshProUGUI> texts, SearchTextParameters parameters, StatusLocalizationScene statusLocalizationScene)
         {
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
             List<TextMeshProUGUI> result = new List<TextMeshProUGUI>();
 
             foreach (TextMeshProUGUI text in texts)
+            {
+                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
+                    continue;
+
+                if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)
+                    continue;
+
+                result.Add(text);
+            }
+
+            return result;
+        }
+
+        public static List<TextMesh> FilterTextMeshLegacy(List<TextMesh> texts, SearchTextParameters parameters, StatusLocalizationScene statusLocalizationScene)
+        {
+            LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
+            List<TextMesh> result = new List<TextMesh>();
+
+            foreach (TextMesh text in texts)
+            {
+                if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
+                    continue;
+
+                if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)
+                    continue;
+
+                result.Add(text);
+            }
+
+            return result;
+        }
+
+        public static List<TextMeshPro> FilterTextMeshPro(List<TextMeshPro> texts, SearchTextParameters parameters, StatusLocalizationScene statusLocalizationScene)
+        {
+            LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
+            List<TextMeshPro> result = new List<TextMeshPro>();
+
+            foreach (TextMeshPro text in texts)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;

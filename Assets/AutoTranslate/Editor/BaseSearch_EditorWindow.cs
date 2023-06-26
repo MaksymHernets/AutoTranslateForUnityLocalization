@@ -88,7 +88,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected void FillDispalay_StatusLocalization()
 		{
             _checkLists[0].FillElements(_statusLocalizationScene.LegacyTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
-            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshProUIs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
             _checkLists[2].FillElements(_statusLocalizationScene.LegacyDropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
             _checkLists[3].FillElements(_statusLocalizationScene.TMP_Dropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
         }
@@ -96,7 +96,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected void GetCheckTable()
 		{
             _statusLocalizationScene.LegacyTexts = GetBack<Text>(_statusLocalizationScene.LegacyTexts, _checkLists[0].GetElements());
-            _statusLocalizationScene.TextMeshs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshs, _checkLists[1].GetElements());
+            _statusLocalizationScene.TextMeshProUIs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshProUIs, _checkLists[1].GetElements());
             _statusLocalizationScene.LegacyDropdowns = GetBack<Dropdown>(_statusLocalizationScene.LegacyDropdowns, _checkLists[2].GetElements());
             _statusLocalizationScene.TMP_Dropdowns = GetBack<TMP_Dropdown>(_statusLocalizationScene.TMP_Dropdowns, _checkLists[3].GetElements());
         }

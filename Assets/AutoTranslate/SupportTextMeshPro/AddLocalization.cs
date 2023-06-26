@@ -20,11 +20,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.SupportTextMeshPro
 
             if (parameters.Lists.ContainsKey("Text Mesh Pro") && parameters.Lists["Text Mesh Pro"])
             {
-                AddLocalization_TextMeshPro(statusLocalizationScene.TextMeshs, stringTable, sharedTable);
+                AddLocalization_TextMeshProUI(statusLocalizationScene.TextMeshProUIs, stringTable, sharedTable);
             }
         }
 
-        private static void AddLocalization_TextMeshPro(List<TextMeshProUGUI> texts, StringTable stringTable, SharedTableData sharedTable)
+        private static void AddLocalization_TextMeshProUI(List<TextMeshProUGUI> texts, StringTable stringTable, SharedTableData sharedTable)
         {
             LocalizeStringEvent localizeStringEvent = default(LocalizeStringEvent);
             SharedTableEntry sharedTableEntry = default(SharedTableEntry);
@@ -38,7 +38,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.SupportTextMeshPro
 
                 localizeStringEvent.Clear_OnUpdateString();
                 localizeStringEvent.Sign_ReferenceTable(sharedTable.TableCollectionName, sharedTableEntry.Key);
-                localizeStringEvent.Sign_OnUpdateString_TextMeshPro(text);
+                localizeStringEvent.Sign_OnUpdateString_TextMeshProUI(text);
             }
         }
     }
