@@ -18,6 +18,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
         public List<TMP_Dropdown> TMP_Dropdowns;
 
         public List<GameObject> Prefabs;
+        public List<GameObject> VariantPrefabs;
         public List<LocalizeStringEvent> LocalizeStringEvents;
 
         public StatusLocalizationScene()
@@ -31,15 +32,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             TMP_Dropdowns = new List<TMP_Dropdown>();
 
             Prefabs = new List<GameObject>();
+            VariantPrefabs = new List<GameObject>();
             LocalizeStringEvents = new List<LocalizeStringEvent>();
         }
 
         public override string ToString()
         {
-            return String.Format("Found:\nText Legacy: {0}\nText Mesh Legacy: {1}\nText Mesh Pro UI: {2}\nText Mesh Pro: {3}\nLocalize string event: {4}\nPrefabs: {5}\nDropdown Legacy: {6}\nTMP_Dropdowns: {7}",
+            return String.Format("Found:\nText Legacy: {0}\nText Mesh Legacy: {1}\nText Mesh Pro UI: {2}\nText Mesh Pro: {3}\nLocalize string event: {4}\nPrefabs: {5}\nVariant Prefabs: {6}\nDropdown Legacy: {7}\nTMP_Dropdowns: {8}",
                 LegacyTexts.Count, LegacyMeshTexts.Count,
                 TextMeshProUIs.Count, TextMeshPros.Count,
-                LocalizeStringEvents.Count, Prefabs.Count,
+                LocalizeStringEvents.Count, Prefabs.Count, VariantPrefabs.Count,
                 LegacyDropdowns.Count,  TMP_Dropdowns.Count);
         }
     }

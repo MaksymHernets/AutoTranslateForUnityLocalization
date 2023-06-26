@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,12 +52,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndFadeGroup();
             EditorGUILayout.BeginFadeGroup(2); // Begin 1
             _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipVariantPrefab = LinesGUI.DrawLineToggle("Skip variant prefabs", _skipVariantPrefab);
             _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
-            EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
-            GUI.enabled = false;
+            //EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
+            //GUI.enabled = false;
             if (GUILayout.Button("Add localization"))
             {
                 StartAddLocalization();
@@ -65,32 +67,44 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndHorizontal();
         }
 
-        private string StartAddLocalization()
+        private void StartAddLocalization()
         {
-            //AddLocalizationParameters parameters = new AddLocalizationParameters();
+            try
+            {
+                EditorUtility.DisplayProgressBar("Add Localization", "Load prefabs", 0);
 
-            //if (_dropdownTables.Selected == KEYWORD_NEWTABLE) parameters.NameTable = _nameTable;
-            //else parameters.NameTable = _dropdownTables.Selected;
+                AddLocalizationParameters parameters = new AddLocalizationParameters();
 
-            //if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
+                parameters.IsSkipPrefab = _skipPrefab;
+                parameters.IsSkipVariantPrefab = _skipVariantPrefab;
+                parameters.IsSkipEmptyText = _skipEmptyText;
+                parameters.SourceLocale = _selectedLocale;
+                parameters.Lists = _checkListSearchElements.GetElements(true, true);
 
-            //parameters.IsSkipPrefab = _skipPrefab;
-            //parameters.IsSkipEmptyText = _skipEmptyText;
-            //parameters.SourceLocale = _selectedLocale;
-            //parameters.Lists = _checkListSearchElements.GetElements();
+                _searchTextParameters.Lists = _checkListScenes.GetElements(true, true);
+                List<GameObject> gameObjects = DatabaseProject.GetPrefabs(_checkListScenes.GetNames(true, true));
 
-            //if (_statusLocalizationScene == null) StartSearch();
-            //else GetCheckTable();
+                float dola = gameObjects.Count * 0.1f;
+                int index = 0;
 
-            //AddLocalization.Execute(parameters, _statusLocalizationScene);
-            //if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
-            //if (_autoSave)
-            //{
-            //    EditorSceneManager.SaveOpenScenes();
-            //    EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
-            //}
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    EditorUtility.DisplayProgressBar("Add Localization", "Prefabs: " + gameObject.name, index * dola);
 
-            return "Completed";
+                    parameters.NameTable = "StringTable_" + gameObject.name + "_Prefab";
+
+                    _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
+
+                    AddLocalization.Execute(parameters, _statusLocalizationScene);
+
+                    EditorUtility.SetDirty(gameObject);
+                }
+                ++index;
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
         }
     }
 }

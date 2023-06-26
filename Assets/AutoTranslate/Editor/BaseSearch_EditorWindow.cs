@@ -19,7 +19,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
 
-        protected bool _skipPrefab = true;
+        protected bool _skipPrefab = false;
+        protected bool _skipVariantPrefab = false;
         protected bool _skipEmptyText = false;
         protected bool _removeMissStringEvents = true;
         protected bool _autoSave = true;

@@ -3,6 +3,7 @@ using GoodTime.Tools.GUIPro;
 using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
@@ -78,6 +79,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _dropdownLanguages.Draw();
 
             _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipVariantPrefab = LinesGUI.DrawLineToggle("Skip variant prefabs", _skipVariantPrefab);
             _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
@@ -120,6 +122,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void StartSearch()
         {
             _searchTextParameters.SkipPrefab = _skipPrefab;
+            _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
             _searchTextParameters.SkipEmptyText = _skipEmptyText;
             _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
 
@@ -137,6 +140,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
             parameters.IsSkipPrefab = _skipPrefab;
+            parameters.IsSkipVariantPrefab= _skipVariantPrefab;
             parameters.IsSkipEmptyText = _skipEmptyText;
             parameters.SourceLocale = _selectedLocale;
             parameters.Lists = _checkListSearchElements.GetElements(true, true);

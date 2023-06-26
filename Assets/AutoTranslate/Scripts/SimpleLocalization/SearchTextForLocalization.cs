@@ -73,9 +73,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 List<TMP_Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<TMP_Dropdown>(gameObjects);
                 statusLocalizationScene.TMP_Dropdowns = FilterDropdownTMP(dropdowns, parameters, statusLocalizationScene);
             }
-            if ( parameters.SkipPrefab == false )
+            if (parameters.SkipPrefab == false)
             {
                 statusLocalizationScene.Prefabs = GameObjectHelper.DetectPrefabs(gameObjects);
+            }
+            if (parameters.SkipVariantPrefab == false)
+            {
+                statusLocalizationScene.VariantPrefabs = GameObjectHelper.DetectVariantPrefabs(gameObjects);
             }
             statusLocalizationScene.LocalizeStringEvents = GetAllLocalizeStringEvents(gameObjects);
             return statusLocalizationScene;
@@ -89,6 +93,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             foreach (Text text in texts)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true) 
+                    continue;
+
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
                     continue;
 
                 if ( string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true) 
@@ -110,6 +117,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;
 
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
+                    continue;
+
                 result.Add(text);
             }
 
@@ -126,6 +136,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;
 
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
+                    continue;
+
                 result.Add(text);
             }
 
@@ -140,6 +153,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             foreach (TextMeshProUGUI text in texts)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
+                    continue;
+
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
                     continue;
 
                 if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)
@@ -161,6 +177,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
                     continue;
 
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
+                    continue;
+
                 if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)
                     continue;
 
@@ -178,6 +197,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             foreach (TextMeshPro text in texts)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(text.gameObject) && parameters.SkipPrefab == true)
+                    continue;
+
+                if (PrefabUtility.IsPartOfVariantPrefab(text.gameObject) && parameters.SkipVariantPrefab == true)
                     continue;
 
                 if (string.IsNullOrEmpty(text.text) && parameters.SkipEmptyText == true)

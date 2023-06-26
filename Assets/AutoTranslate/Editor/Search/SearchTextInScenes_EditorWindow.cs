@@ -2,8 +2,10 @@ using GoodTime.HernetsMaksym.AutoTranslate.Editor;
 using GoodTime.Tools.GUIPro;
 using GoodTime.Tools.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -49,12 +51,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndFadeGroup();
             EditorGUILayout.BeginFadeGroup(2); // Begin 1
             _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipVariantPrefab = LinesGUI.DrawLineToggle("Skip variant prefabs", _skipVariantPrefab);
             _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
-            EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
-            GUI.enabled = false;
+            //EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
+            //GUI.enabled = false;
             if (GUILayout.Button("Add localization"))
             {
                 StartAddLocalization();
@@ -63,32 +66,55 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndHorizontal();
         }
 
-        private string StartAddLocalization()
+        private void StartAddLocalization()
         {
-            //AddLocalizationParameters parameters = new AddLocalizationParameters();
+            try
+            {
+                EditorUtility.DisplayProgressBar("Add Localization", "Start", 0);
 
-            //if (_dropdownTables.Selected == KEYWORD_NEWTABLE) parameters.NameTable = _nameTable;
-            //else parameters.NameTable = _dropdownTables.Selected;
+                AddLocalizationParameters parameters = new AddLocalizationParameters();
 
-            //if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
+                //if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
-            //parameters.IsSkipPrefab = _skipPrefab;
-            //parameters.IsSkipEmptyText = _skipEmptyText;
-            //parameters.SourceLocale = _selectedLocale;
-            //parameters.Lists = _checkListSearchElements.GetElements();
+                parameters.IsSkipPrefab = _skipPrefab;
+                parameters.IsSkipVariantPrefab = _skipVariantPrefab;
+                parameters.IsSkipEmptyText = _skipEmptyText;
+                parameters.SourceLocale = _selectedLocale;
+                parameters.Lists = _checkListSearchElements.GetElements(true, true);
 
-            //if (_statusLocalizationScene == null) StartSearch();
-            //else GetCheckTable();
+                //if (_statusLocalizationScene == null) StartSearch();
+                //else GetCheckTable();
 
-            //AddLocalization.Execute(parameters, _statusLocalizationScene);
-            //if (_removeMissStringEvents) AddLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
-            //if (_autoSave)
-            //{
-            //    EditorSceneManager.SaveOpenScenes();
-            //    EditorUtility.SetDirty(_prefabStage.prefabContentsRoot);
-            //}
+                _searchTextParameters.Lists = _checkListScenes.GetElements(true, true);
+                List<string> paths = _checkListScenes.GetNames(true, true);
 
-            return "Completed";
+                float dola = paths.Count * 0.1f;
+                int index = 0;
+
+                foreach (string path in paths)
+                {
+                    EditorUtility.DisplayProgressBar("Add Localization", "Scene: " + path, index * dola);
+
+                    Scene openScene = EditorSceneManager.OpenScene(path);
+
+                    parameters.NameTable = "StringTable_" + openScene.name + "_Scene";
+
+                    _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
+
+                    AddLocalization.Execute(parameters, _statusLocalizationScene);
+
+                    if (_removeMissStringEvents) ClearUpLocalization.RemoveMiss_LocalizeStringEvent(_statusLocalizationScene.LocalizeStringEvents);
+
+                    //EditorSceneManager.SaveScene(scene);
+                    EditorSceneManager.SaveOpenScenes();
+                }
+                ++index;
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+
         }
     }
 }
