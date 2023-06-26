@@ -40,6 +40,23 @@ namespace GoodTime.Tools.Helpers
             return prefabs;
         }
 
+        public static List<GameObject> DetectVariantPrefabs(GameObject[] gameObjects)
+        {
+            List<GameObject> prefabs = new List<GameObject>();
+            foreach (GameObject gameObject in gameObjects)
+            {
+                GameObject[] subGameObjects = GameObjectHelper.GetSubGameObjects(gameObject);
+                foreach (GameObject subGameObject in subGameObjects)
+                {
+                    if (PrefabUtility.IsPartOfVariantPrefab(subGameObject))
+                    {
+                        prefabs.Add(subGameObject);
+                    }
+                }
+            }
+            return prefabs;
+        }
+
         public static string GetFullName(this GameObject gameObject)
         {
             string fullName = string.Empty;
