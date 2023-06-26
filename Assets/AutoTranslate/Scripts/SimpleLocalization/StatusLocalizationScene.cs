@@ -38,11 +38,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
         public override string ToString()
         {
-            return String.Format("Found:\nText Legacy: {0}\nText Mesh Legacy: {1}\nText Mesh Pro UI: {2}\nText Mesh Pro: {3}\nLocalize string event: {4}\nPrefabs: {5}\nVariant Prefabs: {6}\nDropdown Legacy: {7}\nTMP_Dropdowns: {8}",
+            return String.Format("Found:\nText Legacy: {0}\nText Mesh Legacy: {1}\nText Mesh Pro UI: {2}\nText Mesh Pro: {3}\nLocalize string event: {4}\nPrefabs: {5}\nVariant Prefabs: {6}",
                 LegacyTexts.Count, LegacyMeshTexts.Count,
                 TextMeshProUIs.Count, TextMeshPros.Count,
-                LocalizeStringEvents.Count, Prefabs.Count, VariantPrefabs.Count,
-                LegacyDropdowns.Count,  TMP_Dropdowns.Count);
+                LocalizeStringEvents.Count, Prefabs.Count, VariantPrefabs.Count);
         }
     }
 }

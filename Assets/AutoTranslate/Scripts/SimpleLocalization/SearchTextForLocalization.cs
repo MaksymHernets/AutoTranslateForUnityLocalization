@@ -19,8 +19,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             Checklists.Add(new RowCheckList("Text Mesh Legacy", true, true));
             Checklists.Add(new RowCheckList("Text Mesh Pro UI", true, true));
             Checklists.Add(new RowCheckList("Text Mesh Pro", true, true));
-            Checklists.Add(new RowCheckList("Dropdown Legacy", false, false));
-            Checklists.Add(new RowCheckList("Dropdown Mesh Pro", false, false));
+            //Checklists.Add(new RowCheckList("Dropdown Legacy", false, false));
+            //Checklists.Add(new RowCheckList("Dropdown Mesh Pro", false, false));
             return Checklists;
         }
 
