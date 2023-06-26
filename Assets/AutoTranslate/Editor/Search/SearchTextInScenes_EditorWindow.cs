@@ -114,7 +114,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorUtility.ClearProgressBar();
             }
-
+            Debug.Log("Completed Add Localization for scenes");
         }
     }
 }

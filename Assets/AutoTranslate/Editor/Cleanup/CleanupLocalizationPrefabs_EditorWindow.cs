@@ -112,6 +112,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorUtility.ClearProgressBar();
             }
+            Debug.Log("Completed Remove Localization for prefabs");
         }
     }
 }
