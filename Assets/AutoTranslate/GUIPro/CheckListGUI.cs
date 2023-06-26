@@ -8,9 +8,11 @@ namespace GoodTime.Tools.GUIPro
     public class CheckListGUI : BaseGUI
 	{
 		public List<RowCheckList> RowCheckLists { get; private set; }
-		public int Width;
-		public int Height;
-		public Color BackColor = Color.white;
+		public int Width = 1000;
+        public int MinWidth = 100;
+        public int Height;
+        public int MinHeight = 100;
+        public Color BackColor = Color.white;
 
 		private GUIStyle CheckListStyle;
 		private Texture2D texture2D;
@@ -49,7 +51,7 @@ namespace GoodTime.Tools.GUIPro
             CheckListStyle.padding = new RectOffset(7, 7, 7, 7);
             CheckListStyle.normal.background = texture2D;
 
-            vector2 = EditorGUILayout.BeginScrollView(vector2, CheckListStyle, GUILayout.MaxHeight(Height));
+            vector2 = EditorGUILayout.BeginScrollView(vector2, CheckListStyle, GUILayout.ExpandWidth(true), GUILayout.MaxHeight(Height), GUILayout.MinHeight(MinHeight));
         }
 
 		private void DrawElements()

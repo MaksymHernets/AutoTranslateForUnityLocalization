@@ -41,6 +41,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             List<GameObject> gameObjects = DatabaseProject.GetPrefabs();
             _checkListPrefabs = new CheckListGUI(gameObjects.Select(w => w.name).ToList());
+            _checkListPrefabs.Width = 150;
+            _checkListPrefabs.Height = 1000;
 
             List<string> list2 = new List<string>();
             list2.Add("LocalizeStringEvent");
@@ -49,6 +51,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             list2.Add("LocalizeAudioClipEvent");
             list2.Add("LocalizedGameObjectEvent");
             _checkListComponents = new CheckListGUI(list2);
+            _checkListComponents.Height = 150;
         }
 
         protected override void OnFocus()
@@ -56,17 +59,18 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnFocus();
 
             List<GameObject> gameObjects = DatabaseProject.GetPrefabs();
-            _checkListPrefabs = new CheckListGUI(gameObjects.Select(w => w.name).ToList());
+            _checkListPrefabs.Update(gameObjects.Select(w => w.name).ToList());
+            //_checkListPrefabs.Width = 150;
         }
 
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(400)); // Main Begin 
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true)); // Main Begin 
 
-            EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginVertical();
             _checkListPrefabs.DrawButtons("Prefabs:");
-            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical(); // Begin 1
             Show_CurrentOpen();

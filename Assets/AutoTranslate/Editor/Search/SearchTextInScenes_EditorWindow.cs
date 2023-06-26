@@ -17,6 +17,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private const string k_WindowTitle = "Search Text in Scenes";
 
         private CheckListGUI _checkListScenes;
+        private bool LC = true;
 
         [MenuItem("Window/Auto Localization/Search Text in Scenes", false, MyProjectSettings_AutoTranslate.BaseIndex + 41)]
         public static void ShowWindow()
@@ -32,6 +33,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnEnable();
             string[] scenes = DatabaseProject.GetPathScenes();
             _checkListScenes = new CheckListGUI(scenes.ToList());
+            _checkListScenes.Width = 300;
+            _checkListScenes.Height = 1000;
         }
 
         protected override void OnFocus()
@@ -45,11 +48,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             ShowNameWindow(k_WindowTitle);
 
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
-            EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true)); // Main Begin 
+            EditorGUILayout.BeginVertical(); // Begin 0
             _checkListScenes.DrawButtons("Scenes:");
-            EditorGUILayout.EndFadeGroup();
-            EditorGUILayout.BeginFadeGroup(2); // Begin 1
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical(GUILayout.MaxHeight(200)); // Begin 1
             _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
             _skipVariantPrefab = LinesGUI.DrawLineToggle("Skip variant prefabs", _skipVariantPrefab);
             _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
@@ -58,11 +61,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             //EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
             //GUI.enabled = false;
+            LC = EditorGUILayout.BeginFoldoutHeaderGroup(LC , "Search UI Elements:"); // Begin 1
+            if ( LC )
+            {
+                _checkListSearchElements.Draw();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+
             if (GUILayout.Button("Add localization"))
             {
                 StartAddLocalization();
             }
-            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndVertical();
+            
             EditorGUILayout.EndHorizontal();
         }
 
@@ -85,7 +96,10 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 //if (_statusLocalizationScene == null) StartSearch();
                 //else GetCheckTable();
 
-                _searchTextParameters.Lists = _checkListScenes.GetElements(true, true);
+                _searchTextParameters.SkipPrefab = _skipPrefab;
+                _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
+                _searchTextParameters.SkipEmptyText = _skipEmptyText;
+                _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
                 List<string> paths = _checkListScenes.GetNames(true, true);
 
                 float dola = paths.Count * 0.1f;
@@ -99,7 +113,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
                     parameters.NameTable = "StringTable_" + openScene.name + "_Scene";
 
-                    _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
+                    _statusLocalizationScene = SearchTextForLocalization.Search(openScene, _searchTextParameters);
 
                     AddLocalization.Execute(parameters, _statusLocalizationScene);
 

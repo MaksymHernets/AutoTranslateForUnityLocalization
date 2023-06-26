@@ -3,12 +3,10 @@ using GoodTime.Tools.GUIPro;
 using GoodTime.Tools.Helpers;
 using System;
 using System.Linq;
-using System.Security.Cryptography;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -59,8 +57,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorGUILayout.HelpBox("Tip. You can also search for localization text for a prefab by opening prefab edit", MessageType.Info);
             }
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
-            EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true)); // Main Begin 
+            EditorGUILayout.BeginVertical(); // Begin 0
 
             if (_prefabStage == null)
 			{
@@ -84,7 +82,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
-            EditorGUILayout.EndFadeGroup(); // End 0
+            EditorGUILayout.EndVertical(); // End 0
             EditorGUILayout.BeginFadeGroup(1); // Begin 1
 
             EditorGUILayout.LabelField("Search UI Elements:");

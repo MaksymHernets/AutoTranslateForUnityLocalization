@@ -20,8 +20,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected string _nameTable = string.Empty;
 
         protected bool _skipPrefab = false;
-        protected bool _skipVariantPrefab = false;
-        protected bool _skipEmptyText = false;
+        protected bool _skipVariantPrefab = true;
+        protected bool _skipEmptyText = true;
         protected bool _removeMissStringEvents = true;
         protected bool _autoSave = true;
 
@@ -65,7 +65,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _searchTextParameters = new SearchTextParameters();
 
             List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
-            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 150);
+            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 400);
+            _checkListSearchElements.MinHeight = 100;
 
             _checkLists = new List<CheckListGUI>();
             List<TabGUI> tabGUIs = new List<TabGUI>();
