@@ -1,7 +1,7 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate for Unity Localization",
-    "version": "0.4.5",
+    "version": "0.4.6",
 	"author": "Hernets Maksym",
 	"license": "ISC",
     "unity": "2020.3",
@@ -37,6 +37,6 @@
 	],
 	"_upm": 
 	{
-		"changelog": "### Changed\n- Updated screenshots\n### Fixed\n- Fixed parsing of google translate response\n- Fixed show scenes in project in cleanuplocalizationscenes\n- Fixed dont save after remove localization in scene\n- Fixed dont work to search TextMeshPro\n- Fixed nullreferense prefab when autosave searchtext in prerab\n- Fixed CheckList when default parameters be false"
+		"changelog": "### Added\n- Added search and localization for TextMeshLegacy and TextMeshPro\n- Added ability skip variant prefab for search\n- Added message when completed\n- Added instruction to Demo.scene\n### Changed- Changed default parameters (skip empty text) for Search Text\n- Remove option dropdown for search\n- Updated ResultStringTable screenshot\n### Fixed\n- Fixed detect variant prefab\n- Fixed detect prefab in scene or prefab\n- Fixed some trouble GUI"
 	}
 }

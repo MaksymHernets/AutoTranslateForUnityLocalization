@@ -3,6 +3,20 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [0.4.6] - 2023-06-26
+### Added
+- Added search and localization for TextMeshLegacy and TextMeshPro
+- Added ability skip variant prefab for search
+- Added message when completed
+- Added instruction to Demo.scene
+### Changed
+- Changed default parameters (skip empty text) for Search Text
+- Remove option dropdown for search
+- Updated ResultStringTable screenshot
+### Fixed
+- Fixed detect variant prefab
+- Fixed detect prefab in scene or prefab
+- Fixed some trouble GUI
 
 ## [0.4.5] - 2023-06-24
 ### Changed
