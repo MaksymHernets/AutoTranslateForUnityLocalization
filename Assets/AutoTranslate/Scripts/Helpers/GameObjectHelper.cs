@@ -31,7 +31,24 @@ namespace GoodTime.Tools.Helpers
                 GameObject[] subGameObjects = GameObjectHelper.GetSubGameObjects(gameObject);
                 foreach (GameObject subGameObject in subGameObjects)
                 {
-                    if (PrefabUtility.IsAnyPrefabInstanceRoot(subGameObject))
+                    if (PrefabUtility.IsAnyPrefabInstanceRoot(subGameObject) && !PrefabUtility.IsPartOfVariantPrefab(subGameObject))
+                    {
+                        prefabs.Add(subGameObject);
+                    }
+                }
+            }
+            return prefabs;
+        }
+
+        public static List<GameObject> DetectVariantPrefabs(GameObject[] gameObjects)
+        {
+            List<GameObject> prefabs = new List<GameObject>();
+            foreach (GameObject gameObject in gameObjects)
+            {
+                GameObject[] subGameObjects = GameObjectHelper.GetSubGameObjects(gameObject);
+                foreach (GameObject subGameObject in subGameObjects)
+                {
+                    if (PrefabUtility.IsPartOfVariantPrefab(subGameObject))
                     {
                         prefabs.Add(subGameObject);
                     }

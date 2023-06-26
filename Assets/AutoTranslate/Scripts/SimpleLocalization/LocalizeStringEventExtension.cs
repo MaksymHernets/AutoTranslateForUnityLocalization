@@ -38,7 +38,29 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             }
         }
 
-        public static void Sign_OnUpdateString_TextMeshPro(this LocalizeStringEvent localizeStringEvent, TextMeshProUGUI text)
+        public static void Sign_OnUpdateString_TextMeshPro(this LocalizeStringEvent localizeStringEvent, TextMeshPro text)
+        {
+            var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
+            if (targetinfo != null)
+            {
+                UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), text, targetinfo, false) as UnityAction<string>;
+                UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
+                EditorUtility.SetDirty(text.gameObject);
+            }
+        }
+
+        public static void Sign_OnUpdateString_TextMeshLegacy(this LocalizeStringEvent localizeStringEvent, TextMesh text)
+        {
+            var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
+            if (targetinfo != null)
+            {
+                UnityAction<string> action = Delegate.CreateDelegate(typeof(UnityAction<string>), text, targetinfo, false) as UnityAction<string>;
+                UnityEventTools.AddPersistentListener(localizeStringEvent.OnUpdateString, action);
+                EditorUtility.SetDirty(text.gameObject);
+            }
+        }
+
+        public static void Sign_OnUpdateString_TextMeshProUI(this LocalizeStringEvent localizeStringEvent, TextMeshProUGUI text)
         {
             var targetinfo = UnityEvent.GetValidMethodInfo(text, "set_text", new Type[] { typeof(string) });
             if (targetinfo != null)

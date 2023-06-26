@@ -52,6 +52,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             else
                 _checkListStringTable = new CheckListGUI(new List<string>());
 
+            _checkListStringTable.Width = 150;
+            _checkListStringTable.Height = 1000;
+
             if (_locales != null)
             {
                 _checkListLanguages = new CheckListGUI(_locales.Select(w => w.name).ToList());

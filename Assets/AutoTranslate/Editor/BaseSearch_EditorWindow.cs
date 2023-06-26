@@ -19,7 +19,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected string _infoLocalization = string.Empty;
         protected string _nameTable = string.Empty;
 
-        protected bool _skipPrefab = true;
+        protected bool _skipPrefab = false;
+        protected bool _skipVariantPrefab = true;
         protected bool _skipEmptyText = true;
         protected bool _removeMissStringEvents = true;
         protected bool _autoSave = true;
@@ -64,7 +65,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _searchTextParameters = new SearchTextParameters();
 
             List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
-            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 150);
+            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 400);
+            _checkListSearchElements.MinHeight = 100;
 
             _checkLists = new List<CheckListGUI>();
             List<TabGUI> tabGUIs = new List<TabGUI>();
@@ -88,17 +90,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected void FillDispalay_StatusLocalization()
 		{
             _checkLists[0].FillElements(_statusLocalizationScene.LegacyTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
-            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
-            _checkLists[2].FillElements(_statusLocalizationScene.LegacyDropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
-            _checkLists[3].FillElements(_statusLocalizationScene.TMP_Dropdowns.Select(w => w.gameObject.GetFullName(w.captionText.text)).ToList());
+            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshProUIs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[2].FillElements(_statusLocalizationScene.TextMeshPros.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[3].FillElements(_statusLocalizationScene.LegacyMeshTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
         }
 
         protected void GetCheckTable()
 		{
             _statusLocalizationScene.LegacyTexts = GetBack<Text>(_statusLocalizationScene.LegacyTexts, _checkLists[0].GetElements());
-            _statusLocalizationScene.TextMeshs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshs, _checkLists[1].GetElements());
-            _statusLocalizationScene.LegacyDropdowns = GetBack<Dropdown>(_statusLocalizationScene.LegacyDropdowns, _checkLists[2].GetElements());
-            _statusLocalizationScene.TMP_Dropdowns = GetBack<TMP_Dropdown>(_statusLocalizationScene.TMP_Dropdowns, _checkLists[3].GetElements());
+            _statusLocalizationScene.TextMeshProUIs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshProUIs, _checkLists[1].GetElements());
+            _statusLocalizationScene.TextMeshPros = GetBack<TextMeshPro>(_statusLocalizationScene.TextMeshPros, _checkLists[2].GetElements());
+            _statusLocalizationScene.LegacyMeshTexts = GetBack<TextMesh>(_statusLocalizationScene.LegacyMeshTexts, _checkLists[3].GetElements());
         }
 
         protected List<T> GetBack<T>(List<T> lists, Dictionary<string, bool> keyValuePairs)

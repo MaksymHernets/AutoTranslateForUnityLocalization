@@ -7,7 +7,6 @@ using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
@@ -58,8 +57,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorGUILayout.HelpBox("Tip. You can also search for localization text for a prefab by opening prefab edit", MessageType.Info);
             }
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(170)); // Main Begin 
-            EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true)); // Main Begin 
+            EditorGUILayout.BeginVertical(); // Begin 0
 
             if (_prefabStage == null)
 			{
@@ -78,11 +77,12 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _dropdownLanguages.Draw();
 
             _skipPrefab = LinesGUI.DrawLineToggle("Skip prefabs", _skipPrefab);
+            _skipVariantPrefab = LinesGUI.DrawLineToggle("Skip variant prefabs", _skipVariantPrefab);
             _skipEmptyText = LinesGUI.DrawLineToggle("Skip empty text", _skipEmptyText);
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
-            EditorGUILayout.EndFadeGroup(); // End 0
+            EditorGUILayout.EndVertical(); // End 0
             EditorGUILayout.BeginFadeGroup(1); // Begin 1
 
             EditorGUILayout.LabelField("Search UI Elements:");
@@ -120,6 +120,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void StartSearch()
         {
             _searchTextParameters.SkipPrefab = _skipPrefab;
+            _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
             _searchTextParameters.SkipEmptyText = _skipEmptyText;
             _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
 
@@ -137,6 +138,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             if (string.IsNullOrEmpty(parameters.NameTable)) return "nameTable is null";
 
             parameters.IsSkipPrefab = _skipPrefab;
+            parameters.IsSkipVariantPrefab= _skipVariantPrefab;
             parameters.IsSkipEmptyText = _skipEmptyText;
             parameters.SourceLocale = _selectedLocale;
             parameters.Lists = _checkListSearchElements.GetElements(true, true);

@@ -43,6 +43,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             string[] scenes = DatabaseProject.GetPathScenes();
             _checkListScenes = new CheckListGUI(scenes.ToList());
+            _checkListScenes.Width = 150;
+            _checkListScenes.Height = 1000;
 
             List<string> list2 = new List<string>();
             list2.Add("LocalizeStringEvent");
@@ -51,6 +53,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             list2.Add("LocalizeAudioClipEvent");
             list2.Add("LocalizedGameObjectEvent");
             _checkListComponents = new CheckListGUI(list2);
+            _checkListComponents.Height = 150;
         }
 
         protected override void OnFocus()
@@ -59,16 +62,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             string[] scenes = DatabaseProject.GetPathScenes();
             _checkListScenes.Update(scenes.ToList());
+            _checkListScenes.Width = 150;
         }
 
         private void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true), GUILayout.MinHeight(400)); // Main Begin 
-            
-            EditorGUILayout.BeginFadeGroup(1); // Begin 0
+            EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true)); // Main Begin 
+
+            EditorGUILayout.BeginVertical();
             _checkListScenes.DrawButtons("Scenes:");
-            EditorGUILayout.EndFadeGroup();
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical(); // Begin 1
             Show_CurrentOpen();
@@ -119,6 +123,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorUtility.ClearProgressBar();
             }
+            Debug.Log("Completed Remove Localization for scenes");
         }
     }
 }
