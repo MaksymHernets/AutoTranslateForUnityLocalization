@@ -49,8 +49,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _currentScene = DatabaseProject.GetCurrentScene();
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
 
-            if (_prefabStage == null) _nameTable = "StringTable_" + _currentScene.name + "_Scene";
-            else _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";       
+            if (_prefabStage == null)
+            {
+                //_dropdownTables.Filter = "scene";
+                _nameTable = "StringTable_" + _currentScene.name + "_Scene";
+            }
+            else
+            {
+                //_dropdownTables.Filter = "prefab";
+                _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";
+            }
         }
 
         private void OnGUI()
@@ -72,6 +80,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
             }
 
+            _dropdownTables.DrawFilter("Filter for string tabels");
             _dropdownTables.Draw();
 
             TextField_NewStringTable();

@@ -15,6 +15,7 @@ namespace GoodTime.Tools.GUIPro
         public string Name;
         public string Selected;
         public int Width;
+        public string Filter = "";
 
         private GenericMenu genericMenu;
         private List<GUIContent> GUIContents;
@@ -69,14 +70,25 @@ namespace GoodTime.Tools.GUIPro
                 genericMenu = new GenericMenu();
                 foreach (GUIContent content in GUIContents)
                 {
-                    genericMenu.AddItem(content, content.text == Selected, () =>
+                    if ( content.text.Contains(KEYWORD_NEWTABLE) || content.text.ToLower().Contains(Filter) )
                     {
-                        Selected = content.text;
-                        UpdateSelected?.Invoke(Selected);
-                    });
+                        genericMenu.AddItem(content, content.text == Selected, () =>
+                        {
+                            Selected = content.text;
+                            UpdateSelected?.Invoke(Selected);
+                        });
+                    }
                 }
                 genericMenu.DropDown(Position);
             }
+            EditorGUILayout.EndHorizontal();
+        }
+
+        public void DrawFilter(string name = "Filter:")
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(name, GUILayout.Width(Width));
+            Filter = EditorGUILayout.TextField(Filter);
             EditorGUILayout.EndHorizontal();
         }
 
