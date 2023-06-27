@@ -51,7 +51,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_prefabStage == null)
             {
-                //_dropdownTables.Filter = "scene";
+                _dropdownTables.Filter = "scene";
                 _nameTable = "StringTable_" + _currentScene.name + "_Scene";
             }
             else
@@ -73,11 +73,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_prefabStage == null)
 			{
-                LinesGUI.DrawTexts("Current Scene", _currentScene.name, k_SeparationWidth);
+                LinesGUI.DrawTexts("Current Scene", _currentScene.name, 200);
             }
             else
 			{
-                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
+                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, 200);
             }
 
             _dropdownTables.DrawFilter("Filter for string tabels");
