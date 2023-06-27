@@ -33,11 +33,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             base.OnEnable();
             _searchTextParameters = new SearchTextParameters();
             Dictionary<string, bool> list = new Dictionary<string, bool>();
-            foreach (var item in SearchTextForLocalization.GetAvailableForSearchUIElements())
+            foreach (var item in SearchTextForLocalization.GetAvailableForSearchUIComponents())
             {
                 list.Add(item.Name, true);
             }
-            _searchTextParameters.Lists = list;
+            _searchTextParameters.ListSearchComponents = list;
 
             List<GameObject> gameObjects = DatabaseProject.GetPrefabs();
             _checkListPrefabs = new CheckListGUI(gameObjects.Select(w => w.name).ToList());
@@ -96,7 +96,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorUtility.DisplayProgressBar("Cleanup Localization in Prefabs", "Load prefabs", 0);
 
-                _searchTextParameters.Lists = _checkListComponents.GetElements(true, true);
+                _searchTextParameters.ListSearchComponents = _checkListComponents.GetElements(true, true);
                 List<GameObject> gameObjects = DatabaseProject.GetPrefabs(_checkListPrefabs.GetNames(true, true));
 
                 float dola = gameObjects.Count * 0.1f;

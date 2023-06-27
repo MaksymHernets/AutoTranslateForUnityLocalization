@@ -1,7 +1,7 @@
 {
     "name": "com.maksymhernets.autotranslateforunitylocalization",
     "displayName": "Auto Translate for Unity Localization",
-    "version": "0.4.6",
+    "version": "0.4.7",
 	"author": "Hernets Maksym",
 	"license": "ISC",
     "unity": "2020.3",
@@ -37,6 +37,6 @@
 	],
 	"_upm": 
 	{
-		"changelog": "### Added\n- Added search and localization for TextMeshLegacy and TextMeshPro\n- Added ability skip variant prefab for search\n- Added message when completed\n- Added instruction to Demo.scene\n### Changed- Changed default parameters (skip empty text) for Search Text\n- Remove option dropdown for search\n- Updated ResultStringTable screenshot\n### Fixed\n- Fixed detect variant prefab\n- Fixed detect prefab in scene or prefab\n- Fixed some trouble GUI"
+		"changelog": "### Added\n- Added the ability to skip text that has parent components of type ui.\n- Added filter for dropdown of string table\n### Changed\n- Updated searchTextSceneWindow screenshot\n### Fixed\n- Fixed some bug guipro"
 	}
 }

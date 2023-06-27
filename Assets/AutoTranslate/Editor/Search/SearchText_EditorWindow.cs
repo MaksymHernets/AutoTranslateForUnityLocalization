@@ -15,6 +15,9 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Window parameters
         private const string k_WindowTitle = "Search Text in Scene or Prefab";
 
+        private bool LSC = true;
+        private bool LC = true;
+
         [MenuItem("Window/Auto Localization/Search Text in Scene or Prefab", false, MyProjectSettings_AutoTranslate.BaseIndex + 40)]
         public static void ShowWindow()
         {
@@ -46,8 +49,16 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _currentScene = DatabaseProject.GetCurrentScene();
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
 
-            if (_prefabStage == null) _nameTable = "StringTable_" + _currentScene.name + "_Scene";
-            else _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";       
+            if (_prefabStage == null)
+            {
+                _dropdownTables.Filter = "scene";
+                _nameTable = "StringTable_" + _currentScene.name + "_Scene";
+            }
+            else
+            {
+                //_dropdownTables.Filter = "prefab";
+                _nameTable = "StringTable_" + _prefabStage.prefabContentsRoot.name + "_Prefab";
+            }
         }
 
         private void OnGUI()
@@ -62,13 +73,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             if (_prefabStage == null)
 			{
-                LinesGUI.DrawTexts("Current Scene", _currentScene.name, k_SeparationWidth);
+                LinesGUI.DrawTexts("Current Scene", _currentScene.name, 200);
             }
             else
 			{
-                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, k_SeparationWidth);
+                LinesGUI.DrawTexts("Current Prefab", _prefabStage.prefabContentsRoot.name, 200);
             }
 
+            _dropdownTables.DrawFilter("Filter for string tabels");
             _dropdownTables.Draw();
 
             TextField_NewStringTable();
@@ -83,12 +95,20 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
             EditorGUILayout.EndVertical(); // End 0
-            EditorGUILayout.BeginFadeGroup(1); // Begin 1
-
-            EditorGUILayout.LabelField("Search UI Elements:");
-            _checkListSearchElements.Draw();
-
-            EditorGUILayout.EndFadeGroup(); // End 1
+            EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+            LSC = EditorGUILayout.BeginFoldoutHeaderGroup(LSC, "Skip parent UI Components:");
+            if (LSC)
+            {
+                _checkListSkipParentComponents.DrawButtons();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            LC = EditorGUILayout.BeginFoldoutHeaderGroup(LC, "Search UI Components:");
+            if ( LC)
+            {
+                _checkListSearchComponents.Draw();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal(); // Main End  
 
             if (GUILayout.Button("Search text for localization"))
@@ -122,7 +142,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _searchTextParameters.SkipPrefab = _skipPrefab;
             _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
             _searchTextParameters.SkipEmptyText = _skipEmptyText;
-            _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
+            _searchTextParameters.ListSearchComponents = _checkListSearchComponents.GetElements(true, true);
+            _searchTextParameters.ListSkipParentComponents = _checkListSkipParentComponents.GetElements(true, true);
 
             if (_prefabStage == null) _statusLocalizationScene = SearchTextForLocalization.Search(_currentScene, _searchTextParameters);
             else _statusLocalizationScene = SearchTextForLocalization.Search(_prefabStage.prefabContentsRoot, _searchTextParameters);
@@ -141,7 +162,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             parameters.IsSkipVariantPrefab= _skipVariantPrefab;
             parameters.IsSkipEmptyText = _skipEmptyText;
             parameters.SourceLocale = _selectedLocale;
-            parameters.Lists = _checkListSearchElements.GetElements(true, true);
+            parameters.Lists = _checkListSearchComponents.GetElements(true, true);
+            //parameters.ListSkipParentComponents = _checkListSkipParentComponents.GetElements(true, true);
 
             if (_statusLocalizationScene == null) StartSearch();
             else GetCheckTable();

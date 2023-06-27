@@ -5,7 +5,7 @@ namespace GoodTime.Tools.GUIPro
 {
     public static class LinesGUI
     {
-        public static void DrawTexts(string name, string name2, int width = 200)
+        public static void DrawTexts(string name, string name2, int width = 150)
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(name, GUILayout.Width(width));

@@ -7,12 +7,14 @@ using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GoodTime.Tools.GUIPro;
+using System.Security.Cryptography;
+using ASTools.Validator;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
 {
     public static class SearchTextForLocalization 
     {
-        public static List<RowCheckList> GetAvailableForSearchUIElements()
+        public static List<RowCheckList> GetAvailableForSearchUIComponents()
         {
             List<RowCheckList> Checklists = new List<RowCheckList>();
             Checklists.Add(new RowCheckList("Text Legacy", true, true));
@@ -21,6 +23,18 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             Checklists.Add(new RowCheckList("Text Mesh Pro", true, true));
             //Checklists.Add(new RowCheckList("Dropdown Legacy", false, false));
             //Checklists.Add(new RowCheckList("Dropdown Mesh Pro", false, false));
+            return Checklists;
+        }
+
+        public static List<RowCheckList> GetAvailableForSkipParentComponents()
+        {
+            List<RowCheckList> Checklists = new List<RowCheckList>();
+            Checklists.Add(new RowCheckList("Toggle", false, true));
+            Checklists.Add(new RowCheckList("Button", false, true));
+            Checklists.Add(new RowCheckList("Input Field Legacy", false, true));
+            Checklists.Add(new RowCheckList("Dropdown Legacy", false, true));
+            Checklists.Add(new RowCheckList("Input Field Pro", false, true));
+            Checklists.Add(new RowCheckList("Dropdown Pro", false, true));
             return Checklists;
         }
 
@@ -43,36 +57,44 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 		{
             StatusLocalizationScene statusLocalizationScene = new StatusLocalizationScene();
 
-            if ( parameters.Lists.ContainsKey("Text Legacy") && parameters.Lists["Text Legacy"])
+            if ( parameters.ListSearchComponents.ContainsKey("Text Legacy") && parameters.ListSearchComponents["Text Legacy"])
 			{
                 List<Text> texts = GameObjectHelper.GetComponentsInChildrens<Text>(gameObjects);
                 statusLocalizationScene.LegacyTexts = FilterTextLegacy(texts, parameters, statusLocalizationScene);
+                if (parameters.ListSkipParentComponents.Count != 0)
+                    statusLocalizationScene.LegacyTexts = FilterParentComponents<Text>(statusLocalizationScene.LegacyTexts, parameters.ListSkipParentComponents);
             }
-            if ( parameters.Lists.ContainsKey("Text Mesh Pro UI") && parameters.Lists["Text Mesh Pro UI"])
+            if ( parameters.ListSearchComponents.ContainsKey("Text Mesh Pro UI") && parameters.ListSearchComponents["Text Mesh Pro UI"])
             {
                 List<TextMeshProUGUI> textMeshs = GameObjectHelper.GetComponentsInChildrens<TextMeshProUGUI>(gameObjects);
                 statusLocalizationScene.TextMeshProUIs = FilterTextMeshProUI(textMeshs, parameters, statusLocalizationScene);
+                if (parameters.ListSkipParentComponents.Count != 0)
+                    statusLocalizationScene.TextMeshProUIs = FilterParentComponents<TextMeshProUGUI>(statusLocalizationScene.TextMeshProUIs, parameters.ListSkipParentComponents);
             }
-            if (parameters.Lists.ContainsKey("Text Mesh Legacy") && parameters.Lists["Text Mesh Legacy"])
+            if (parameters.ListSearchComponents.ContainsKey("Text Mesh Legacy") && parameters.ListSearchComponents["Text Mesh Legacy"])
             {
                 List<TextMesh> texts = GameObjectHelper.GetComponentsInChildrens<TextMesh>(gameObjects);
                 statusLocalizationScene.LegacyMeshTexts = FilterTextMeshLegacy(texts, parameters, statusLocalizationScene);
+                if (parameters.ListSkipParentComponents.Count != 0)
+                    statusLocalizationScene.LegacyMeshTexts = FilterParentComponents<TextMesh>(statusLocalizationScene.LegacyMeshTexts, parameters.ListSkipParentComponents);
             }
-            if (parameters.Lists.ContainsKey("Text Mesh Pro") && parameters.Lists["Text Mesh Pro"])
+            if (parameters.ListSearchComponents.ContainsKey("Text Mesh Pro") && parameters.ListSearchComponents["Text Mesh Pro"])
             {
                 List<TextMeshPro> textMeshs = GameObjectHelper.GetComponentsInChildrens<TextMeshPro>(gameObjects);
                 statusLocalizationScene.TextMeshPros = FilterTextMeshPro(textMeshs, parameters, statusLocalizationScene);
+                if (parameters.ListSkipParentComponents.Count != 0)
+                    statusLocalizationScene.TextMeshPros = FilterParentComponents<TextMeshPro>(statusLocalizationScene.TextMeshPros, parameters.ListSkipParentComponents);
             }
-            if ( parameters.Lists.ContainsKey("Dropdown Legacy") && parameters.Lists["Dropdown Legacy"])
-            {
-                List<Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<Dropdown>(gameObjects);
-                statusLocalizationScene.LegacyDropdowns = FilterDropdownLegacy(dropdowns, parameters, statusLocalizationScene);
-            }
-            if (parameters.Lists.ContainsKey("Dropdown Mesh Pro") && parameters.Lists["Dropdown Mesh Pro"])
-            {
-                List<TMP_Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<TMP_Dropdown>(gameObjects);
-                statusLocalizationScene.TMP_Dropdowns = FilterDropdownTMP(dropdowns, parameters, statusLocalizationScene);
-            }
+            //if ( parameters.ListSearchComponents.ContainsKey("Dropdown Legacy") && parameters.ListSearchComponents["Dropdown Legacy"])
+            //{
+            //    List<Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<Dropdown>(gameObjects);
+            //    statusLocalizationScene.LegacyDropdowns = FilterDropdownLegacy(dropdowns, parameters, statusLocalizationScene);
+            //}
+            //if (parameters.ListSearchComponents.ContainsKey("Dropdown Mesh Pro") && parameters.ListSearchComponents["Dropdown Mesh Pro"])
+            //{
+            //    List<TMP_Dropdown> dropdowns = GameObjectHelper.GetComponentsInChildrens<TMP_Dropdown>(gameObjects);
+            //    statusLocalizationScene.TMP_Dropdowns = FilterDropdownTMP(dropdowns, parameters, statusLocalizationScene);
+            //}
             if (parameters.SkipPrefab == false)
             {
                 statusLocalizationScene.Prefabs = GameObjectHelper.DetectPrefabs(gameObjects);
@@ -83,6 +105,47 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             }
             statusLocalizationScene.LocalizeStringEvents = GetAllLocalizeStringEvents(gameObjects);
             return statusLocalizationScene;
+        }
+
+        public static List<T> FilterParentComponents<T>(List<T> components, Dictionary<string, bool> skipParentComponents) where T : Component
+        {
+            List<T> result = new List<T>();
+            foreach (T component in components)
+            {
+                Transform parent = component.transform.parent;
+                if (skipParentComponents.ContainsKey("Toggle") && skipParentComponents["Toggle"])
+                {
+                    Toggle toggle = default(Toggle);
+                    if (parent.TryGetComponent<Toggle>(out toggle)) continue;
+                }
+                if (skipParentComponents.ContainsKey("Button") && skipParentComponents["Button"])
+                {
+                    Button button = default(Button);
+                    if (parent.TryGetComponent<Button>(out button)) continue;
+                }
+                if (skipParentComponents.ContainsKey("Input Field Legacy") && skipParentComponents["Input Field Legacy"])
+                {
+                    InputField inputField = default(InputField);
+                    if (parent.TryGetComponent<InputField>(out inputField)) continue;
+                }
+                if (skipParentComponents.ContainsKey("Dropdown Legacy") && skipParentComponents["Dropdown Legacy"])
+                {
+                    Dropdown dropdown = default(Dropdown);
+                    if (parent.TryGetComponent<Dropdown>(out dropdown)) continue;
+                }
+                if (skipParentComponents.ContainsKey("Input Field Pro") && skipParentComponents["Input Field Pro"])
+                {
+                    TMP_InputField inputField = default(TMP_InputField);
+                    if (parent.TryGetComponent<TMP_InputField>(out inputField)) continue;
+                }
+                if (skipParentComponents.ContainsKey("Dropdown Pro") && skipParentComponents["Dropdown Pro"])
+                {
+                    TMP_Dropdown dropdown = default(TMP_Dropdown);
+                    if (parent.TryGetComponent<TMP_Dropdown>(out dropdown)) continue;
+                }
+                result.Add(component);
+            }
+            return result;
         }
 
         public static List<Text> FilterTextLegacy(List<Text> texts, SearchTextParameters parameters, StatusLocalizationScene statusLocalizationScene)

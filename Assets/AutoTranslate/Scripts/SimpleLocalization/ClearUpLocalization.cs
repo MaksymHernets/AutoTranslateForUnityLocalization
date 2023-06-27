@@ -25,11 +25,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
         public static void RemoveAllLocalizationPrefab(SearchTextParameters parameters, GameObject gameObject)
         {
-            if (parameters.Lists.ContainsKey("LocalizeStringEvent")) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-            if (parameters.Lists.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-            if (parameters.Lists.ContainsKey("LocalizeTextureEvent")) RemoveComponents<LocalizeTextureEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-            if (parameters.Lists.ContainsKey("LocalizeAudioClipEvent")) RemoveComponents<LocalizeAudioClipEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-            if (parameters.Lists.ContainsKey("LocalizedGameObjectEvent")) RemoveComponents<LocalizedGameObjectEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+            if (parameters.ListSearchComponents.ContainsKey("LocalizeStringEvent")) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+            if (parameters.ListSearchComponents.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+            if (parameters.ListSearchComponents.ContainsKey("LocalizeTextureEvent")) RemoveComponents<LocalizeTextureEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+            if (parameters.ListSearchComponents.ContainsKey("LocalizeAudioClipEvent")) RemoveComponents<LocalizeAudioClipEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+            if (parameters.ListSearchComponents.ContainsKey("LocalizedGameObjectEvent")) RemoveComponents<LocalizedGameObjectEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
         }
 
         public static void RemoveAllLocalization(SearchTextParameters parameters, GameObject[] gameObjects)
@@ -38,11 +38,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(gameObject) && parameters.SkipPrefab == true) continue;
                 EditorUtility.SetDirty(gameObject);
-                if (parameters.Lists.ContainsKey("LocalizeStringEvent") ) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-                if (parameters.Lists.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-                if (parameters.Lists.ContainsKey("LocalizeTextureEvent")) RemoveComponents<LocalizeTextureEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-                if (parameters.Lists.ContainsKey("LocalizeAudioClipEvent")) RemoveComponents<LocalizeAudioClipEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
-                if (parameters.Lists.ContainsKey("LocalizedGameObjectEvent")) RemoveComponents<LocalizedGameObjectEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+                if (parameters.ListSearchComponents.ContainsKey("LocalizeStringEvent") ) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+                if (parameters.ListSearchComponents.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+                if (parameters.ListSearchComponents.ContainsKey("LocalizeTextureEvent")) RemoveComponents<LocalizeTextureEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+                if (parameters.ListSearchComponents.ContainsKey("LocalizeAudioClipEvent")) RemoveComponents<LocalizeAudioClipEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
+                if (parameters.ListSearchComponents.ContainsKey("LocalizedGameObjectEvent")) RemoveComponents<LocalizedGameObjectEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
             }
         }
 
