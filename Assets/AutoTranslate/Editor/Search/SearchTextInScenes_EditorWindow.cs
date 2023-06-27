@@ -18,6 +18,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private CheckListGUI _checkListScenes;
         private bool LC = true;
+        private bool LSC = true;
 
         [MenuItem("Window/Auto Localization/Search Text in Scenes", false, MyProjectSettings_AutoTranslate.BaseIndex + 41)]
         public static void ShowWindow()
@@ -61,10 +62,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             //EditorGUILayout.HelpBox("Not working yet", MessageType.Error);
             //GUI.enabled = false;
+            LSC = EditorGUILayout.BeginFoldoutHeaderGroup(LSC, "Skip parent UI Components:");
+            if (LSC)
+            {
+                _checkListSkipParentComponents.DrawButtons();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+
             LC = EditorGUILayout.BeginFoldoutHeaderGroup(LC , "Search UI Elements:"); // Begin 1
             if ( LC )
             {
-                _checkListSearchElements.Draw();
+                _checkListSearchComponents.Draw();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -91,7 +99,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 parameters.IsSkipVariantPrefab = _skipVariantPrefab;
                 parameters.IsSkipEmptyText = _skipEmptyText;
                 parameters.SourceLocale = _selectedLocale;
-                parameters.Lists = _checkListSearchElements.GetElements(true, true);
+                parameters.Lists = _checkListSearchComponents.GetElements(true, true);
 
                 //if (_statusLocalizationScene == null) StartSearch();
                 //else GetCheckTable();
@@ -99,7 +107,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 _searchTextParameters.SkipPrefab = _skipPrefab;
                 _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
                 _searchTextParameters.SkipEmptyText = _skipEmptyText;
-                _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
+                _searchTextParameters.ListSearchComponents = _checkListSearchComponents.GetElements(true, true);
+                _searchTextParameters.ListSkipParentComponents = _checkListSkipParentComponents.GetElements(true, true);
                 List<string> paths = _checkListScenes.GetNames(true, true);
 
                 float dola = paths.Count * 0.1f;

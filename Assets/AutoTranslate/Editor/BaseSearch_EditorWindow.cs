@@ -28,7 +28,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected const string KEYWORD_NEWTABLE = "-New-";
 
         protected DropdownGUI _dropdownTables;
-        protected CheckListGUI _checkListSearchElements;
+        protected CheckListGUI _checkListSkipParentComponents;
+        protected CheckListGUI _checkListSearchComponents;
         protected ToolbarGUI _TabsGUI;
 
         protected List<CheckListGUI> _checkLists;
@@ -64,9 +65,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _searchTextParameters = new SearchTextParameters();
 
-            List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIElements();
-            _checkListSearchElements = new CheckListGUI(rowCheckLists, 300, 400);
-            _checkListSearchElements.MinHeight = 100;
+            List<RowCheckList> rowCheckLists = SearchTextForLocalization.GetAvailableForSearchUIComponents();
+            _checkListSearchComponents = new CheckListGUI(rowCheckLists, 300, 400);
+            _checkListSearchComponents.MinHeight = 100;
+
+            List<RowCheckList> rowCheckSkipParentLists = SearchTextForLocalization.GetAvailableForSkipParentComponents();
+            _checkListSkipParentComponents = new CheckListGUI(rowCheckSkipParentLists, 300, 500);
+            _checkListSkipParentComponents.MinHeight = 160;
 
             _checkLists = new List<CheckListGUI>();
             List<TabGUI> tabGUIs = new List<TabGUI>();
@@ -84,22 +89,22 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected override void OnFocus()
         {
             base.OnFocus();
-            _checkListSearchElements?.Update(SearchTextForLocalization.GetAvailableForSearchUIElements().Select(w=>w.Name).ToList());
+            _checkListSearchComponents?.Update(SearchTextForLocalization.GetAvailableForSearchUIComponents().Select(w=>w.Name).ToList());
         }
 
         protected void FillDispalay_StatusLocalization()
 		{
             _checkLists[0].FillElements(_statusLocalizationScene.LegacyTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
-            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshProUIs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
-            _checkLists[2].FillElements(_statusLocalizationScene.TextMeshPros.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[2].FillElements(_statusLocalizationScene.TextMeshProUIs.Select(w => w.gameObject.GetFullName(w.text)).ToList());
+            _checkLists[1].FillElements(_statusLocalizationScene.TextMeshPros.Select(w => w.gameObject.GetFullName(w.text)).ToList());
             _checkLists[3].FillElements(_statusLocalizationScene.LegacyMeshTexts.Select(w => w.gameObject.GetFullName(w.text)).ToList());
         }
 
         protected void GetCheckTable()
 		{
             _statusLocalizationScene.LegacyTexts = GetBack<Text>(_statusLocalizationScene.LegacyTexts, _checkLists[0].GetElements());
-            _statusLocalizationScene.TextMeshProUIs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshProUIs, _checkLists[1].GetElements());
-            _statusLocalizationScene.TextMeshPros = GetBack<TextMeshPro>(_statusLocalizationScene.TextMeshPros, _checkLists[2].GetElements());
+            _statusLocalizationScene.TextMeshProUIs = GetBack<TextMeshProUGUI>(_statusLocalizationScene.TextMeshProUIs, _checkLists[2].GetElements());
+            _statusLocalizationScene.TextMeshPros = GetBack<TextMeshPro>(_statusLocalizationScene.TextMeshPros, _checkLists[1].GetElements());
             _statusLocalizationScene.LegacyMeshTexts = GetBack<TextMesh>(_statusLocalizationScene.LegacyMeshTexts, _checkLists[3].GetElements());
         }
 
@@ -107,7 +112,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 		{
             List<T> newsList = new List<T>();
             int index = 0;
-			foreach (var item in keyValuePairs)
+            //if ( keyValuePairs.Count != lists.Count) return newsList;
+            foreach (var item in keyValuePairs)
 			{
                 if (item.Value == true) newsList.Add(lists[index]);
                 ++index;

@@ -16,6 +16,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private CheckListGUI _checkListScenes;
         private bool LC = true;
+        private bool LSC = true;
 
         [MenuItem("Window/Auto Localization/Search Text in Prefabs", false, MyProjectSettings_AutoTranslate.BaseIndex + 42)]
         public static void ShowWindow()
@@ -57,10 +58,17 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _removeMissStringEvents = LinesGUI.DrawLineToggle("Remove miss stringEvents", _removeMissStringEvents);
             _autoSave = LinesGUI.DrawLineToggle("Auto Save", _autoSave);
 
+            LSC = EditorGUILayout.BeginFoldoutHeaderGroup(LSC, "Skip parent UI Components:");
+            if (LSC)
+            {
+                _checkListSkipParentComponents.DrawButtons();
+            }
+            EditorGUILayout.EndFoldoutHeaderGroup();
+
             LC = EditorGUILayout.BeginFoldoutHeaderGroup(LC, "Search UI Elements:"); // Begin 1
             if (LC)
             {
-                _checkListSearchElements.Draw();
+                _checkListSearchComponents.Draw();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
 
@@ -86,12 +94,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
                 parameters.IsSkipVariantPrefab = _skipVariantPrefab;
                 parameters.IsSkipEmptyText = _skipEmptyText;
                 parameters.SourceLocale = _selectedLocale;
-                parameters.Lists = _checkListSearchElements.GetElements(true, true);
+                parameters.Lists = _checkListSearchComponents.GetElements(true, true);
 
                 _searchTextParameters.SkipPrefab = _skipPrefab;
                 _searchTextParameters.SkipVariantPrefab = _skipVariantPrefab;
                 _searchTextParameters.SkipEmptyText = _skipEmptyText;
-                _searchTextParameters.Lists = _checkListSearchElements.GetElements(true, true);
+                _searchTextParameters.ListSearchComponents = _checkListSearchComponents.GetElements(true, true);
+                _searchTextParameters.ListSkipParentComponents = _checkListSkipParentComponents.GetElements(true, true);
                 List<GameObject> gameObjects = DatabaseProject.GetPrefabs(_checkListScenes.GetNames(true, true));
 
                 float dola = gameObjects.Count * 0.1f;

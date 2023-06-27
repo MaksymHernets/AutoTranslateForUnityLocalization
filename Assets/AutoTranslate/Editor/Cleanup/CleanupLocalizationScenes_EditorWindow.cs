@@ -35,11 +35,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _searchTextParameters = new SearchTextParameters();
             Dictionary<string, bool> list = new Dictionary<string, bool>();
-            foreach (var item in SearchTextForLocalization.GetAvailableForSearchUIElements())
+            foreach (var item in SearchTextForLocalization.GetAvailableForSearchUIComponents())
 			{
                 list.Add(item.Name, true);
             }
-            _searchTextParameters.Lists = list;
+            _searchTextParameters.ListSearchComponents = list;
 
             string[] scenes = DatabaseProject.GetPathScenes();
             _checkListScenes = new CheckListGUI(scenes.ToList());
@@ -98,7 +98,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             {
                 EditorUtility.DisplayProgressBar("Cleanup Localization in Scenes", "Load scenes", 0);
 
-                _searchTextParameters.Lists = _checkListComponents.GetElements(true, true);
+                _searchTextParameters.ListSearchComponents = _checkListComponents.GetElements(true, true);
                 List<string> paths = _checkListScenes.GetNames(true, true);
 
                 float dola = paths.Count * 0.1f;
