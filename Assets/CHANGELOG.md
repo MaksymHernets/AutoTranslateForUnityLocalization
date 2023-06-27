@@ -3,6 +3,15 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [0.4.7] - 2023-06-27
+### Added
+- Added the ability to skip text that has parent components of type ui.
+- Added filter for dropdown of string table
+### Changed
+- Updated searchTextSceneWindow screenshot
+### Fixed
+- Fixed some bug guipro
+
 ## [0.4.6] - 2023-06-26
 ### Added
 - Added search and localization for TextMeshLegacy and TextMeshPro
