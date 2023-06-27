@@ -51,3 +51,7 @@ As a result, thanks to the plugin, you can save a lot of time.
 Package Manager
 
 ![GitHub Logo](/Screenshots/PackageManager.png)
+
+Search Text Scene or Prefab
+
+![GitHub Logo](/Screenshots/SearchTextSceneWIndow.png)
