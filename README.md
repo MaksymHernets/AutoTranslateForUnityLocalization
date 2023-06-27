@@ -23,9 +23,9 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - TextMeshPro 3.0.6
 
 ## Supported components for text search:
-- Text Legacy ( Possible to skip -> Button, Toggle, Input Field );
+- Text Legacy ( Possible to skip -> Button, Toggle, Input Field, Dropdown);
 - Text Mesh Legacy;
-- Test Mesh Pro UI ( Possible to skip -> Button, Toggle, Input Field );
+- Test Mesh Pro UI ( Possible to skip -> Button, Toggle, Input Field, Dropdown);
 - Test Mesh Pro.
 
 ## Plans to add to the package:
