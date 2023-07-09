@@ -2,6 +2,7 @@ using GoodTime.Tools.FactoryTranslate;
 using GoodTime.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine.Localization.Tables;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate
@@ -149,6 +150,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                             {
                                 word = word.Replace("{" + keyValuePair.Key + "}", "{" + keyValuePair.Value + "}");
                             }
+                            Undo.RecordObject(targetLanguageTable, "AddEntry for StringTable (AutoTranslate)");
                             targetLanguageTable.AddEntry(item.Key, word);
                         }
                     }

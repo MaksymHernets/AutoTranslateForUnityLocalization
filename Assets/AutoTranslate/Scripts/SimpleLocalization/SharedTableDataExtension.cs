@@ -2,6 +2,7 @@ using GoodTime.HernetsMaksym.AutoTranslate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.Localization.Tables;
@@ -30,7 +31,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 
         public static SharedTableData AddSharedTableData(string name)
         {
-            LocalizationEditorSettings.CreateStringTableCollection(name, "Assets/" + name);
+            StringTableCollection stringTableCollection = LocalizationEditorSettings.CreateStringTableCollection(name, "Assets/" + name);
+            Undo.RegisterCreatedObjectUndo(stringTableCollection, "Created StringTableCollection (Search Localization)");
             SharedTableData sharedTable = GetSharedTable(name);
             return sharedTable;
         }
@@ -54,6 +56,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 name = String.Format("[{0}][{1}][{2}][{3}]", nameGameObjet, parentName, typeText, variants);
                 ++variants;
             }
+            Undo.RecordObject(sharedTable, "AddKey for SharedTable (Search Localization)");
             SharedTableEntry sharedTableEntry = sharedTable.AddKey(name);
             return sharedTableEntry;
         }

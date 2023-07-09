@@ -37,6 +37,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             foreach (GameObject gameObject in gameObjects)
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(gameObject) && parameters.SkipPrefab == true) continue;
+
                 EditorUtility.SetDirty(gameObject);
                 if (parameters.ListSearchComponents.ContainsKey("LocalizeStringEvent") ) Remove_LocalizeStringEvent(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
                 if (parameters.ListSearchComponents.ContainsKey("LocalizeSpriteEvent")) RemoveComponents<LocalizeSpriteEvent>(gameObject, parameters.IsRemoveMiss_StringTable, parameters.SkipPrefab);
@@ -60,7 +61,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                 {
                     if (PrefabUtility.IsPartOfAnyPrefab(localizeStringEvent.gameObject) && SkipPrefab == true) continue;
 
-                    UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                    Undo.DestroyObjectImmediate(localizeStringEvent);
+                    //UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
                 }
             }
         }
@@ -73,7 +75,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             {
                 if (PrefabUtility.IsPartOfAnyPrefab(localizeStringEvent.gameObject) && SkipPrefab == true) continue;
 
-                UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                Undo.DestroyObjectImmediate(localizeStringEvent);
+                //UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
             }
         }
 
@@ -90,7 +93,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                     SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.Key);
                     if (m_SelectedEntry == null)
                     {
-                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                        Undo.DestroyObjectImmediate(localizeStringEvent);
+                        //UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
                     }
                 }
                 else
@@ -98,7 +102,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
                     SharedTableData.SharedTableEntry m_SelectedEntry = m_SelectedTableCollection.SharedData.GetEntry(localizeStringEvent.StringReference.TableEntryReference.KeyId);
                     if (m_SelectedEntry == null)
                     {
-                        UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
+                        Undo.DestroyObjectImmediate(localizeStringEvent);
+                        //UnityEngine.Object.DestroyImmediate(localizeStringEvent, true);
                     }
                 }
             }
