@@ -3,6 +3,14 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [0.4.8] - 2023-07-09
+### Added
+- Added ability Undo for AutoTranslate, Search and CleanUp
+### Changed
+- Updated Addressables into 1.21.14 and remove ai.navigation
+### Fixed
+- Fixed some bug guipro
+
 ## [0.4.7] - 2023-06-27
 ### Added
 - Added the ability to skip text that has parent components of type ui.

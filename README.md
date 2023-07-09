@@ -15,11 +15,12 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Finding text components in a scene or prefab to add localization;
 - Adaptation of language dialects for Google translator;
 - Cleaning up localization in scenes and prefabs;
+- Supports native unity command "Undo";
 - Tutorial scene.
 
 ## Package dependencies:
 - Localization 1.3.2
-- Addressables 1.20.50
+- Addressables 1.21.14
 - TextMeshPro 3.0.6
 
 ## Supported components for text search:

@@ -88,7 +88,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
             if (gameObject.TryGetComponent<LocalizeStringEvent>(out localizeStringEvent))
                 return gameObject.GetComponent<LocalizeStringEvent>();
             else
-                return gameObject.AddComponent<LocalizeStringEvent>();
+                return Undo.AddComponent<LocalizeStringEvent>(gameObject);
+                //return gameObject.AddComponent<LocalizeStringEvent>();
         }
     }
 }

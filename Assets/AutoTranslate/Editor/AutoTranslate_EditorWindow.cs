@@ -32,6 +32,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private bool WLS = false;
         private ITranslateApi translator;
         private Vector2 _position = Vector2.zero;
+        private float MinChar = 0;
+        private float MaxChar = 1000;
 
         [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
         public static void ShowWindow()
@@ -52,7 +54,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             else
                 _checkListStringTable = new CheckListGUI(new List<string>());
 
-            _checkListStringTable.Width = 150;
+            _checkListStringTable.Width = 100;
             _checkListStringTable.Height = 1000;
 
             if (_locales != null)
@@ -62,6 +64,8 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             }
             else
                 _checkListLanguages = new CheckListGUI(new List<string>());
+            _checkListLanguages.Height = 600;
+            _checkListLanguages.MinHeight = 500;
 
             _dropdownLanguages.UpdateSelected += DropdownLanguages_UpdateSelected;
 
@@ -105,14 +109,14 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         void OnGUI()
         {
             ShowNameWindow(k_WindowTitle);
-            EditorGUIUtility.labelWidth = k_SeparationWidth;
+            //EditorGUIUtility.labelWidth = k_SeparationWidth;
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginVertical(GUILayout.MaxWidth(350), GUILayout.ExpandHeight(true));
             EditorGUILayout.LabelField("Selected collection tables for translation:");
             _checkListStringTable.DrawButtons();
             EditorGUILayout.EndVertical();
-            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginVertical(GUILayout.ExpandHeight(true));
             _dropdownLanguages.Draw();
             if ( translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
             {
@@ -122,6 +126,15 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             _translateParameters.canOverrideWords = LinesGUI.DrawLineToggle("Override words that have a translation", _translateParameters.canOverrideWords, k_SeparationWidth);
             _translateParameters.canTranslateEmptyWords = LinesGUI.DrawLineToggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords, k_SeparationWidth);
             _translateParameters.canTranslateSmartWords = LinesGUI.DrawLineToggle("Translate smart words", _translateParameters.canTranslateSmartWords, k_SeparationWidth);
+            //EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
+            //EditorGUILayout.LabelField("Translate words that contain chars", GUILayout.Width(k_SeparationWidth));
+            //int minchar = (int)MinChar;
+            //int maxchar = (int)MaxChar;
+            //EditorGUILayout.LabelField(minchar.ToString("G"), GUILayout.Width(30));
+            //EditorGUILayout.MinMaxSlider(ref MinChar, ref MaxChar, 0, 1000);
+            //EditorGUILayout.LabelField(maxchar.ToString("G"), GUILayout.Width(30));
+            //EditorGUILayout.EndHorizontal();
+            
 
             GUILayout.Space(10);
 

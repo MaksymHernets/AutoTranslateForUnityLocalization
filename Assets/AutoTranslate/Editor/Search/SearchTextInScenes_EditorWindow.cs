@@ -42,7 +42,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         {
             base.OnFocus();
             string[] scenes = DatabaseProject.GetPathScenes();
-            _checkListScenes.Update(scenes.ToList());
+            if (_checkListScenes != null) _checkListScenes.Update(scenes.ToList());
         }
 
         private void OnGUI()
