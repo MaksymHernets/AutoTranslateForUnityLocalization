@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.Progress;
 
 namespace GoodTime.Tools.GUIPro
 {

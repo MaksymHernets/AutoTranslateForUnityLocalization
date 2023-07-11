@@ -2,7 +2,9 @@
     "name": "GUIPro",
     "rootNamespace": "GoodTime.Tools.GUIPro",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
