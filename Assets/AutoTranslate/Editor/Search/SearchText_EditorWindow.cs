@@ -43,8 +43,11 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
         private void UpdateParameter()
         {
-            if (_sharedStringTables != null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
-            else _dropdownTables.Selected = KEYWORD_NEWTABLE;
+            if (_dropdownTables != null)
+            {
+                if (_sharedStringTables != null && _sharedStringTables.Count != 0) _dropdownTables.Selected = _sharedStringTables.First().TableCollectionName;
+                else _dropdownTables.Selected = KEYWORD_NEWTABLE;
+            }
 
             _currentScene = DatabaseProject.GetCurrentScene();
             _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
