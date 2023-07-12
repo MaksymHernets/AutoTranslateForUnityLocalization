@@ -37,7 +37,7 @@ namespace GoodTime.Tools.InterfaceTranslate
             }
             if (settings.ServiceApis.Length != 0)
             {
-                settings.CurrentServiceTranslate = TypeServiceTranslate.GoogleApiFree;
+                settings.CurrentServiceTranslate = TypeServiceTranslate.GoogleTranslateApis;
                 settings.ServiceApis[0].HasLimit = true;
                 settings.ServiceApis[0].IsActive = true;
                 settings.ServiceApis[0].Description = "Free api service from google for text translation.";

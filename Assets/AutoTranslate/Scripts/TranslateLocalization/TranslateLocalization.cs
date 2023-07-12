@@ -9,7 +9,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate
 {
     public class TranslateLocalization
     {
-        private ITranslateApi translator;
+        private TextTranslateApi translator;
 
         public TranslateLocalization()
         {

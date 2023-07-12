@@ -1,4 +1,5 @@
-﻿using GoodTime.Tools.InterfaceTranslate;
+﻿using GoodTime.Tools.GoogleTranslate.Apis;
+using GoodTime.Tools.InterfaceTranslate;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ public class GoogleApiFreeTest
     [Test]
     public void Translate_SimpleText_Hello()
     {
-        GoogleApiFree googleApiFree = new GoogleApiFree();
+        GoogleTranslateApis googleApiFree = new GoogleTranslateApis();
 
         string result = googleApiFree.Translate("Hello", "en", "ru");
 
@@ -18,7 +19,7 @@ public class GoogleApiFreeTest
     [Test]
     public void Translate_BiggerText_Hello()
     {
-        GoogleApiFree googleApiFree = new GoogleApiFree();
+        GoogleTranslateApis googleApiFree = new GoogleTranslateApis();
 
         string result = googleApiFree.Translate("The technology was developed for different platforms.", "en", "ru");
 
@@ -29,7 +30,7 @@ public class GoogleApiFreeTest
     [Test]
     public void DictionaryTranslate_OneWord_Hello()
     {
-        GoogleApiFree googleApiFree = new GoogleApiFree();
+        GoogleTranslateApis googleApiFree = new GoogleTranslateApis();
 
         Dictionary<string, string> words = new Dictionary<string, string>();
         words.Add("Hello", "Hello");
@@ -44,7 +45,7 @@ public class GoogleApiFreeTest
     [Test]
     public void DictionaryTranslate_LotWords_HelloByeMotherFather()
     {
-        GoogleApiFree googleApiFree = new GoogleApiFree();
+        GoogleTranslateApis googleApiFree = new GoogleTranslateApis();
 
         Dictionary<string, string> words = new Dictionary<string, string>();
         words.Add("Hello", "Hello");

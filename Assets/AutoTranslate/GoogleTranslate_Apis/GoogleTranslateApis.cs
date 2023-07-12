@@ -1,5 +1,5 @@
+using GoodTime.Tools.FactoryTranslate;
 using GoodTime.Tools.Helpers;
-using GoodTime.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using UnityEngine;
 
-namespace GoodTime.Tools.InterfaceTranslate
+namespace GoodTime.Tools.GoogleTranslate.Apis
 {
-    public class GoogleApiFree : ITranslateApi
+    public class GoogleTranslateApis : GenericTranslateApi
     {
         private const int MAXCHARS_FORREQUST = 5000;
         private const String SEPARATE_STRING = "[$]";
@@ -21,7 +22,7 @@ namespace GoodTime.Tools.InterfaceTranslate
 
         private Dictionary<string, string> _ignoreLocale;
 
-        public GoogleApiFree() 
+        public GoogleTranslateApis() 
         {
             _ignoreLocale = new Dictionary<string, string>();
             //_ignoreLocale.Add("en-gb", "en-gb");
@@ -56,7 +57,8 @@ namespace GoodTime.Tools.InterfaceTranslate
 
         public string Translate(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
         {
-            string translationFromGoogle = RequestToGoogleApi(sourceText, sourceLanguage, targetLanguage, key);
+            string url = BuildRequest(sourceText.ToString(), sourceLanguage, targetLanguage);
+            string translationFromGoogle = RequestToGoogleApi(url);
 
             RespontTranslateGoogle respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
 
@@ -83,7 +85,8 @@ namespace GoodTime.Tools.InterfaceTranslate
                 sourceTryText.Append(temp);
                 if (sourceTryText.Length > MAXCHARS_FORREQUST)
                 {
-                    translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage, key);
+                    string url2 = BuildRequest(sourceText.ToString(), sourceLanguage, targetLanguage);
+                    translationFromGoogle = RequestToGoogleApi(url2);
                     respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
                     listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
                     sourceTryText.Clear();
@@ -95,7 +98,8 @@ namespace GoodTime.Tools.InterfaceTranslate
                 }
             }
 
-            translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
+            string url = BuildRequest(sourceText.ToString(), sourceLanguage, targetLanguage);
+            translationFromGoogle = RequestToGoogleApi(url);
 
             respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
             string response = respontTranslateGoogle.FullRespont;
@@ -116,6 +120,30 @@ namespace GoodTime.Tools.InterfaceTranslate
             }
 
             return targetWords;
+        }
+
+        public Sprite Translate(Sprite sprite, string sourceLanguage, string targetLanguage)
+        {
+            //string url = BuildBaseRequest2(sourceLanguage, targetLanguage);
+            ////url += "&q=apple";
+            ////url += "&dt=i";
+            //string translationFromGoogle = RequestToGoogleApi(url);
+            return null;
+        }
+
+        public Dictionary<string, Sprite> Translate(Dictionary<string, Sprite> sprites, string sourceLanguage, string targetLanguage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Texture Translate(Texture texture, string sourceLanguage, string targetLanguage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, Texture> Translate(Dictionary<string, Texture> textures, string sourceLanguage, string targetLanguage)
+        {
+            throw new NotImplementedException();
         }
 
         public bool ValidateLocale(string namelocale)
@@ -151,26 +179,28 @@ namespace GoodTime.Tools.InterfaceTranslate
             return respontTranslateGoogle;
         }
 
-        private string RequestToGoogleApi(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
+        private string BuildRequest(string sourceText, string sourceLanguage, string targetLanguage, string key = null)
+        {
+            string url = BuildBaseRequest(sourceLanguage, targetLanguage, key);
+            url += string.Format("&dt=t");
+            url += string.Format("&q={0}", sourceText);
+            return url;
+        }
+
+        private string BuildBaseRequest(string sourceLanguage, string targetLanguage, string key = null)
+        {
+            string url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}",
+                                                sourceLanguage, targetLanguage);
+            if (!string.IsNullOrEmpty(key))
+            {
+                url += string.Format("&key={0}", key);
+            }
+            return url;
+        }
+
+        private string RequestToGoogleApi(string url)
         {
             string translationFromGoogle = "";
-
-            string url = string.Empty;
-            if ( key == null )
-			{
-                url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
-                                                sourceLanguage,
-                                                targetLanguage,
-                                                sourceText);
-            }
-            else
-			{
-                url = string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}&key={3}",
-                                                sourceLanguage,
-                                                targetLanguage,
-                                                sourceText,
-                                                key);
-            }
 
             using (WebClient wc = new WebClient())
             {

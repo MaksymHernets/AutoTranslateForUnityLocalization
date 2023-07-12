@@ -41,7 +41,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
 
                     dropdownGUI.Draw();
 
-                    if (setting.CurrentServiceTranslate != TypeServiceTranslate.GoogleApiFree)
+                    if (setting.CurrentServiceTranslate != TypeServiceTranslate.GoogleTranslateApis)
                     {
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField("Key for service", GUILayout.Width(200));
