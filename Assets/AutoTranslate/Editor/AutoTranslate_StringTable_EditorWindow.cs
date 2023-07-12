@@ -13,7 +13,7 @@ using GoodTime.Tools.InterfaceTranslate;
 
 namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 {
-	public class AutoTranslate_EditorWindow : BaseLocalization_EditorWindow
+	public class AutoTranslate_StringTable_EditorWindow : BaseLocalization_EditorWindow
     {
         // Window parameters
         protected const string k_WindowTitle = "Auto Translate for Unity Localization";
@@ -21,16 +21,19 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         // Arguments for execute
         private TranslateParameters _translateParameters = new TranslateParameters();
 
+        private CheckListGUI _checkListStringTable;
+        private CheckListGUI _checkListLanguages;
+
+        private GenericTranslateApi translator;
+
         // Error
         private bool _isErrorTooManyRequests = false;
         private DateTime _diedLineErrorTooManyRequests;
         private double _timeNeedForWaitErrorMinute = 10;
         private bool _isErrorConnection = false;
-        private CheckListGUI _checkListStringTable;
-        private CheckListGUI _checkListLanguages;
+        
         private bool LS = false;
         private bool WLS = false;
-        private ITranslateApi translator;
         private Vector2 _position = Vector2.zero;
         private float MinChar = 0;
         private float MaxChar = 1000;
@@ -39,7 +42,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");
-            AutoTranslate_EditorWindow window = GetWindow<AutoTranslate_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
+            AutoTranslate_StringTable_EditorWindow window = GetWindow<AutoTranslate_StringTable_EditorWindow>(k_WindowTitle, true, typeof(SceneView), gameview);
             window.titleContent = new GUIContent(k_WindowTitle, EditorIcons.AutoTranslate);
             window.Show();
         }
@@ -69,8 +72,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
 
             _dropdownLanguages.UpdateSelected += DropdownLanguages_UpdateSelected;
 
-            AutoTranslateSetting setting = AutoTranslateSetting.GetOrCreateSettings();
-            translator = FactoryTranslateApi.GetTranslateApi(setting.CurrentServiceTranslate);
+            translator = FactoryTranslateApi.GetTranslateApi();
         }
 
         private void DropdownLanguages_UpdateSelected(string name)
@@ -118,7 +120,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical(GUILayout.ExpandHeight(true));
             _dropdownLanguages.Draw();
-            if ( translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
+            if (translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
             {
                 EditorGUILayout.HelpBox(translator.GetNameService() + " service does not support some dialects of languages, the choice of language will be changed to the generally accepted.", MessageType.Warning);
             }
