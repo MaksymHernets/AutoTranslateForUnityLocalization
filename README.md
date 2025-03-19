@@ -1,5 +1,5 @@
 # Auto Translate For Unity Localization
-## Compatibility Unity 2020.3.48 or high
+## Compatibility Unity 2023.2.20f1 or high
 
 This tool allows you to translate the game into other languages, using free google translators and unity localization. Also allows you to find in the project, the text to add to the table.
 
@@ -19,8 +19,8 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Tutorial scene.
 
 ## Package dependencies:
-- Localization 1.3.2
-- Addressables 1.21.14
+- Localization 1.4.5
+- Addressables 1.21.21
 - TextMeshPro 3.0.6
 
 ## Supported components for text search:
