@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public class TranslateData
     {

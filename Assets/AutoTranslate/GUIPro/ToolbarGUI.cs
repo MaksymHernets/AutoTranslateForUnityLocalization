@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.GUIPro
+namespace EqualchanceGames.Tools.GUIPro
 {
     public class ToolbarGUI : BaseGUI
     {

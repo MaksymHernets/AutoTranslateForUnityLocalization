@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.GUIPro
+namespace EqualchanceGames.Tools.GUIPro
 {
     public class TableGUI : BaseGUI
 	{

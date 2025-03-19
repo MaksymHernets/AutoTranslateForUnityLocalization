@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GoodTime.Tools.Helpers
+namespace EqualchanceGames.Tools.Helpers
 {
     public static class DropdownExtension
     {

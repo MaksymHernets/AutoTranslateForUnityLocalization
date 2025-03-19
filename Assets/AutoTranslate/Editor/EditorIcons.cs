@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public class EditorIcons
     {

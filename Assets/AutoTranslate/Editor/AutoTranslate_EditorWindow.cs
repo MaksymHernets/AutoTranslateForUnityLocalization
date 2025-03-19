@@ -1,17 +1,17 @@
-using GoodTime.Tools.Helpers;
-using GoodTime.Tools.GUIPro;
+using EqualchanceGames.Tools.Helpers;
+using EqualchanceGames.Tools.GUIPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using UnityEditor;
 using UnityEngine;
-using GoodTime.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
 using UnityEngine.Localization;
-using GoodTime.Tools.FactoryTranslate;
-using GoodTime.Tools.InterfaceTranslate;
+using EqualchanceGames.Tools.FactoryTranslate;
+using EqualchanceGames.Tools.InterfaceTranslate;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
 {
 	public class AutoTranslate_EditorWindow : BaseLocalization_EditorWindow
     {

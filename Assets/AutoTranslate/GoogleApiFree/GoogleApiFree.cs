@@ -1,5 +1,5 @@
-using GoodTime.Tools.Helpers;
-using GoodTime.Tools.InterfaceTranslate;
+using EqualchanceGames.Tools.Helpers;
+using EqualchanceGames.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace GoodTime.Tools.InterfaceTranslate
+namespace EqualchanceGames.Tools.InterfaceTranslate
 {
     public class GoogleApiFree : ITranslateApi
     {

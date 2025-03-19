@@ -1,12 +1,12 @@
-using GoodTime.Tools.GUIPro;
-using GoodTime.Tools.InterfaceTranslate;
+using EqualchanceGames.Tools.GUIPro;
+using EqualchanceGames.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Editor
 {
     public static class MyProjectSettings_AutoTranslate
     {

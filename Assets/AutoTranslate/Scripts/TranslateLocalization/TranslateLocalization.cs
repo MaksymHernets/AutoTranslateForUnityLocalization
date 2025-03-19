@@ -1,11 +1,11 @@
-using GoodTime.Tools.FactoryTranslate;
-using GoodTime.Tools.InterfaceTranslate;
+using EqualchanceGames.Tools.FactoryTranslate;
+using EqualchanceGames.Tools.InterfaceTranslate;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine.Localization.Tables;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public class TranslateLocalization
     {

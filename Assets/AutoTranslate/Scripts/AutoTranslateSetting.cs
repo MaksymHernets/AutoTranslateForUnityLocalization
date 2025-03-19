@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.InterfaceTranslate
+namespace EqualchanceGames.Tools.InterfaceTranslate
 {
     public class AutoTranslateSetting : ScriptableObject
     {

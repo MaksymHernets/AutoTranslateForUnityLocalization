@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace GoodTime.Tools.GUIPro
+namespace EqualchanceGames.Tools.GUIPro
 {
     public class DropdownGUI : BaseGUI
     {

@@ -1,6 +1,6 @@
-using GoodTime.HernetsMaksym.AutoTranslate.Editor;
-using GoodTime.Tools.GUIPro;
-using GoodTime.Tools.Helpers;
+using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.GUIPro;
+using EqualchanceGames.Tools.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
 {
     public class SearchTextInScenes_EditorWindow : BaseSearch_EditorWindow
     {

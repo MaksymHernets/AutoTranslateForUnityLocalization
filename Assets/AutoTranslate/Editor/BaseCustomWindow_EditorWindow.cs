@@ -1,15 +1,15 @@
-using GoodTime.Tools.GUIPro;
-using GoodTime.Tools.Helpers;
+using EqualchanceGames.Tools.GUIPro;
+using EqualchanceGames.Tools.Helpers;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
 {
     public class BaseCustomWindow_EditorWindow : EditorWindow
     {
-        protected PrefabStage _prefabStage;
+        protected UnityEditor.SceneManagement.PrefabStage _prefabStage;
         protected Scene _currentScene;
 
         // Window parameters
@@ -26,13 +26,13 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         protected virtual void OnEnable()
         {
             _currentScene = DatabaseProject.GetCurrentScene();
-            _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            _prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
         }
 
         protected virtual void OnFocus()
         {
             _currentScene = DatabaseProject.GetCurrentScene();
-            _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            _prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
         }
 
         protected void ShowNameWindow(string name)

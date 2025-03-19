@@ -1,11 +1,11 @@
-using GoodTime.Tools.Helpers;
+using EqualchanceGames.Tools.Helpers;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-namespace GoodTime.Helpers
+namespace EqualchanceGames.Helpers
 {
     public class SceneHelper : MonoBehaviour
     {

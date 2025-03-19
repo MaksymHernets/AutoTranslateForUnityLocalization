@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GoodTime.Tools.InterfaceTranslate
+namespace EqualchanceGames.Tools.InterfaceTranslate
 {
     public interface ITranslateApi
     {

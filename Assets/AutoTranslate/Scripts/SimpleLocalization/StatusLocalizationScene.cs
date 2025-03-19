@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public class StatusLocalizationScene
     {

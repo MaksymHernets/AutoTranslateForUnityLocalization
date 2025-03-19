@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.Helpers
+namespace EqualchanceGames.Tools.Helpers
 {
     public static class GameObjectHelper
     {

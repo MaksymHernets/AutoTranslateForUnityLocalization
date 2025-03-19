@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace GoodTime.Tools.GUIPro
+namespace EqualchanceGames.Tools.GUIPro
 {
     public static class LinesGUI
     {

@@ -1,4 +1,4 @@
-﻿using GoodTime.Tools.InterfaceTranslate;
+﻿using EqualchanceGames.Tools.InterfaceTranslate;
 using NUnit.Framework;
 using System.Collections.Generic;
 

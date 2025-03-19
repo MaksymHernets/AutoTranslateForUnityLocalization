@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace GoodTime.Tools.Helpers
+namespace EqualchanceGames.Tools.Helpers
 {
     public class WebInformation
     {

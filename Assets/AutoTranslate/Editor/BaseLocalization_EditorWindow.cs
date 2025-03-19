@@ -1,4 +1,4 @@
-﻿using GoodTime.Tools.GUIPro;
+﻿using EqualchanceGames.Tools.GUIPro;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
 {
     public class BaseLocalization_EditorWindow : BaseCustomWindow_EditorWindow
     {

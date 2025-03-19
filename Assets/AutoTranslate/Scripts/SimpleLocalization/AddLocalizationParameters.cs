@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.Localization;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Editor
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Editor
 {
 	public class AddLocalizationParameters
     {

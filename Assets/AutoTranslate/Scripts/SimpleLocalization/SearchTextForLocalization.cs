@@ -1,4 +1,4 @@
-using GoodTime.Tools.Helpers;
+using EqualchanceGames.Tools.Helpers;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -6,11 +6,11 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using GoodTime.Tools.GUIPro;
+using EqualchanceGames.Tools.GUIPro;
 using System.Security.Cryptography;
 using ASTools.Validator;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public static class SearchTextForLocalization 
     {

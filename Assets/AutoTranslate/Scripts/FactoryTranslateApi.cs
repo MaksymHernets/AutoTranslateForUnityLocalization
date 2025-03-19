@@ -1,7 +1,7 @@
-using GoodTime.Tools.InterfaceTranslate;
+using EqualchanceGames.Tools.InterfaceTranslate;
 using System;
 
-namespace GoodTime.Tools.FactoryTranslate
+namespace EqualchanceGames.Tools.FactoryTranslate
 {
     public class FactoryTranslateApi
     {

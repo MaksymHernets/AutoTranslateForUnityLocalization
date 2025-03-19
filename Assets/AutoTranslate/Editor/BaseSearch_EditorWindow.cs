@@ -1,15 +1,15 @@
-﻿using GoodTime.Tools.Helpers;
+﻿using EqualchanceGames.Tools.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using GoodTime.Tools.GUIPro;
+using EqualchanceGames.Tools.GUIPro;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
 {
     public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
     {
@@ -137,7 +137,7 @@ namespace GoodTime.HernetsMaksym.AutoTranslate.Windows
         private void Check()
 		{
             _currentScene = DatabaseProject.GetCurrentScene();
-            _prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            _prefabStage = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
         }
     }
 }

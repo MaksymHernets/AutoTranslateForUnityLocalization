@@ -7,7 +7,7 @@ using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 
-namespace GoodTime.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.HernetsMaksym.AutoTranslate
 {
     public static class ClearUpLocalization
     {
