@@ -118,7 +118,7 @@ namespace EqualchanceGames.Tools.AutoTranslate.Windows
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical(GUILayout.ExpandHeight(true));
             _dropdownLanguages.Draw();
-            if ( translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
+            if ( _selectedLocale != null && translator.ValidateLocale(_selectedLocale.Identifier.Code) == false)
             {
                 EditorGUILayout.HelpBox(translator.GetNameService() + " service does not support some dialects of languages, the choice of language will be changed to the generally accepted.", MessageType.Warning);
             }

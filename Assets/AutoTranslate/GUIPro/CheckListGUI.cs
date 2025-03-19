@@ -12,7 +12,7 @@ namespace EqualchanceGames.Tools.GUIPro
         public int MinWidth = 100;
         public int Height;
         public int MinHeight = 100;
-        public Color BackColor = Color.white;
+        public Color BackColor = Color.gray;
 
 		private GUIStyle CheckListStyle;
 		private Texture2D texture2D;
