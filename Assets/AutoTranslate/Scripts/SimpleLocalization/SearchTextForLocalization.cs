@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EqualchanceGames.Tools.GUIPro;
 using System.Security.Cryptography;
-using ASTools.Validator;
+//using ASTools.Validator;
 
 namespace EqualchanceGames.Tools.AutoTranslate
 {

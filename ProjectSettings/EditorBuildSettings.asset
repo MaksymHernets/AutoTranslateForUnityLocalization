@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/AutoTranslate/ShortTutorial/Demo.unity
     guid: 13bd414fa28bcd249a27ae3c15a04256
   m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: f0ee3b7a7c6078c4a98b2d7755e36627, type: 2}
-    com.unity.localization.settings: {fileID: 11400000, guid: cb8dd5c2c81da3743b27fad21e73437b, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 4632837d73cd42548b02176e6d42574f, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: c820c551a74331d419316400d7fda15b, type: 2}
   m_UseUCBPForAssetBundles: 0
