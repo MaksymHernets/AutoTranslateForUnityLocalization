@@ -3,6 +3,14 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [0.4.9] - 2025-03-19
+### Changed
+- Updated Unity 2023
+- Updated Addressables into 1.21.21
+- Updated Localization into 1.4.5
+### Fixed
+- Fixed crashwindow
+
 ## [0.4.8] - 2023-07-09
 ### Added
 - Added ability Undo for AutoTranslate, Search and CleanUp
