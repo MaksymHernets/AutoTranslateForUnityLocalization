@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 using static UnityEngine.Localization.Tables.SharedTableData;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     public static class AddLocalization
     {

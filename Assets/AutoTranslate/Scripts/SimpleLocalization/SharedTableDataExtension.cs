@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate;
+using EqualchanceGames.Tools.AutoTranslate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Localization.Tables;
 using static UnityEngine.Localization.Tables.SharedTableData;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     public static class SharedTableDataExtension
     {

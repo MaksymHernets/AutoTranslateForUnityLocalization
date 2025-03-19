@@ -1,7 +1,7 @@
 using EqualchanceGames.Tools.GUIPro;
 using System.Collections.Generic;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     public class TranslateParameters
     {

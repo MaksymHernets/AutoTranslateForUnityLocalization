@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EqualchanceGames.Tools.GUIPro;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class BaseSearch_EditorWindow : BaseLocalization_EditorWindow
     {

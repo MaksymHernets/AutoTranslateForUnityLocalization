@@ -1,4 +1,4 @@
-﻿using EqualchanceGames.HernetsMaksym.AutoTranslate;
+﻿using EqualchanceGames.Tools.AutoTranslate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
 	public static class SimpleInterfaceStringTable
 	{

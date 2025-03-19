@@ -10,7 +10,7 @@ using EqualchanceGames.Tools.GUIPro;
 using System.Security.Cryptography;
 using ASTools.Validator;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     public static class SearchTextForLocalization 
     {

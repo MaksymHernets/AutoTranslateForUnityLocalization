@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Editor
+namespace EqualchanceGames.Tools.AutoTranslate.Editor
 {
     public static class MyProjectSettings_AutoTranslate
     {

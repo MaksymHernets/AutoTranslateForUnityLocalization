@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;

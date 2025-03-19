@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class BaseCustomWindow_EditorWindow : EditorWindow
     {

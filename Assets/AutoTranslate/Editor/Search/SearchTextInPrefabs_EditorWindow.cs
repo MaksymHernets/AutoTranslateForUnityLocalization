@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using EqualchanceGames.Tools.GUIPro;
 using EqualchanceGames.Tools.Helpers;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class SearchTextInPrefabs_EditorWindow : BaseSearch_EditorWindow
     {

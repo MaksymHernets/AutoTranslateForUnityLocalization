@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class BaseLocalization_EditorWindow : BaseCustomWindow_EditorWindow
     {

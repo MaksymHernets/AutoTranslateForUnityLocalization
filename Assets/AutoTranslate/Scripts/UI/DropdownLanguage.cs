@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.UI
+namespace EqualchanceGames.Tools.AutoTranslate.UI
 {
 	public class DropdownLanguage : MonoBehaviour
 	{

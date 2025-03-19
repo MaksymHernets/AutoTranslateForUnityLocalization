@@ -1,4 +1,4 @@
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     public class TranslateStatus
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Editor
+namespace EqualchanceGames.Tools.AutoTranslate.Editor
 {
 	public class AutoLocalization_MenuItems : MonoBehaviour
     {

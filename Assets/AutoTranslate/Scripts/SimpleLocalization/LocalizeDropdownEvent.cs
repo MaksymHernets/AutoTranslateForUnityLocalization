@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate
+namespace EqualchanceGames.Tools.AutoTranslate
 {
     [AddComponentMenu("Localization/Localize Dropdown Event")]
     public class LocalizeDropdownEvent : LocalizeStringEvent

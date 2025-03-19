@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using EqualchanceGames.Tools.GUIPro;
 using EqualchanceGames.Tools.Helpers;
 using System;
@@ -8,7 +8,7 @@ using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class SearchText_EditorWindow : BaseSearch_EditorWindow
     {

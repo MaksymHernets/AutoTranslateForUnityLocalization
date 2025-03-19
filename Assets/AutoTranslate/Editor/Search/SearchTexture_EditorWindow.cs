@@ -1,9 +1,9 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
 	public class SearchTexture_EditorWindow : EditorWindow
     {

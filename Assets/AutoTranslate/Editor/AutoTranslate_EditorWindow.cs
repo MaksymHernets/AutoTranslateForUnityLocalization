@@ -6,12 +6,12 @@ using System.Linq;
 using System.Net;
 using UnityEditor;
 using UnityEngine;
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using UnityEngine.Localization;
 using EqualchanceGames.Tools.FactoryTranslate;
 using EqualchanceGames.Tools.InterfaceTranslate;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
 	public class AutoTranslate_EditorWindow : BaseLocalization_EditorWindow
     {

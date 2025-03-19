@@ -1,4 +1,4 @@
-using EqualchanceGames.HernetsMaksym.AutoTranslate.Editor;
+using EqualchanceGames.Tools.AutoTranslate.Editor;
 using EqualchanceGames.Tools.GUIPro;
 using EqualchanceGames.Tools.Helpers;
 using System;
@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EqualchanceGames.HernetsMaksym.AutoTranslate.Windows
+namespace EqualchanceGames.Tools.AutoTranslate.Windows
 {
     public class CleanupLocalizationScenes_EditorWindow : BaseCustomWindow_EditorWindow
     {
