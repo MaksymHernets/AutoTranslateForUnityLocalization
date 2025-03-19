@@ -19,7 +19,7 @@ namespace EqualchanceGames.Tools.AutoTranslate.Windows
 
         protected SearchTextParameters _searchTextParameters;
 
-        [MenuItem("Window/Auto Localization/Clean up Localization in Prefabs", false, MyProjectSettings_AutoTranslate.BaseIndex + 81)]
+        [MenuItem("Auto Localization/Clean up Localization in Prefabs", false, MyProjectSettings_AutoTranslate.BaseIndex + 81)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

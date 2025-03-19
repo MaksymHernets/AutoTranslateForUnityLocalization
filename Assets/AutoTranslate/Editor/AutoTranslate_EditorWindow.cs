@@ -35,7 +35,7 @@ namespace EqualchanceGames.Tools.AutoTranslate.Windows
         private float MinChar = 0;
         private float MaxChar = 1000;
 
-        [MenuItem("Window/Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
+        [MenuItem("Auto Localization/Auto Translate for String Tables", false, MyProjectSettings_AutoTranslate.BaseIndex + 1)]
         public static void ShowWindow()
         {
             Type gameview = typeof(UnityEditor.EditorWindow).Assembly.GetType("UnityEditor.GameView");

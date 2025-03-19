@@ -10,12 +10,12 @@ namespace EqualchanceGames.Tools.AutoTranslate.Editor
 		private const string NameDefine_AutoTranslate = "AutoLocalization";
 		private const string NamePackage_AutoTranslate = "AutoLocalization";
 
-		public const string MainDomainNameMenuItem = "Window/Auto Localization";
+		public const string MainDomainNameMenuItem = "Auto Localization";
 
 		[MenuItem(MainDomainNameMenuItem, false, 6000)]
 		public static void PriorityDomainName() {}
 
-		[MenuItem("Window/Auto Localization/Add Define Auto Localization", false, 10000 + 120)]
+		[MenuItem("Auto Localization/Add Define Auto Localization", false, 10000 + 120)]
 		public static void AddDefine_AutoLocalization()
 		{
 			List<BuildTargetGroup> namedBuildTargets = NamedBuildTargetExtension.GetNamedBuildTargets();
