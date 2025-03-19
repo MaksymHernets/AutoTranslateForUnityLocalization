@@ -76,3 +76,7 @@ crashlytics-build.properties
 /.vsconfig
 /Assets/Samples
 /Assets/Samples.meta
+/Assets/Localization
+/Assets/Localization.meta
+/Assets/AddressableAssetsData
+/Assets/AddressableAssetsData.meta
