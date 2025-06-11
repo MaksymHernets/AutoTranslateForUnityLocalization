@@ -16,13 +16,13 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
     public class GoogleApiFree : ITranslateApi
     {
         private const int MAXCHARS_FORREQUST = 5000;
-		private const String SEPARATE_STRING = "[$%]";
-		private const String SEPARATE_STRING2 = "[%$]";
-		private const String SEPARATE_STRING3 = "[$$]";
-		private const String SEPARATE_STRING4 = "[%%]";
-		private const String SEPARATE_STRING5 = "[$#$]";
+        private const String SEPARATE_STRING = "[$$]";
+        private const String SEPARATE_STRING2 = "[$#]";
+        private const String SEPARATE_STRING3 = "[#$]";
+        private const String SEPARATE_STRING4 = "[##]";
+        private const String SEPARATE_STRING5 = "[###]";
 
-		private Dictionary<string, string> _ignoreLocale;
+        private Dictionary<string, string> _ignoreLocale;
 
         public GoogleApiFree() 
         {
@@ -110,6 +110,11 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             mass[4] = SEPARATE_STRING3;
             
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
+
+            if (String.IsNullOrEmpty(listRespontWords[listRespontWords.Count-1]))
+            {
+                listRespontWords.RemoveAt(listRespontWords.Count - 1);
+			}
 
             if (listRespontWords.Count != words.Count)
             {
