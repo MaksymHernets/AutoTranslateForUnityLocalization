@@ -124,7 +124,7 @@ namespace EqualchanceGames.Tools.AutoTranslate.Windows
             }
 
             _translateParameters.canOverrideWords = LinesGUI.DrawLineToggle("Override words that have a translation", _translateParameters.canOverrideWords, k_SeparationWidth);
-            //_translateParameters.canTranslateEmptyWords = LinesGUI.DrawLineToggle("Translate words that don't have a translation", _translateParameters.canTranslateEmptyWords, k_SeparationWidth);
+            _translateParameters.canTranslateEmptyWords = LinesGUI.DrawLineToggle("Single word translation. No translation errors, but attempts are exhausted faster.", _translateParameters.canTranslateEmptyWords, k_SeparationWidth);
             _translateParameters.canTranslateSmartWords = LinesGUI.DrawLineToggle("Translate smart words", _translateParameters.canTranslateSmartWords, k_SeparationWidth);
             //EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
             //EditorGUILayout.LabelField("Translate words that contain chars", GUILayout.Width(k_SeparationWidth));

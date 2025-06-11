@@ -66,7 +66,7 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             return respontTranslateGoogle.FullRespont;
         }
 
-        public Dictionary<string, string> Translate(Dictionary<string, string> words, string sourceLanguage, string targetLanguage, string key = null)
+        public Dictionary<string, string> Translate(Dictionary<string, string> words, string sourceLanguage, string targetLanguage, bool singleWordTranslation = false, string key = null)
         {
             List<string> listRespontWords = new List<string>();
             Dictionary<string, string> targetWords = new Dictionary<string, string>();
@@ -80,41 +80,54 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             sourceLanguage = MappingLocale(sourceLanguage);
             targetLanguage = MappingLocale(targetLanguage);
 
-            foreach (var item in words)
+            if (singleWordTranslation)
             {
-                string temp = item.Value + SEPARATE_STRING;
-                sourceTryText.Append(temp);
-                if (sourceTryText.Length > MAXCHARS_FORREQUST)
-                {
-                    translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage, key);
-                    respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-                    listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
-                    sourceTryText.Clear();
-                    sourceText.Clear();
-                }
-                else
-                {
-                    sourceText.Append(temp);
-                }
-            }
+				foreach (var item in words)
+				{
+					translationFromGoogle = RequestToGoogleApi(item.Value, sourceLanguage, targetLanguage, key);
+					respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+					if (string.IsNullOrEmpty(respontTranslateGoogle.FullRespont) == true) listRespontWords.Add("");
+					else listRespontWords.Add(respontTranslateGoogle.FullRespont);
+				}
+			}
+            else
+            {
+				foreach (var item in words)
+				{
+					string temp = item.Value + SEPARATE_STRING;
+					sourceTryText.Append(temp);
+					if (sourceTryText.Length > MAXCHARS_FORREQUST)
+					{
+						translationFromGoogle = RequestToGoogleApi(sourceTryText.ToString(), sourceLanguage, targetLanguage, key);
+						respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+						listRespontWords.AddRange(respontTranslateGoogle.FullRespont.Split(SEPARATE_STRING.ToCharArray()).ToList());
+						sourceTryText.Clear();
+						sourceText.Clear();
+					}
+					else
+					{
+						sourceText.Append(temp);
+					}
+				}
 
-            translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
+				translationFromGoogle = RequestToGoogleApi(sourceText.ToString(), sourceLanguage, targetLanguage);
 
-            respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
-            string response = respontTranslateGoogle.FullRespont;
-            String[] mass = new String[5];
-            mass[0] = SEPARATE_STRING;
-            mass[1] = SEPARATE_STRING4;
-            mass[2] = SEPARATE_STRING5;
-            mass[3] = SEPARATE_STRING2;
-            mass[4] = SEPARATE_STRING3;
-            
-            listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
+				respontTranslateGoogle = DeserializeRespont(translationFromGoogle);
+				string response = respontTranslateGoogle.FullRespont;
+				String[] mass = new String[5];
+				mass[0] = SEPARATE_STRING;
+				mass[1] = SEPARATE_STRING4;
+				mass[2] = SEPARATE_STRING5;
+				mass[3] = SEPARATE_STRING2;
+				mass[4] = SEPARATE_STRING3;
 
-            if ( listRespontWords.Count != 0 && String.IsNullOrEmpty(listRespontWords[listRespontWords.Count-1]))
+				listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
+			}
+
+            if (listRespontWords.Count != 0 && String.IsNullOrEmpty(listRespontWords[listRespontWords.Count - 1]))
             {
                 listRespontWords.RemoveAt(listRespontWords.Count - 1);
-			}
+            }
 
             if (listRespontWords.Count != words.Count)
             {

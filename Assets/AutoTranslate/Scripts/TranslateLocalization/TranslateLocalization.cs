@@ -141,7 +141,7 @@ namespace EqualchanceGames.Tools.AutoTranslate
 
                     if ( lists.Count != 0 ) 
                     {
-                        Dictionary<string, string> result = translator.Translate(lists, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code);
+                        Dictionary<string, string> result = translator.Translate(lists, sourceLanguageTable.LocaleIdentifier.Code, targetLanguageTable.LocaleIdentifier.Code, translateParameters.canTranslateEmptyWords);
 
                         foreach (var item in result)
                         {
