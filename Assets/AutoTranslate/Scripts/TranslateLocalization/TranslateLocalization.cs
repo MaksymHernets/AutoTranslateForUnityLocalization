@@ -82,7 +82,7 @@ namespace EqualchanceGames.Tools.AutoTranslate
                         StringTableEntry targetWord;
                         if (targetLanguageTable.TryGetValue(entry.Id, out targetWord))
                         {
-                            if (translateParameters.canOverrideWords == false)
+                            if (String.IsNullOrEmpty(targetWord.Value) == false && translateParameters.canOverrideWords == false)
                             {
                                 continue;
                             }
