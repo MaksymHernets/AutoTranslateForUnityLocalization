@@ -4,7 +4,7 @@
     "version": "0.4.9",
 	"author": "Hernets Maksym",
 	"license": "ISC",
-    "unity": "2023.2.20",
+    	"unity": "2023.2",
 	"category": "Tool",
     "description": "Auto translation plugin allows you to translate a project in just one click, thanks to other automation systems, such as loсalization system unity and google cloud translator.\n\n  Main features: \n• Translation of text into hundreds of languages to choose from;\n Use 'Window/Auto localization/Auto Translate for String Tables'\n• Automatic search text for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Text'\n• Automatic search files for translation in scenes or project prefabs.\n Use 'Window/Auto Localization/Search Textures'\n Use 'Window/Auto Localization/Search Audio'",
     "keywords": 
