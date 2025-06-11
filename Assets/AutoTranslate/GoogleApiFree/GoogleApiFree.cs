@@ -1,4 +1,4 @@
-using EqualchanceGames.Tools.Helpers;
+﻿using EqualchanceGames.Tools.Helpers;
 using EqualchanceGames.Tools.InterfaceTranslate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,13 +16,13 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
     public class GoogleApiFree : ITranslateApi
     {
         private const int MAXCHARS_FORREQUST = 5000;
-        private const String SEPARATE_STRING = "[$$]";
-        private const String SEPARATE_STRING2 = "[$#]";
-        private const String SEPARATE_STRING3 = "[#$]";
-        private const String SEPARATE_STRING4 = "[##]";
-        private const String SEPARATE_STRING5 = "[###]";
+        private const String SEPARATE_STRING = " [𓀀] ";
+        private const String SEPARATE_STRING2 = " [⨉] ";
+        private const String SEPARATE_STRING3 = "[№]";
+        private const String SEPARATE_STRING4 = "[⨉]";
+        private const String SEPARATE_STRING5 = "[𓀀]";
 
-        private Dictionary<string, string> _ignoreLocale;
+		private Dictionary<string, string> _ignoreLocale;
 
         public GoogleApiFree() 
         {
@@ -111,7 +111,7 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
-            if (String.IsNullOrEmpty(listRespontWords[listRespontWords.Count-1]))
+            if ( listRespontWords.Count != 0 && String.IsNullOrEmpty(listRespontWords[listRespontWords.Count-1]))
             {
                 listRespontWords.RemoveAt(listRespontWords.Count - 1);
 			}
@@ -120,7 +120,7 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             {
 				foreach (var item in words)
 				{
-					targetWords.Add(item.Key, " ");
+					targetWords.Add(item.Key, "");
 				}
 			}
             else
@@ -128,6 +128,8 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
 				int index = 0;
 				foreach (var item in words)
 				{
+     //               string responseWord = listRespontWords[index];
+					//if (item.Value.Length != 0 && responseWord.Length != 0 && )
 					targetWords.Add(item.Key, listRespontWords[index]);
 					++index;
 				}
