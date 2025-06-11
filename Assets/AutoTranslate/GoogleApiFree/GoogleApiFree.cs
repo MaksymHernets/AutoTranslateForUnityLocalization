@@ -4,9 +4,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using UnityEngine.TestTools;
 
 namespace EqualchanceGames.Tools.InterfaceTranslate
 {
@@ -108,13 +111,23 @@ namespace EqualchanceGames.Tools.InterfaceTranslate
             
             listRespontWords.AddRange(response.Split(mass, StringSplitOptions.None).ToList());
 
-            int index = 0;
-            foreach (var item in words)
+            if (listRespontWords.Count != words.Count)
             {
-                targetWords.Add(item.Key, listRespontWords[index]);
-                ++index;
-            }
-
+				foreach (var item in words)
+				{
+					targetWords.Add(item.Key, " ");
+				}
+			}
+            else
+            {
+				int index = 0;
+				foreach (var item in words)
+				{
+					targetWords.Add(item.Key, listRespontWords[index]);
+					++index;
+				}
+			}
+                
             return targetWords;
         }
 
