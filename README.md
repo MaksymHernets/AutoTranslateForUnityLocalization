@@ -18,6 +18,12 @@ https://assetstore.unity.com/packages/tools/localization/auto-translate-for-unit
 - Supports native unity command "Undo";
 - Tutorial scene.
 
+## Known issues and how to solve them
+- During automatic translation, an error occurs or the result is empty. The solution is to select the option to translate one entity at a time, rather than the entire table at once. This way, the process takes longer, but the result is accurate, but free attempts end faster.
+- Cannot find text in disabled objects. Enable objects before searching.
+- The checklist for selecting to add localization does not work correctly.
+- The search or translation result is not saved in tables after the project is closed.
+
 ## Package dependencies:
 - Localization 1.4.5
 - Addressables 1.21.21
